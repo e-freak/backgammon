@@ -1,0 +1,32 @@
+{
+  "name": "backgammon",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/e-freak/backgammon.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/e-freak/backgammon/issues"
+  },
+  "homepage": "https://github.com/e-freak/backgammon",
+  "devDependencies": {
+    "gulp": "~3.9.1",
+    "gulp-babel": "~5.3.0",
+    "gulp-load-plugins": "~1.5.0",
+    "gulp-util": "~3.0.8",
+    "through2": "~2.0.3",
+    "browserify": "~14.3.0",
+    "gulp-mocha": "~4.3.1",
+    "mocha": "~3.3.0",
+    "electron": "~1.6.7",
+    "electron-packager": "~8.7.0",
+    "asar": "~0.13.0"
+  }
+}

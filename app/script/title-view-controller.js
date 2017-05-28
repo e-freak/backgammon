@@ -1,5 +1,3 @@
-"use strict";
+'use strict';
 
-global.window.addEventListener('DOMContentLoaded', function () {
-    alert("Hello, Script.");
-}, false);
+global.window.addEventListener('DOMContentLoaded', function () {}, false);

@@ -22,7 +22,7 @@ app.on('window-all-closed', () => {
 });
 
 app.on('ready', () => {
-    mainWindow = new BrowserWindow({ width: 1024, height: 768, resizable: true });
+    mainWindow = new BrowserWindow({ width: 800, height: 600, resizable: false });
     mainWindow.loadURL('file://' + __dirname + '/app/view/title.html');
     mainWindow.on('closed', () => {
         mainWindow = null;

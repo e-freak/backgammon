@@ -2,15 +2,66 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        <title>BACKGAMMON</title>
+        <title>My first three.js app</title>
+        <style>
+            body { margin: 0; }
+            canvas { width: 100%; height: 100% }
+        </style>
         <link rel="stylesheet" href="../css/game.css" />
     </head>
-	</header>
-        <main>
-        <p>coming soon..</p>
-        <div id="dice"></div>
-        </div>
-        </main>
-        <script src="../script/game-view-controller-loader.js"></script>
+    </body>
+<p>===============</p>
+<p>three.js</p>
+<p>===============</p>
+        <p>
+        The MIT License</p>
+<p>
+Copyright © 2010-2015 three.js authors</p>
+<p>
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:</p>
+<p>
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.</p>
+<p>
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+        </p>
+        <script src="../script/threejs/three.min.js"></script>
+        <script>
+            var scene = new THREE.Scene();
+            var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
+
+            var renderer = new THREE.WebGLRenderer();
+            renderer.setSize( window.innerWidth, window.innerHeight );
+            document.body.appendChild( renderer.domElement );
+
+            var geometry = new THREE.BoxGeometry( 1, 1, 1 );
+            var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+            var cube = new THREE.Mesh( geometry, material );
+            scene.add( cube );
+
+            camera.position.z = 5;
+
+            var render = function () {
+                requestAnimationFrame( render );
+
+                cube.rotation.x += 0.1;
+                cube.rotation.y += 0.1;
+
+                renderer.render(scene, camera);
+            };
+
+            render();
+        </script>
    </body>
 </html>

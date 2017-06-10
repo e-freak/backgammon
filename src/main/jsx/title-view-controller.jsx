@@ -5,11 +5,11 @@ export default class TitleViewController {
     }
     
     initialize() {
-        this._view.getElementById('button-battle').addEventListener('click', this.onClickBattleButton);
-    }
-    
+        this._view.getElementById('button-battle').addEventListener('click', this.onClickBattleButton.bind(this));
+        }
+
     onClickBattleButton() {
-        this.textContent = 'coming soon..';
+        this._view.location.href = './game.html';
     }
     
 }

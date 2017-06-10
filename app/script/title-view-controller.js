@@ -18,12 +18,12 @@ var TitleViewController = (function () {
     _createClass(TitleViewController, [{
         key: 'initialize',
         value: function initialize() {
-            this._view.getElementById('button-battle').addEventListener('click', this.onClickBattleButton);
+            this._view.getElementById('button-battle').addEventListener('click', this.onClickBattleButton.bind(this));
         }
     }, {
         key: 'onClickBattleButton',
         value: function onClickBattleButton() {
-            this.textContent = 'coming soon..';
+            this._view.location.href = './game.html';
         }
     }]);
 

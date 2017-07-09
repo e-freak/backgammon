@@ -8,15 +8,15 @@ body {
     margin-bottom: auto;
     border: none;
 }
-
+div.main-area {
+    display:flex;
+}
 div.board-area {
-    float: left;
     width: 700px;
     height: 580px;
 }
 
 img.board-image {
-    float: left;
     width: 700px;
     height: 580px;
 }
@@ -84,18 +84,21 @@ img.opponent-piece {
 }
 
 div.information-area {
-    float: left;
+    display:flex;
+    flex-direction: column;
     width: 100px;
     height: 580px;
+    background-color: #0000ff;
 }
 
 div.opponent-area {
     height: 50%;
     background-color: #ffe4c4;
-
 }
 
-
+div.player-name {
+    display: flex;
+}
 div.my-area {
     height: 50%;
     background-color: #33cc00;
@@ -142,7 +145,6 @@ div.timelimit {
 img.piece-image {
     width: 20px;
     height: 20px;
-    float: left;
 }
 
 span.player-name {

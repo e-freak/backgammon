@@ -32,20 +32,30 @@ button.undo-button {
     display: none;  /*表示/非表示はjsで切り替える*/
 }
 
-img.my-firstDice {
+img.firstOrSecond {
     position: absolute;
-    top: 260px;
-    left: 430px;
-    width: 50px;
-    height: 50px;
+    top: 200px;
+    left: 200px;
+    width: 300px;
+    display: none;
 }
 
-img.my-secoundDice {
+img.my-firstDice {
     position: absolute;
     top: 260px;
     left: 483px;
     width: 50px;
     height: 50px;
+    opacity: 1.0;
+}
+
+img.my-secoundDice {
+    position: absolute;
+    top: 260px;
+    left: 430px;
+    width: 50px;
+    height: 50px;
+    opacity: 1.0;
 }
 
 img.opponent-firstDice {
@@ -54,6 +64,7 @@ img.opponent-firstDice {
     left: 100px;
     width: 50px;
     height: 50px;
+    opacity: 1.0;
     /*表示/非表示はjsで切り替える*/
 /*    display: none;*/
 }
@@ -65,15 +76,50 @@ img.opponent-secoundDice {
     width: 50px;
     height: 50px;
     display: none;  /*表示/非表示はjsで切り替える*/
+    opacity: 1.0;
 }
+
 img.piece-field {
+    width: 50px;
+    height: 50px;
+}
+
+button.piece-field {
     position: absolute;
     /*top/leftは仮の位置(jsで表示位置は変更する予定)*/
     top: 520px;
     left: 580px;
     width: 50px;
     height: 50px;
+    border: 0;
+    padding: 0;
+    background-color: Transparent;
+    background-repeat:no-repeat;
+    transition: all .5s;
+    outline : none;     /*選択時のフォーカスを消す*/
 }
+
+button.movable-field {
+    position: absolute;
+    /*top/leftは仮の位置(jsで表示位置は変更する予定)*/
+    top: 520px;
+    left: 580px;
+    width: 50px;
+    height: 50px;
+    border: 0;
+    padding: 0;
+    background-color: Transparent;
+    background-repeat:no-repeat;
+    transition: all 1s;
+    outline : none;     /*選択時のフォーカスを消す*/
+}
+/*
+input.piece-field:hover {
+  background-color: #31c8aa;
+}
+*/
+
+
 img.opponent-piece {
     position: absolute;
     /*top/leftは仮の位置(jsで表示位置は変更する予定)*/
@@ -160,6 +206,3 @@ img.icon-image {
     display: block;
     border: 1px solid #000000;
 }
-
-
-

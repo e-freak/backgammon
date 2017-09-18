@@ -5,10 +5,44 @@
         <title>BACKGAMMON</title>
         <link rel="stylesheet" href="../css/game.css" />
     </head>
-	</header>
+   <body>
         <main>
-        <p>coming soon..</p>
-        <div id="dice"></div>
+        <div class="main-area" id= "main-area">
+            <div class="board-area" id= "board-area">
+                <img class="board-image" src="../image/board.png" />
+                <button type="button" class="undo-button">undo</button>
+                <img class="firstOrSecond" id= "firstOrSecond-image" src="../image/first.png"/>
+                <img class="my-firstDice" id= "my-firstDice-image" src="../image/dice/dice1.png"/>
+                <img class="my-secoundDice" id="my-secoundDice-image" src="../image/dice/dice2.png"/>
+                <img class="opponent-firstDice" id= "opponent-firstDice-image" src="../image/dice/dice1.png"/>
+                <img class="opponent-secoundDice" id= "opponent-secoundDice-image" src="../image/dice/dice4.png"/>
+            </div>
+            <div class="information-area">
+                <div class="opponent-area">
+                    <div class="player-name">
+                        <img class="piece-image" src="../image/opponent_piece.png"/>
+                        <span class="player-name">name</span>
+                    </div>
+                    <img class="icon-image" src="../image/opponent_icon.jpg"/>
+                    <div class="pip-count">167</div>
+                    <div class="timelimit-title">持ち時間</div>
+                    <div class="timelimit">10:00</div>
+                    <button type="button" class="double-button">double</button>
+                    <button type="button" class="giveup-button">giveup</button>
+                </div>
+                <div class="my-area">
+                    <div class="player-name">
+                        <img class="piece-image" src="../image/my_piece.png"/>
+                        <span class="player-name">name</span>
+                    </div>
+                    <img class="icon-image" src="../image/my_icon.jpg"/>
+                    <div class="pip-count">167</div>
+                    <div class="timelimit-title">持ち時間</div>
+                    <div class="timelimit">10:00</div>
+                    <button type="button" class="double-button">double</button>
+                    <button type="button" class="giveup-button">giveup</button>
+                </div>
+            </div>
         </div>
         </main>
         <script src="../script/game-view-controller-loader.js"></script>

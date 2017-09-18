@@ -1,5 +1,208 @@
 @charset 'UTF-8';
 
+
 body {
-    background: green;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: auto;
+    margin-bottom: auto;
+    border: none;
+}
+div.main-area {
+    display:flex;
+}
+div.board-area {
+    width: 700px;
+    height: 580px;
+}
+
+img.board-image {
+    width: 700px;
+    height: 580px;
+}
+
+button.undo-button {
+    position: absolute;
+    top: 280px;
+    left: 150px;
+    font-size: 25px;
+    border-radius: 25px;
+    outline : none;     /*選択時のフォーカスを消す*/
+    background-color: transparent;
+    display: none;  /*表示/非表示はjsで切り替える*/
+}
+
+img.firstOrSecond {
+    position: absolute;
+    top: 200px;
+    left: 200px;
+    width: 300px;
+    display: none;
+}
+
+img.my-firstDice {
+    position: absolute;
+    top: 260px;
+    left: 483px;
+    width: 50px;
+    height: 50px;
+    opacity: 1.0;
+}
+
+img.my-secoundDice {
+    position: absolute;
+    top: 260px;
+    left: 430px;
+    width: 50px;
+    height: 50px;
+    opacity: 1.0;
+}
+
+img.opponent-firstDice {
+    position: absolute;
+    top: 260px;
+    left: 100px;
+    width: 50px;
+    height: 50px;
+    opacity: 1.0;
+    /*表示/非表示はjsで切り替える*/
+/*    display: none;*/
+}
+
+img.opponent-secoundDice {
+    position: absolute;
+    top: 260px;
+    left: 153px;
+    width: 50px;
+    height: 50px;
+    display: none;  /*表示/非表示はjsで切り替える*/
+    opacity: 1.0;
+}
+
+img.piece-field {
+    width: 50px;
+    height: 50px;
+}
+
+button.piece-field {
+    position: absolute;
+    /*top/leftは仮の位置(jsで表示位置は変更する予定)*/
+    top: 520px;
+    left: 580px;
+    width: 50px;
+    height: 50px;
+    border: 0;
+    padding: 0;
+    background-color: Transparent;
+    background-repeat:no-repeat;
+    transition: all .5s;
+    outline : none;     /*選択時のフォーカスを消す*/
+}
+
+button.movable-field {
+    position: absolute;
+    /*top/leftは仮の位置(jsで表示位置は変更する予定)*/
+    top: 520px;
+    left: 580px;
+    width: 50px;
+    height: 50px;
+    border: 0;
+    padding: 0;
+    background-color: Transparent;
+    background-repeat:no-repeat;
+    transition: all 1s;
+    outline : none;     /*選択時のフォーカスを消す*/
+}
+/*
+input.piece-field:hover {
+  background-color: #31c8aa;
+}
+*/
+
+
+img.opponent-piece {
+    position: absolute;
+    /*top/leftは仮の位置(jsで表示位置は変更する予定)*/
+    top: 10px;
+    left: 10px;
+    width: 50px;
+    height: 50px;
+}
+
+div.information-area {
+    display:flex;
+    flex-direction: column;
+    width: 100px;
+    height: 580px;
+    background-color: #0000ff;
+}
+
+div.opponent-area {
+    height: 50%;
+    background-color: #ffe4c4;
+}
+
+div.player-name {
+    display: flex;
+}
+div.my-area {
+    height: 50%;
+    background-color: #33cc00;
+}
+
+button.giveup-button {
+    margin: 5px auto;
+    display: block;
+    width: 80px;
+    font-size: 20px;
+
+}
+
+button.double-button {
+    margin: 5px auto;
+    display: block;
+    width: 80px;
+    font-size: 20px;
+}
+
+div.pip-count {
+    margin: 5px auto;
+    margin-top: 5px;
+    width: 60px;
+    height: 30px;
+    background-color: #f0f8ff;
+    border-radius: 100%;
+    text-align: center;
+    font-size: 25px;
+    color: red;
+}
+div.timelimit-title {
+    font-size: 15px;
+    margin-left: 5px;
+    margin-top:5px
+}
+
+div.timelimit {
+    font-size: 20px;
+    width: 50px;
+    margin-left: auto;
+}
+
+img.piece-image {
+    width: 20px;
+    height: 20px;
+}
+
+span.player-name {
+    margin-left:10px;
+    font-size: 20px;
+    display: block;
+}
+img.icon-image {
+    margin-top: 2px;
+    margin-left:5px;
+    width: 90px;
+    height: 90px;
+    display: block;
+    border: 1px solid #000000;
 }

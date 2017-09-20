@@ -1,4 +1,6 @@
 import Piece from '../script/Piece';
+import InformationViewController from '../script/information-view-controller';
+
 
 export default class GameViewController {
 
@@ -12,6 +14,7 @@ export default class GameViewController {
         this._myDicePip = 1;
         this._opponentDicePip = 1;
         this._dicePip = [];
+        this._informationViewController;
     }
 
     // とりあえずの実装。設計は後から考える
@@ -19,6 +22,9 @@ export default class GameViewController {
         this._loadImages();     // 画像をロードしておく
         this._updateToStartUI();        // ゲーム開始画面のUIに更新する(コマを配る, サイコロの表示/非表示の設定とか)
         this._shakeDice(true);      // サイコロ画像を切り替えて振ってる風に見せる
+
+        this._informationViewController = new InformationViewController(this._view);
+        this._informationViewController.initialize();
 
     }
 
@@ -182,11 +188,7 @@ export default class GameViewController {
           case 2: this._view.getElementById('opponent-firstDice-image').style.opacity =  "0.75"; break;
           case 3: this._view.getElementById('my-firstDice-image').style.opacity =  "0.5"; break;
           case 4: this._view.getElementById('my-firstDice-image').style.opacity =  "0.75"; break;
-
-
         }
-
-
       }else if (this._myDicePip === diceNum) {
         this._view.getElementById('my-firstDice-image').style.opacity =  "0.5";
       }else{
@@ -199,8 +201,15 @@ export default class GameViewController {
         this._dicePip.splice(idx, 1);
       }
 
+      // pipnumを変更
+      this._informationViewController.updatePipNumber(diceNum * -1);
+
       if (this._dicePip.length === 0){
           // ターン終了、再度サイコロを振る
+
+          // ターン終了時にカウントをストップしてみる
+          this._informationViewController.stopTime();
+
           this._shakeDice(false);
       }
     }
@@ -233,6 +242,10 @@ export default class GameViewController {
               img.style.display="block" // 表示
 
             }
+
+            // とりあえず、ここでカウントスタートしてみる
+            this._informationViewController.startTime();
+
             return 0;
         }
         this._myDicePip = Math.ceil(Math.random() * 6);        // 1から6までの適当な数字

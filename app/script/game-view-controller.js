@@ -1,18 +1,22 @@
-"use strict";
+'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+Object.defineProperty(exports, '__esModule', {
   value: true
 });
 
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
 var _scriptPiece = require('../script/Piece');
 
 var _scriptPiece2 = _interopRequireDefault(_scriptPiece);
+
+var _scriptInformationViewController = require('../script/information-view-controller');
+
+var _scriptInformationViewController2 = _interopRequireDefault(_scriptInformationViewController);
 
 var GameViewController = (function () {
   function GameViewController(view) {
@@ -27,19 +31,23 @@ var GameViewController = (function () {
     this._myDicePip = 1;
     this._opponentDicePip = 1;
     this._dicePip = [];
+    this._informationViewController;
   }
 
   // とりあえずの実装。設計は後から考える
 
   _createClass(GameViewController, [{
-    key: "initialize",
+    key: 'initialize',
     value: function initialize() {
       this._loadImages(); // 画像をロードしておく
       this._updateToStartUI(); // ゲーム開始画面のUIに更新する(コマを配る, サイコロの表示/非表示の設定とか)
       this._shakeDice(true); // サイコロ画像を切り替えて振ってる風に見せる
+
+      this._informationViewController = new _scriptInformationViewController2['default'](this._view);
+      this._informationViewController.initialize();
     }
   }, {
-    key: "_loadImages",
+    key: '_loadImages',
     value: function _loadImages() {
       // サイコロの画像
       for (var i = 1; i <= 6; i++) {
@@ -51,7 +59,7 @@ var GameViewController = (function () {
       }
     }
   }, {
-    key: "_updateToStartUI",
+    key: '_updateToStartUI',
     value: function _updateToStartUI() {
       // コマを配りたい
       this._appendPiece();
@@ -64,13 +72,13 @@ var GameViewController = (function () {
       this._view.getElementById('opponent-secoundDice-image').style.display = "none"; // 非表示
     }
   }, {
-    key: "_appendPiece",
+    key: '_appendPiece',
     value: function _appendPiece() {
       // 自分のコマの位置
       var point = [24, 24, 13, 13, 13, 13, 13, 8, 8, 8, 6, 6, 6, 6, 6];
       for (var i = 0; i <= 14; i++) {
         var position = this._getPiecePosition(point[i], this._myPieces);
-        var piece = new _scriptPiece2["default"](position[0], position[1], point[i], true);
+        var piece = new _scriptPiece2['default'](position[0], position[1], point[i], true);
         piece.initialize();
         var btn = piece.createPieceElement();
 
@@ -86,7 +94,7 @@ var GameViewController = (function () {
 
       for (var i = 0; i <= 14; i++) {
         var position = this._getPiecePosition(point[i], this._opponentPieces);
-        var piece = new _scriptPiece2["default"](position[0], position[1], point[i], false);
+        var piece = new _scriptPiece2['default'](position[0], position[1], point[i], false);
         piece.initialize();
         var btn = piece.createPieceElement();
 
@@ -97,7 +105,7 @@ var GameViewController = (function () {
       }
     }
   }, {
-    key: "_getPiecePosition",
+    key: '_getPiecePosition',
     value: function _getPiecePosition(point, pieces) {
       // 0番目の要素はダミー
       var base_x = [-1, 520, 520, 520, 520, 520, 520, 520, 520, 520, 520, 520, 520, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10];
@@ -119,7 +127,7 @@ var GameViewController = (function () {
       return [position_x + "px", position_y + "px"];
     }
   }, {
-    key: "_preMovePiece",
+    key: '_preMovePiece',
     value: function _preMovePiece(piece) {
       // とりあえず、このタイミングで消す
       var img = this._view.getElementById('firstOrSecond-image');
@@ -151,7 +159,7 @@ var GameViewController = (function () {
       }
     }
   }, {
-    key: "_canMove",
+    key: '_canMove',
     value: function _canMove(point) {
       var numOfOpponentPiece = 0;
       this._opponentPieces.forEach(function (value) {
@@ -166,7 +174,7 @@ var GameViewController = (function () {
       return returnValue;
     }
   }, {
-    key: "_showMovablePoint",
+    key: '_showMovablePoint',
     value: function _showMovablePoint(point, piece, diceNum) {
       var position = this._getPiecePosition(point, this._myPieces);
       // 移動可能な位置を表示
@@ -187,7 +195,7 @@ var GameViewController = (function () {
       this._view.getElementById("board-area").appendChild(btn);
     }
   }, {
-    key: "_movePiece",
+    key: '_movePiece',
     value: function _movePiece(btn, piece, point, diceNum) {
       var elements = document.getElementsByClassName("movable-field");
       while (elements.length > 0) {
@@ -207,7 +215,6 @@ var GameViewController = (function () {
             this._view.getElementById('my-firstDice-image').style.opacity = "0.5";break;
           case 4:
             this._view.getElementById('my-firstDice-image').style.opacity = "0.75";break;
-
         }
       } else if (this._myDicePip === diceNum) {
         this._view.getElementById('my-firstDice-image').style.opacity = "0.5";
@@ -221,15 +228,22 @@ var GameViewController = (function () {
         this._dicePip.splice(idx, 1);
       }
 
+      // pipnumを変更
+      this._informationViewController.updatePipNumber(diceNum * -1);
+
       if (this._dicePip.length === 0) {
         // ターン終了、再度サイコロを振る
+
+        // ターン終了時にカウントをストップしてみる
+        this._informationViewController.stopTime();
+
         this._shakeDice(false);
       }
     }
 
     // isInit:初回はゾロ目ダメ, 先攻or後攻表示
   }, {
-    key: "_shakeDice",
+    key: '_shakeDice',
     value: function _shakeDice(isInit) {
 
       this._view.getElementById('my-firstDice-image').style.opacity = "1.0";
@@ -258,6 +272,10 @@ var GameViewController = (function () {
           }
           img.style.display = "block"; // 表示
         }
+
+        // とりあえず、ここでカウントスタートしてみる
+        this._informationViewController.startTime();
+
         return 0;
       }
       this._myDicePip = Math.ceil(Math.random() * 6); // 1から6までの適当な数字
@@ -278,5 +296,5 @@ var GameViewController = (function () {
   return GameViewController;
 })();
 
-exports["default"] = GameViewController;
-module.exports = exports["default"];
+exports['default'] = GameViewController;
+module.exports = exports['default'];

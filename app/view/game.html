@@ -4,6 +4,7 @@
         <meta charset="UTF-8" />
         <title>BACKGAMMON</title>
         <link rel="stylesheet" href="../css/game.css" />
+        <audio src="../sound/game_maoudamashii_1_battle37.mp3" autoplay loop></audio>
     </head>
    <body>
         <main>
@@ -12,10 +13,10 @@
                 <img class="board-image" src="../image/board.png" />
                 <button type="button" class="undo-button">undo</button>
                 <img class="firstOrSecond" id= "firstOrSecond-image" src="../image/first.png"/>
-                <img class="my-firstDice" id= "my-firstDice-image" src="../image/dice/dice1.png"/>
-                <img class="my-secoundDice" id="my-secoundDice-image" src="../image/dice/dice2.png"/>
-                <img class="opponent-firstDice" id= "opponent-firstDice-image" src="../image/dice/dice1.png"/>
-                <img class="opponent-secoundDice" id= "opponent-secoundDice-image" src="../image/dice/dice4.png"/>
+                <img class="my-firstDice" id= "my-firstDice-image" src="../image/myDice/dice1.png"/>
+                <img class="my-secoundDice" id="my-secoundDice-image" src="../image/myDice/dice2.png"/>
+                <img class="opponent-firstDice" id= "opponent-firstDice-image" src="../image/opponentDice/dice1.png"/>
+                <img class="opponent-secoundDice" id= "opponent-secoundDice-image" src="../image/opponentDice/dice2.png"/>
             </div>
             <div class="information-area">
                 <div class="opponent-area">
@@ -39,7 +40,7 @@
                     <div class="pip-count" id="my-pipCount">167</div>
                     <div class="timelimit-title">持ち時間</div>
                     <div class="timelimit" id="my-timeLimit">10:00</div>
-                    <button type="button" class="double-button">double</button>
+                    <button type="button" class="double-button" id="my-double-button">double</button>
                     <button type="button" class="giveup-button">giveup</button>
                 </div>
             </div>

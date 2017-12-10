@@ -23,10 +23,10 @@ var GameViewController = (function () {
     _classCallCheck(this, GameViewController);
 
     this._view = view;
-    this._imageMyDiceResource = [];
-    this._imageOpponentDiceResource = [];
-    this._myPieces = [];
-    this._opponentPieces = [];
+    this._imageMyDiceResource = []; // 自分のサイコロの画像(indexはサイコロの目と対応, index=0は使用しない)
+    this._imageOpponentDiceResource = []; // 相手のサイコロの画像(indexはサイコロの目と対応, index=0は使用しない)
+    this._myPieces = []; // Pieceオブジェクトを格納する
+    this._opponentPieces = []; // Pieceオブジェクトを格納する
     this._count = 0;
     this._myDicePip = 1;
     this._opponentDicePip = 1;
@@ -53,14 +53,15 @@ var GameViewController = (function () {
       for (var i = 1; i <= 6; i++) {
         // ArrayのIndex=サイコロの目(0は使用しない)
         this._imageMyDiceResource[i] = new Image();
-        this._imageMyDiceResource[i].src = "../image/dice/dice" + i + ".png";
+        this._imageMyDiceResource[i].src = "../image/myDice/dice" + i + ".png";
         this._imageOpponentDiceResource[i] = new Image();
-        this._imageOpponentDiceResource[i].src = "../image/dice/dice" + i + ".png";
+        this._imageOpponentDiceResource[i].src = "../image/opponentDice/dice" + i + ".png";
       }
     }
   }, {
     key: '_updateToStartUI',
     value: function _updateToStartUI() {
+      this._view.getElementById('my-double-button').style.animationIterationCount = "infinite";
       // コマを配りたい
       this._appendPiece();
 

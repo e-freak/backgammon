@@ -3,7 +3,8 @@
     <head>
         <meta charset="UTF-8" />
         <title>BACKGAMMON</title>
-        <link rel="stylesheet" href="../css/game.css" />
+        <link rel="stylesheet" href="../css/stylesheets/game.css" />
+        <link rel="stylesheet" href="../css/stylesheets/smokyText.css" />
         <audio src="../sound/game_maoudamashii_1_battle37.mp3" autoplay loop></audio>
     </head>
    <body>
@@ -12,11 +13,16 @@
             <div class="board-area" id= "board-area">
                 <img class="board-image" src="../image/board.png" />
                 <button type="button" class="undo-button">undo</button>
-                <img class="firstOrSecond" id= "firstOrSecond-image" src="../image/first.png"/>
                 <img class="my-firstDice" id= "my-firstDice-image" src="../image/myDice/dice1.png"/>
                 <img class="my-secoundDice" id="my-secoundDice-image" src="../image/myDice/dice2.png"/>
                 <img class="opponent-firstDice" id= "opponent-firstDice-image" src="../image/opponentDice/dice1.png"/>
                 <img class="opponent-secoundDice" id= "opponent-secoundDice-image" src="../image/opponentDice/dice2.png"/>
+                <div class="smoky-area" id="first-smoky">
+                  <span class="smoky-span">Y</span><span class="smoky-span">O</span><span class="smoky-span">U</span><span class="smoky-span">&nbsp;</span><span class="smoky-span">G</span><span class="smoky-span">O</span><span class="smoky-span">&nbsp;</span><span class="smoky-span">F</span><span class="smoky-span">I</span><span class="smoky-span">S</span><span class="smoky-span">T</span>
+                </div>
+                <div class="smoky-area" id="second-smoky">
+                  <span class="smoky-span">Y</span><span class="smoky-span">O</span><span class="smoky-span">U</span><span class="smoky-span">&nbsp;</span><span class="smoky-span">G</span><span class="smoky-span">O</span><span class="smoky-span">&nbsp;</span><span class="smoky-span">S</span><span class="smoky-span">E</span><span class="smoky-span">C</span><span class="smoky-span">O</span><span class="smoky-span">N</span><span class="smoky-span">D</span>
+                </div>
             </div>
             <div class="information-area">
                 <div class="opponent-area">

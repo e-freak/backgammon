@@ -110,10 +110,6 @@ export default class GameViewController {
     }
 
     _preMovePiece(piece){
-      // とりあえず、このタイミングで消す
-      var img = this._view.getElementById('firstOrSecond-image');
-      img.style.display="none" // 非表示
-
       // まずは、すでに表示されている移動可能な場所の表示をクリア
       var elements = document.getElementsByClassName("movable-field");
       while(elements.length > 0){
@@ -233,16 +229,15 @@ export default class GameViewController {
             }
             if (isInit === true) {
               // 順番を表示(first or second)
-              var img = this._view.getElementById('firstOrSecond-image');
               if (this._myDicePip > this._opponentDicePip) {
-                img.src = "../image/first.png";
+                // img.src = "../image/first.png";
+                this._view.getElementById('first-smoky').style.display="block" // 表示
                 this._view.getElementById('opponent-firstDice-image').style.left =  "430px"
               }else{
-                img.src = "../image/second.png";
+                //img.src = "../image/second.png";
+                this._view.getElementById('second-smoky').style.display="block" // 表示
                 this._view.getElementById('my-firstDice-image').style.left =  "153px"
               }
-              img.style.display="block" // 表示
-
             }
 
             // とりあえず、ここでカウントスタートしてみる

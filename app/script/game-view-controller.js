@@ -61,6 +61,7 @@ var GameViewController = (function () {
   }, {
     key: '_updateToStartUI',
     value: function _updateToStartUI() {
+      // 試行錯誤中
       this._view.getElementById('my-double-button').style.animationIterationCount = "infinite";
       // コマを配りたい
       this._appendPiece();
@@ -131,8 +132,10 @@ var GameViewController = (function () {
     key: '_preMovePiece',
     value: function _preMovePiece(piece) {
       // とりあえず、このタイミングで消す
-      var img = this._view.getElementById('firstOrSecond-image');
-      img.style.display = "none"; // 非表示
+      var smoky1 = this._view.getElementById('first-smoky');
+      var smoky2 = this._view.getElementById('second-smoky');
+      //smoky1.style.display="none" // 非表示
+      smoky2.style.display = "none"; // 非表示
 
       // まずは、すでに表示されている移動可能な場所の表示をクリア
       var elements = document.getElementsByClassName("movable-field");
@@ -263,15 +266,15 @@ var GameViewController = (function () {
         }
         if (isInit === true) {
           // 順番を表示(first or second)
-          var img = this._view.getElementById('firstOrSecond-image');
           if (this._myDicePip > this._opponentDicePip) {
-            img.src = "../image/first.png";
+            // img.src = "../image/first.png";
+            this._view.getElementById('first-smoky').style.display = "block"; // 表示
             this._view.getElementById('opponent-firstDice-image').style.left = "430px";
           } else {
-            img.src = "../image/second.png";
+            //img.src = "../image/second.png";
+            this._view.getElementById('second-smoky').style.display = "block"; // 表示
             this._view.getElementById('my-firstDice-image').style.left = "153px";
           }
-          img.style.display = "block"; // 表示
         }
 
         // とりあえず、ここでカウントスタートしてみる

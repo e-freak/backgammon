@@ -160,8 +160,8 @@ export default class GameViewController {
       btn.style.left = position[1];
 
       var img = document.createElement("img");
-      img.src = "../image/my_piece2.png";
-      img.className = "piece-field";
+      img.src = "../image/my_piece.png";
+      img.className = "move-piece-field";
       btn.appendChild(img);
 
       btn.onclick = this._movePiece.bind(this, btn, piece, point, diceNum);

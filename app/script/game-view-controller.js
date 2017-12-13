@@ -131,12 +131,6 @@ var GameViewController = (function () {
   }, {
     key: '_preMovePiece',
     value: function _preMovePiece(piece) {
-      // とりあえず、このタイミングで消す
-      var smoky1 = this._view.getElementById('first-smoky');
-      var smoky2 = this._view.getElementById('second-smoky');
-      //smoky1.style.display="none" // 非表示
-      smoky2.style.display = "none"; // 非表示
-
       // まずは、すでに表示されている移動可能な場所の表示をクリア
       var elements = document.getElementsByClassName("movable-field");
       while (elements.length > 0) {
@@ -189,8 +183,8 @@ var GameViewController = (function () {
       btn.style.left = position[1];
 
       var img = document.createElement("img");
-      img.src = "../image/my_piece2.png";
-      img.className = "piece-field";
+      img.src = "../image/my_piece.png";
+      img.className = "move-piece-field";
       btn.appendChild(img);
 
       btn.onclick = this._movePiece.bind(this, btn, piece, point, diceNum);

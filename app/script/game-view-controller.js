@@ -14,6 +14,10 @@ var _scriptPiece = require('../script/Piece');
 
 var _scriptPiece2 = _interopRequireDefault(_scriptPiece);
 
+var _scriptPeerController = require('../script/peer-controller');
+
+var _scriptPeerController2 = _interopRequireDefault(_scriptPeerController);
+
 var _scriptInformationViewController = require('../script/information-view-controller');
 
 var _scriptInformationViewController2 = _interopRequireDefault(_scriptInformationViewController);
@@ -45,6 +49,9 @@ var GameViewController = (function () {
 
       this._informationViewController = new _scriptInformationViewController2['default'](this._view);
       this._informationViewController.initialize();
+
+      this._peerController = new _scriptPeerController2['default']();
+      this._peerController.initialize();
     }
   }, {
     key: '_loadImages',

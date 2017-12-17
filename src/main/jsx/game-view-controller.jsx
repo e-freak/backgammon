@@ -1,4 +1,6 @@
 import Piece from '../script/Piece';
+import PeerController from '../script/peer-controller';
+
 import InformationViewController from '../script/information-view-controller';
 
 
@@ -25,6 +27,9 @@ export default class GameViewController {
 
         this._informationViewController = new InformationViewController(this._view);
         this._informationViewController.initialize();
+
+        this._peerController = new PeerController();
+        this._peerController.initialize();
 
     }
 

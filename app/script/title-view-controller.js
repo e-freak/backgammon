@@ -23,6 +23,11 @@ var TitleViewController = (function () {
     }, {
         key: 'onClickBattleButton',
         value: function onClickBattleButton() {
+            var remote = require('electron').remote;
+            var main = remote.require('./index');
+            console.log('ex remote');
+            main.exampleRemote();
+
             this._view.location.href = './game.html';
         }
     }]);

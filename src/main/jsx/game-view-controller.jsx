@@ -1,4 +1,6 @@
 import Piece from '../script/Piece';
+import PeerController from '../script/peer-controller';
+
 import InformationViewController from '../script/information-view-controller';
 
 
@@ -6,25 +8,52 @@ export default class GameViewController {
 
     constructor(view) {
         this._view = view;
-        this._imageMyDiceResource = [];
-        this._imageOpponentDiceResource = [];
-        this._myPieces = [];
-        this._opponentPieces = [];
+        this._imageMyDiceResource = [];  // 自分のサイコロの画像(indexはサイコロの目と対応, index=0は使用しない)
+        this._imageOpponentDiceResource = []; // 相手のサイコロの画像(indexはサイコロの目と対応, index=0は使用しない)
+        this._myPieces = []; // Pieceオブジェクトを格納する
+        this._opponentPieces = []; // Pieceオブジェクトを格納する
         this._count = 0;
         this._myDicePip = 1;
         this._opponentDicePip = 1;
         this._dicePip = [];
         this._informationViewController;
+
+        var opts = {
+        	lines: 13, // The number of lines to draw
+        	length: 33, // The length of each line
+        	width: 11, // The line thickness
+        	radius: 16, // The radius of the inner circle
+        	corners: 1, // Corner roundness (0..1)
+        	rotate: 74, // The rotation offset
+        	direction: 1, // 1: clockwise, -1: counterclockwise
+        	color: '#000', // #rgb or #rrggbb or array of colors
+        	speed: 1.5, // Rounds per second
+        	trail: 71, // Afterglow percentage
+        	shadow: true, // Whether to render a shadow
+        	hwaccel: true, // Whether to use hardware acceleration
+        	className: 'spinner', // The CSS class to assign to the spinner
+        	zIndex: 2e9, // The z-index (defaults to 2000000000)
+        	top: '50%', // Top position relative to parent
+        	left: '50%' // Left position relative to parent
+        };
+        this._target = document.getElementById('spin-area');
+        this._spinner = new Spinner(opts);
     }
 
     // とりあえずの実装。設計は後から考える
     initialize() {
+        // spinnerを表示
+        this._spinner.spin(this._target);
+
         this._loadImages();     // 画像をロードしておく
         this._updateToStartUI();        // ゲーム開始画面のUIに更新する(コマを配る, サイコロの表示/非表示の設定とか)
         this._shakeDice(true);      // サイコロ画像を切り替えて振ってる風に見せる
 
         this._informationViewController = new InformationViewController(this._view);
         this._informationViewController.initialize();
+
+        this._peerController = new PeerController();
+        this._peerController.initialize();
 
     }
 
@@ -33,14 +62,16 @@ export default class GameViewController {
         for (var i = 1; i <= 6; i++) {
             // ArrayのIndex=サイコロの目(0は使用しない)
             this._imageMyDiceResource[i] = new Image();
-            this._imageMyDiceResource[i].src = "../image/dice/dice" + i + ".png";
+            this._imageMyDiceResource[i].src = "../image/myDice/dice" + i + ".png";
             this._imageOpponentDiceResource[i] = new Image();
-            this._imageOpponentDiceResource[i].src = "../image/dice/dice" + i + ".png";
+            this._imageOpponentDiceResource[i].src = "../image/opponentDice/dice" + i + ".png";
         }
 
     }
 
     _updateToStartUI() {
+        // 試行錯誤中
+        this._view.getElementById('my-double-button').style.animationIterationCount = "infinite";
         // コマを配りたい
         this._appendPiece();
 
@@ -108,10 +139,6 @@ export default class GameViewController {
     }
 
     _preMovePiece(piece){
-      // とりあえず、このタイミングで消す
-      var img = this._view.getElementById('firstOrSecond-image');
-      img.style.display="none" // 非表示
-
       // まずは、すでに表示されている移動可能な場所の表示をクリア
       var elements = document.getElementsByClassName("movable-field");
       while(elements.length > 0){
@@ -162,8 +189,8 @@ export default class GameViewController {
       btn.style.left = position[1];
 
       var img = document.createElement("img");
-      img.src = "../image/my_piece2.png";
-      img.className = "piece-field";
+      img.src = "../image/my_piece.png";
+      img.className = "move-piece-field";
       btn.appendChild(img);
 
       btn.onclick = this._movePiece.bind(this, btn, piece, point, diceNum);
@@ -231,16 +258,15 @@ export default class GameViewController {
             }
             if (isInit === true) {
               // 順番を表示(first or second)
-              var img = this._view.getElementById('firstOrSecond-image');
               if (this._myDicePip > this._opponentDicePip) {
-                img.src = "../image/first.png";
+                // img.src = "../image/first.png";
+                this._view.getElementById('first-smoky').style.display="block" // 表示
                 this._view.getElementById('opponent-firstDice-image').style.left =  "430px"
               }else{
-                img.src = "../image/second.png";
+                //img.src = "../image/second.png";
+                this._view.getElementById('second-smoky').style.display="block" // 表示
                 this._view.getElementById('my-firstDice-image').style.left =  "153px"
               }
-              img.style.display="block" // 表示
-
             }
 
             // とりあえず、ここでカウントスタートしてみる

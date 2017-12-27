@@ -1,0 +1,158 @@
+#menu {
+  position: fixed;
+  z-index: 300;
+  background-color: rgba(0, 0, 0, 0.9);
+  color: #fff;
+}
+
+#menu {
+  top: 0;
+  left: -100vw; /* あらかじめ画面外へ移動しておく */
+  width: 100vw;
+  height: 100vh;
+  text-align: center;
+}
+
+#menu .inner {
+  max-width: none;
+}
+
+#userInfoTitleLabel {
+  margin-left: 100px;
+  padding: 22px 0 0;
+  font-size: 2em;
+  font-weight: bold;
+}
+
+#menu ul {
+  font-size: 0.8em;
+  color: #F4BA14;
+}
+
+#menu ul li span {
+  display: block;
+  padding: 1em 0;
+  cursor: pointer;
+}
+
+#menu .show-menu {
+  position: fixed;
+  z-index: 350;
+  top: 10px;
+  right: 10px;
+  padding: 12px 0;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  line-height: 1;
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+  width: 44px;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  cursor: pointer;
+}
+
+#menu .show-menu:before {
+  content: '';/*何も入れない*/
+  display: inline-block;/*忘れずに！*/
+  width: 24px;/*画像の幅*/
+  height: 24px;/*画像の高さ*/
+  background-image: url(../../image/settingIcon.png);
+  background-size: contain;
+  vertical-align: middle;
+}
+
+#menu.SHOW .show-menu:before {
+  content: "×";
+  background-image: none;
+}
+
+#menu .inner {
+  box-sizing: border-box;
+  height: 100%;
+  overflow: auto;
+}
+
+#dropArea {
+  display: inline-block;
+  margin-left: 10px;
+  margin-top: 20px;
+  overflow: hidden;
+  padding: 10px 10px;
+  background: #ddd;
+  border: 3px #666 dashed;
+  color: #999;
+  font-size: 25px;
+  font-weight: bold;
+  text-align: center;
+  width: 100px;
+  height: 100px;
+}
+
+#dropArea.dragover,
+#dropArea:active {
+  background: #cfc;
+  border-color: #9c9;
+  color: #9c9;
+}
+
+#fileInput {
+  display: none;
+}
+
+#nameLabelArea {
+  margin-top: 30px;
+  margin-left: 100px;
+}
+
+#nameValue {
+    margin-left: 10px;
+}
+#iconLabelArea {
+  position: relative;
+  display: inline-block;
+  margin-left: 65px;
+  top: -50px;
+
+}
+
+#chipsLabelArea {
+  position: relative;
+  top: 40px;
+  margin-top: 40px;
+  margin-left: 138px;
+}
+
+#chipsValueLabelArea {
+  margin-left: 100px;
+}
+
+#winLossRecordLabelArea {
+  position: relative;
+  top: 20px;
+  margin-left: 65px;
+}
+
+#winLabelArea {
+  margin-left: 45px;
+}
+
+#lossLabelArea {
+  margin-left: 10px;
+}
+
+#button-buy {
+  position: relative;
+  top: 35px;
+  margin-left: 10px;
+  background-color: #03f;
+  color: #fff;
+}
+#button-register {
+  position: relative;
+  margin-top: 50px;
+  margin-left: 450px;
+  font-size: 1em;
+  background-color: #fff;
+}

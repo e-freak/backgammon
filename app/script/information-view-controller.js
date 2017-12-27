@@ -33,7 +33,6 @@ var InformationViewController = (function () {
     key: 'startTime',
     value: function startTime() {
       this._timeLimit--;
-      console.log(this._timeLimit);
       var id = setTimeout(this.startTime.bind(this), 1000);
       if (this._isTurn === false) {
         this._isTurn = true; // ここでtrueにするの微妙。。。

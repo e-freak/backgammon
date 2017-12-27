@@ -3,21 +3,180 @@
     <head>
         <meta charset="UTF-8" />
         <title>BACKGAMMON</title>
-        <link rel="stylesheet" href="../css/title.css" />
+        <link rel="stylesheet" href="../css/stylesheets/title.css" />
+        <link rel="stylesheet" href="../css/stylesheets/snowfall.css" />
+        <link rel="stylesheet" href="../css/stylesheets/show-menu.css" />
     </head>
 	</header>
-        <main>    	
+    <body class="snowfall">
+        <main>
+          <div id="menu">
+            <span class="show-menu"></span>
+            <div class="inner">
+              <button type="button" id="button-register">登録</button><br>
+              <label id="userInfoTitleLabel">ユーザー情報</label><br><br>
+              <!--
+                https://qiita.com/amamamaou/items/1b51c834d62c8567fad4
+              -->
+              <label id="nameLabelArea">名前: <input id="nameValue" type="text" value="" placeholder="ユーザー名" ></label><br>
+              <label id="iconLabelArea">アイコン: </label>
+              <div id="dropArea">Drop or Click here!</div><br>
+              <input id="fileInput" type="file" accept="image/*" multiple>
+              <label id="winLossRecordLabelArea">対戦成績: <label id="winLabelArea">010勝</label><label id="lossLabelArea">001負</label></label><br>
+              <label id="chipsLabelArea">チップ: <label id="chipsValueLabelArea">$1000</label></label>
+              <button type="button" id="button-buy">購入</button><br>
+
+            </div>  <!-- /.inner -->
+          </div>
             <div class="title">
                 <img src="../image/title.png" />
             </div>
-
-            <!-- -todo 画像差し替え （リンクを飛ばしたくないがこのgifを使う条件なので仕方なく）-->
             <a href="http://www.animatedimages.org/cat-dice-710.htm"><img src="http://www.animatedimages.org/data/media/710/animated-dice-image-0020.gif" border="0" alt="animated-dice-image-0020"/></a>
-
-            <div class="menue-field">
+            <div id="spin-area" class="menue-field">
                 <button type="button" class="menu" id="button-battle"><img src="../image/start.gif" alt="start"/></button>
             </div>
+          <!--
+          スライドイン ここから
+
+          <div id="slideL" class="off">
+          <span class="nav-icon"><i class="fa fa-star-o"></i></span>
+          <div class="slide-inner">
+          <section>
+          	<blockquote cite="http://www.aozora.gr.jp/cards/000148/files/789_14547.html">
+          	<p>
+              <ul>
+              	<li><a href="#">Top</a></li>
+              	<li><a href="#">About</a></li>
+              	<li><a href="#">Content</a></li>
+              	<li><a href="#">Mail</a></li>
+              </ul>
+          	</p>
+          	</blockquote>
+          </section>
+          </div>
+          </div>
+
+          スライドイン ここまで
+          -->
+
         </main>
+
+        <!--
+        スライドイン ここから
+
+        <style>
+        #slideR {
+        	z-index: 99;
+        	cursor: pointer;
+        	position: fixed;
+        	top: 40%;
+        	right: -140px;
+        	background: #0DCEA8;
+        	width: 180px;
+        	color: #fff;
+        	font-size: 16px;
+        }
+        #slideR a {
+        	color: #fff;
+        	display: block;
+        	padding: 5px 10px;
+        }
+        #slideR ul {
+        	position: relative;
+        	padding: 10px 10px 10px 40px;
+        }
+        #slideR .nav-icon {
+        	position: absolute;
+        	left: 10px;
+        	top: 40%;
+        	font-size: 20px;
+        }
+        #slideL {
+        	z-index:100;
+        	cursor: pointer;
+        	position: fixed;
+        	top: 0;
+        	left: -400px;
+        	width: 400px;
+        	height: auto;
+        	padding: 0 40px 0 0;
+        	background: #999;
+        }
+        #slideL .slide-inner {
+        	position: relative;
+        	overflow: auto;
+        	overflow-x: hidden;
+        	background: #ddd;
+        }
+        #slideL .slide-inner section {
+        	padding: 20px;
+        }
+        #slideL .nav-icon {
+        	position: absolute;
+        	right: 10px;
+        	top: 450px;
+        	font-size: 20px;
+        	color: #fff;
+        }
+        #wrap {
+        	margin:20px 50px;
+        }
+        h1 {
+        	font-size: 18px;
+        }
+        </style>
+        スライドイン ここまで
+        -->
+
+
+
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
         <script src="../script/title-view-controller-loader.js"></script>
+        <script src="../script/show-menu.js"></script>
+        <script type="text/javascript">
+      </script>
+
+      <!--
+      スライドイン ここから
+
+      <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+        <script>
+        $(function() {
+        		$('#slideR').hover(
+        			function(){
+        					$(this).animate({'marginRight':'140px'},500);
+        			},
+        			function () {
+        					$(this).animate({'marginRight':'0'},500);
+        			}
+        	);
+        });
+
+        $('#slideL').on('click',function(){
+        if($('#slideL').hasClass('off')){
+        	$('#slideL').removeClass('off');
+        	$(this).animate({'marginLeft':'400px'},300).addClass('on');
+        }else{
+        	$('#slideL').addClass('off');
+        	$(this).animate({'marginLeft':'0px'},300);
+        }
+        });
+
+        $(document).ready(function(){
+        fit();
+        $(window).resize(function(){
+        	fit();
+        })
+        	function fit(){
+        		var h = $(window).height();
+        		$('.slide-inner').css("height",h);
+        	}
+        });
+        </script>
+
+
+        スライドイン ここまで
+        -->
+
    </body>
 </html>

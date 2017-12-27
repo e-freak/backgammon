@@ -1,0 +1,22 @@
+@charset 'UTF-8';
+
+body {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    /* background: linear-gradient(green,white, green); */
+}
+
+.snowfall {
+    width: 800px;
+    height: 600px;
+    background-color: #393e4f;
+    background-image: url('../../image/snow/ui4IF.png'),
+        url('../../image/snow/mfuUa.png'),
+        url('../../image/snow/MzZY8.png');
+    animation: snow 20s linear infinite;
+}
+@keyframes snow {
+    0% {background-position: 0 0, 0 0, 0 0;}
+    100% {background-position: 0 500px, 0 300px, 0 400px;}
+}

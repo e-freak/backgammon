@@ -29,10 +29,8 @@ var PeerController = (function () {
     value: function initialize() {
       var peer = new Peer({ key: SkyWay_ApiKey,
         debug: 3 });
-
       peer.on('open', this.onOpen);
       peer.on('connection', this.onConnection);
-
       this._peer = peer;
     }
   }, {
@@ -46,11 +44,6 @@ var PeerController = (function () {
           var conn = this._peer.connect(list[0]);
           conn.on('open', this.onConnectionOpen);
           this._conn = conn;
-
-          //        conn.on('open', function() {
-          //          alert("sent data");
-          //          this.conn = conn;
-          //        });
         }
       }).bind(this));
     }

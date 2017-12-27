@@ -16,13 +16,6 @@ button.option {
     margin-right: 10px;
 }
 
-nav.slide-menu {
-    position: fixed;
-     text-align: left;
-    top: 65;
-    right: -100px;
-    width: 100px;
-}
 
 div.title {
     margin-top: 20px;
@@ -40,17 +33,4 @@ button.menu {
 img.dice {
     width: 142px;
     height: 92px;
-}
-.snowfall {
-    width: 100％;
-    height: 440px;
-    background-color: #393e4f;
-    background-image: url('../../image/snow/ui4IF.png'),
-        url('../../image/snow/mfuUa.png'),
-        url('../../image/snow/MzZY8.png');
-    animation: snow 20s linear infinite;
-}
-@keyframes snow {
-    0% {background-position: 0 0, 0 0, 0 0;}
-    100% {background-position: 0 500px, 0 300px, 0 400px;}
 }

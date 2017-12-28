@@ -28,6 +28,7 @@ button.menu {
     margin-top: 100px;
     background-color: transparent;
     border:0;
+    outline: none;
 }
 
 img.dice {

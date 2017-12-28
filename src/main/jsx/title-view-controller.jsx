@@ -1,3 +1,5 @@
+import UserSettingController from '../script/user-setting-controller';
+
 export default class TitleViewController {
 
     constructor(view) {
@@ -7,10 +9,16 @@ export default class TitleViewController {
         this.imageDrop = this.imageDrop.bind(this);
         this.imageClick = this.imageClick.bind(this);
         this.fileInputChange = this.fileInputChange.bind(this);
+
+        this._userSettingController = new UserSettingController();
     }
 
     initialize() {
+        this._view.getElementById('main').addEventListener('drop', this. banDrop.bind(this));
+
         this._view.getElementById('button-battle').addEventListener('click', this.onClickBattleButton.bind(this));
+        this._view.getElementById('button-register').addEventListener('click', this.onClickRegisterButton.bind(this));
+        this._view.getElementById('button-buy').addEventListener('click', this.onClickChipsBuyButton.bind(this));
         this._dropArea = this._view.getElementById('dropArea');
         this._fileInput = this._view.getElementById('fileInput');
 
@@ -23,15 +31,74 @@ export default class TitleViewController {
         this._dropArea.addEventListener('click', this.imageClick);
 
         this._fileInput.addEventListener('change', this.fileInputChange);
+        this._userSettingController.initialize();
+
+        this._updateUserInfoView();
+    }
+
+    banDrop(e) {
+  		// ------------------------------------------------------------
+  		// デフォルトのドロップ機能を無効化する
+  		// ------------------------------------------------------------
+  		e.preventDefault();
     }
 
     onClickBattleButton() {
+        // ユーザー名が登録されていない場合は警告
+        var userName = this._userSettingController.loadUserNameFromJSON();
+        if (userName === undefined) {
+          alert("ユーザー情報を登録してください");
+          return;
+        }
+
         var remote = require('electron').remote;
         var main = remote.require('./index');
         console.log('ex remote');
         main.exampleRemote();
 
         this._view.location.href = './search-opponent.html';
+    }
+
+    onClickChipsBuyButton() {
+      // チップを$500プラスする
+      var chipsValueLabel = this._view.getElementById('chipsValueLabelArea');
+      var chipsString = chipsValueLabel.innerHTML.replace("$", "");
+      var chips = parseInt(chipsString) + 500;
+
+      chipsValueLabel.innerHTML = "$" + chips;
+    }
+    onClickRegisterButton() {
+      // ユーザー名が設定されているか
+      var userName = this._view.getElementById('nameValue').value;
+      if (userName === "") {
+        // 未入力の場合、アラートを出して終了
+        alert("名前: を入力してください");
+        return;
+      }
+
+      // アイコンが設定されているか(JSONに保存されているか)
+      var iconPath = this._userSettingController.loadIconPathFromJSON();
+      if (iconPath === undefined) {
+        alert("アイコン: を設定してください");
+        return;
+      }
+
+      // ユーザー名をJSONに保存
+      this._userSettingController.writeUserNameToJSON(userName);
+
+      // アイコンをコピー
+      // アイコンのファイル名はJSONに保存されている
+      this._userSettingController.copyIcon();
+
+      // チップをJSONに保存
+      var chipsValueLabel = this._view.getElementById('chipsValueLabelArea');
+      var chipsString = chipsValueLabel.innerHTML.replace("$", "");
+      this._userSettingController.writeChipsToJSON(+chipsString);
+
+      // メニューを閉じる
+      var clickMe = document.getElementById("showMenu");
+      clickMe.click();
+
     }
 
     // ドラッグ中の要素がドロップ要素に重なった時
@@ -90,6 +157,9 @@ export default class TitleViewController {
           continue;
         }
 
+        // 画像のパスをJSONに保存しておく
+        this._userSettingController.writeIconPathToJSON(file.path);
+
         // 画像出力処理へ進む
         this._outputImage(file);
       }
@@ -112,7 +182,6 @@ export default class TitleViewController {
 
       dropArea.innerHTML = "";
 
-
       // 画像読み込み完了後
       image.addEventListener('load', function () {
         // File/BlobオブジェクトにアクセスできるURLを開放
@@ -121,5 +190,52 @@ export default class TitleViewController {
         // #output へ出力
         dropArea.appendChild(image);
       });
+    }
+
+    _updateUserInfoView() {
+      // ユーザー名がJSONにあれば設定
+      var userName = this._userSettingController.loadUserNameFromJSON();
+      if (userName !== undefined) {
+        var userNameArea = this._view.getElementById('nameValue');
+        userNameArea.value = userName;
+      }
+
+      // アイコンがuserDataにあれば設定
+      var iconPath = this._userSettingController.loadIconPathFromJSON();
+      if (iconPath !== undefined){
+        // 画像要素の生成
+        var image = new Image();
+
+        // src にURLを入れる
+        image.src = iconPath;
+
+        // 画像は描画領域に合わせて表示
+        image.style.maxWidth = "100%";
+        image.style.height = "auto";
+
+        dropArea.innerHTML = "";
+
+        // 画像読み込み完了後
+        image.addEventListener('load', function () {
+          // #output へ出力
+          dropArea.appendChild(image);
+        });
+      }
+
+      // 対戦成績を設定
+
+      // チップを設定
+      var chips = this._userSettingController.loadChipsFromJSON();
+      if (chips !== undefined) {
+        var chipsValueLabel = this._view.getElementById('chipsValueLabelArea');
+        chipsValueLabel.innerHTML = "$" + chips;
+      }
+
+
+      // ユーザー名が登録されていない場合は、ユーザー情報設定画面を表示してあげる
+      if (userName === undefined) {
+        var clickMe = document.getElementById("showMenu");
+        clickMe.click();
+      }
     }
 }

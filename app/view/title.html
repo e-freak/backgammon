@@ -9,9 +9,9 @@
     </head>
 	</header>
     <body class="snowfall">
-        <main>
+        <main id="main" ondragover="return false">
           <div id="menu">
-            <span class="show-menu"></span>
+            <span id="showMenu" class="show-menu"></span>
             <div class="inner">
               <button type="button" id="button-register">登録</button><br>
               <label id="userInfoTitleLabel">ユーザー情報</label><br><br>
@@ -21,7 +21,7 @@
               <label id="nameLabelArea">名前: <input id="nameValue" type="text" value="" placeholder="ユーザー名" ></label><br>
               <label id="iconLabelArea">アイコン: </label>
               <div id="dropArea">Drop or Click here!</div><br>
-              <input id="fileInput" type="file" accept="image/*" multiple>
+              <input id="fileInput" type="file" accept="image/*">
               <label id="winLossRecordLabelArea">対戦成績: <label id="winLabelArea">010勝</label><label id="lossLabelArea">001負</label></label><br>
               <label id="chipsLabelArea">チップ: <label id="chipsValueLabelArea">$1000</label></label>
               <button type="button" id="button-buy">購入</button><br>

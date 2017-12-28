@@ -21,6 +21,11 @@ export default class UserSettingController {
     this._writeConfigJSON(obj);
   }
 
+  writeImageBase64ToJSON(base64){
+    var obj = {"iconBase64" : base64};
+    this._writeConfigJSON(obj);
+  }
+
   writeChipsToJSON(chips){
     var obj = {"chips" : chips};
     this._writeConfigJSON(obj);
@@ -30,6 +35,16 @@ export default class UserSettingController {
     var jsonObj = this._loadConfigJSON();
     try {
       return jsonObj.userName;
+    }
+    catch (e) {
+      return;
+    }
+  }
+
+  loadImageBase64FromJSON(){
+    var jsonObj = this._loadConfigJSON();
+    try {
+      return jsonObj.iconBase64;
     }
     catch (e) {
       return;

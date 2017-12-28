@@ -34,6 +34,12 @@ var UserSettingController = (function () {
       this._writeConfigJSON(obj);
     }
   }, {
+    key: "writeImageBase64ToJSON",
+    value: function writeImageBase64ToJSON(base64) {
+      var obj = { "iconBase64": base64 };
+      this._writeConfigJSON(obj);
+    }
+  }, {
     key: "writeChipsToJSON",
     value: function writeChipsToJSON(chips) {
       var obj = { "chips": chips };
@@ -45,6 +51,16 @@ var UserSettingController = (function () {
       var jsonObj = this._loadConfigJSON();
       try {
         return jsonObj.userName;
+      } catch (e) {
+        return;
+      }
+    }
+  }, {
+    key: "loadImageBase64FromJSON",
+    value: function loadImageBase64FromJSON() {
+      var jsonObj = this._loadConfigJSON();
+      try {
+        return jsonObj.iconBase64;
       } catch (e) {
         return;
       }

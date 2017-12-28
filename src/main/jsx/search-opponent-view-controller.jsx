@@ -1,4 +1,5 @@
 import Spinner from '../script/spin/spin';
+import PeerController from '../script/peer-controller';
 
 export default class SearchOpponentViewController {
 
@@ -30,6 +31,10 @@ export default class SearchOpponentViewController {
     initialize() {
         // spinnerを表示
         this._spinner.spin(this._target);
+
+        this._peerController = new PeerController();
+        this._peerController.initialize();
+
     }
 
 }

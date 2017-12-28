@@ -1,4 +1,6 @@
 import UserSettingController from '../script/user-setting-controller';
+import Base64Converter from '../script/base64Converter';
+
 
 export default class TitleViewController {
 
@@ -11,6 +13,7 @@ export default class TitleViewController {
         this.fileInputChange = this.fileInputChange.bind(this);
 
         this._userSettingController = new UserSettingController();
+        this._base64Converter = new Base64Converter();
     }
 
     initialize() {
@@ -86,9 +89,9 @@ export default class TitleViewController {
       // ユーザー名をJSONに保存
       this._userSettingController.writeUserNameToJSON(userName);
 
-      // アイコンをコピー
-      // アイコンのファイル名はJSONに保存されている
-      this._userSettingController.copyIcon();
+      // アイコンをBase64に変換してJSONに保存
+      var base64 = this._base64Converter.encodeImage(iconPath);
+      this._userSettingController.writeImageBase64ToJSON(base64);
 
       // チップをJSONに保存
       var chipsValueLabel = this._view.getElementById('chipsValueLabelArea');
@@ -166,7 +169,6 @@ export default class TitleViewController {
     }
 
     _outputImage(blob) {
-
       // 画像要素の生成
       var image = new Image();
 
@@ -179,6 +181,7 @@ export default class TitleViewController {
       // 画像は描画領域に合わせて表示
       image.style.maxWidth = "100%";
       image.style.height = "auto";
+      image.id = "iconImage";
 
       dropArea.innerHTML = "";
 
@@ -192,6 +195,7 @@ export default class TitleViewController {
       });
     }
 
+    // 長い。。。
     _updateUserInfoView() {
       // ユーザー名がJSONにあれば設定
       var userName = this._userSettingController.loadUserNameFromJSON();
@@ -201,18 +205,33 @@ export default class TitleViewController {
       }
 
       // アイコンがuserDataにあれば設定
-      var iconPath = this._userSettingController.loadIconPathFromJSON();
-      if (iconPath !== undefined){
+      var base64 = this._userSettingController.loadImageBase64FromJSON();
+      if (base64 !== undefined) {
         // 画像要素の生成
         var image = new Image();
 
         // src にURLを入れる
-        image.src = iconPath;
+        // ファイル形式は先頭3文字で判断する
+        var first3Char = base64.substring(0, 3);
+        if (first3Char === "/9j") {
+          // JPEG
+          image.src = "data:image/jpg;base64," + base64;
+        }else if (first3Char === "iVB") {
+          // PNG
+          image.src = "data:image/png;base64," + base64;
+        }else if (first3Char === "R0l") {
+          // GIF
+          image.src = "data:image/gif;base64," + base64;
+        }else {
+          // 対応フォーマット以外
+          alert("アイコンの読み取り失敗");
+          return;
+        }
 
         // 画像は描画領域に合わせて表示
         image.style.maxWidth = "100%";
         image.style.height = "auto";
-
+        image.id = "iconImage";
         dropArea.innerHTML = "";
 
         // 画像読み込み完了後
@@ -220,7 +239,9 @@ export default class TitleViewController {
           // #output へ出力
           dropArea.appendChild(image);
         });
+
       }
+
 
       // 対戦成績を設定
 

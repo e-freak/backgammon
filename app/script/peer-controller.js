@@ -52,7 +52,7 @@ var PeerController = (function () {
   }, {
     key: 'onConnection',
     value: function onConnection(conn) {
-      alert("call onConnection");
+      alert("接続イベント受信");
       conn.on('data', this.onReceivedData);
       this._conn = conn;
     }
@@ -62,6 +62,7 @@ var PeerController = (function () {
     key: 'onConnectionOpen',
     value: function onConnectionOpen() {
       // とりあえず送信してみる
+      alert("コネクションが接続利用可能になったので、メッセージを送信してみる");
       this._conn.send('Hello!');
     }
 
@@ -69,7 +70,7 @@ var PeerController = (function () {
   }, {
     key: 'onReceivedData',
     value: function onReceivedData(data) {
-      alert(data);
+      alert("メッセージ受信:" + data);
     }
   }]);
 

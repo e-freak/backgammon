@@ -14,6 +14,10 @@ var _scriptSpinSpin = require('../script/spin/spin');
 
 var _scriptSpinSpin2 = _interopRequireDefault(_scriptSpinSpin);
 
+var _scriptPeerController = require('../script/peer-controller');
+
+var _scriptPeerController2 = _interopRequireDefault(_scriptPeerController);
+
 var SearchOpponentViewController = (function () {
     function SearchOpponentViewController(view) {
         _classCallCheck(this, SearchOpponentViewController);
@@ -47,6 +51,9 @@ var SearchOpponentViewController = (function () {
         value: function initialize() {
             // spinnerを表示
             this._spinner.spin(this._target);
+
+            this._peerController = new _scriptPeerController2['default']();
+            this._peerController.initialize();
         }
     }]);
 

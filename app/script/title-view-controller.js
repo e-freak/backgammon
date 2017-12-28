@@ -14,6 +14,10 @@ var _scriptUserSettingController = require('../script/user-setting-controller');
 
 var _scriptUserSettingController2 = _interopRequireDefault(_scriptUserSettingController);
 
+var _scriptBase64Converter = require('../script/base64Converter');
+
+var _scriptBase64Converter2 = _interopRequireDefault(_scriptBase64Converter);
+
 var TitleViewController = (function () {
   function TitleViewController(view) {
     _classCallCheck(this, TitleViewController);
@@ -26,6 +30,8 @@ var TitleViewController = (function () {
     this.fileInputChange = this.fileInputChange.bind(this);
 
     this._userSettingController = new _scriptUserSettingController2['default']();
+
+    this._base64Converter = new _scriptBase64Converter2['default']();
   }
 
   _createClass(TitleViewController, [{
@@ -110,7 +116,16 @@ var TitleViewController = (function () {
 
       // アイコンをコピー
       // アイコンのファイル名はJSONに保存されている
-      this._userSettingController.copyIcon();
+      //      this._userSettingController.copyIcon();
+      // imageをBase64に変換してJSONに保存
+
+      var base64 = this._base64Converter.encodeImage(iconPath);
+      this._userSettingController.writeImageBase64ToJSON(base64);
+
+      //      // imageをBase64に変換してJSONに保存
+      //      var img = document.getElementById('iconImage');
+      //      var base64 = this._base64Converter.imageToBase64(img, "image/jpeg");
+      //      this._userSettingController.writeImageBase64ToJSON(base64);
 
       // チップをJSONに保存
       var chipsValueLabel = this._view.getElementById('chipsValueLabelArea');
@@ -212,6 +227,7 @@ var TitleViewController = (function () {
       // 画像は描画領域に合わせて表示
       image.style.maxWidth = "100%";
       image.style.height = "auto";
+      image.id = "iconImage";
 
       dropArea.innerHTML = "";
 
@@ -235,26 +251,80 @@ var TitleViewController = (function () {
       }
 
       // アイコンがuserDataにあれば設定
-      var iconPath = this._userSettingController.loadIconPathFromJSON();
-      if (iconPath !== undefined) {
+      var base64 = this._userSettingController.loadImageBase64FromJSON();
+      if (base64 !== undefined) {
+        var decode = this._base64Converter.decodeImage(base64);
+        var fs = require('fs');
+        fs.writeFile('xxx.png', decode, function (err) {
+          console.log(err);
+        });
         // 画像要素の生成
         var image = new Image();
 
         // src にURLを入れる
-        image.src = iconPath;
+        // ファイル形式は先頭3文字で判断する
+        var first3Char = base64.substring(0, 3);
+        if (first3Char === "/9j") {
+          // JPEG
+          image.src = "data:image/jpg;base64," + base64;
+        } else if (first3Char === "iVB") {
+          // PNG
+          image.src = "data:image/png;base64," + base64;
+        } else if (first3Char === "R0l") {
+          // GIF
+          image.src = "data:image/gif;base64," + base64;
+        } else {
+          // 対応フォーマット以外
+          alert("アイコンの読み取り失敗");
+          return;
+        }
 
         // 画像は描画領域に合わせて表示
         image.style.maxWidth = "100%";
         image.style.height = "auto";
-
+        image.id = "iconImage";
         dropArea.innerHTML = "";
 
-        // 画像読み込み完了後
         image.addEventListener('load', function () {
           // #output へ出力
           dropArea.appendChild(image);
         });
+
+        //        this._base64Converter.base64ToImage(base64, function(img) {
+        //          alert("w=" + img.width + " h=" + img.height);
+        //          dropArea.innerHTML = "";
+
+        //          img.style.width = "100px";
+        //          img.style.height = "100px";
+        //          img.style.maxWidth = "100%";
+        //          img.style.height = "auto";
+        //          image.id = "iconImage";
+        //          dropArea.appendChild(img);
+        //        });
       }
+
+      //      var iconPath = this._userSettingController.loadIconPathFromJSON();
+      //      if (iconPath !== undefined){
+      //        // 画像要素の生成
+      //        var image = new Image();
+      //
+      //        // src にURLを入れる
+      //        image.src = iconPath;
+      //
+      //        // 画像は描画領域に合わせて表示
+      //        image.style.maxWidth = "100%";
+      //        image.style.height = "auto";
+      //        image.id = "iconImage";
+      //
+      //        dropArea.innerHTML = "";
+      //
+      //        // 画像読み込み完了後
+      //        image.addEventListener('load', function () {
+      //          // #output へ出力
+      //          dropArea.appendChild(image);
+      //        });
+      //
+      //      }
 
       // 対戦成績を設定
 

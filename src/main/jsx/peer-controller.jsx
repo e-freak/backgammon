@@ -35,7 +35,7 @@ export default class PeerController {
 
   // 接続イベントの受信
   onConnection(conn) {
-    alert("call onConnection");
+    alert("接続イベント受信");
     conn.on('data', this.onReceivedData);
     this._conn = conn;
   }
@@ -43,11 +43,12 @@ export default class PeerController {
    // コネクションが利用可能になった
    onConnectionOpen() {
       // とりあえず送信してみる
+      alert("コネクションが接続利用可能になったので、メッセージを送信してみる");
       this._conn.send('Hello!');
    }
 
    // メッセージを受信
    onReceivedData(data) {
-      alert(data);
+      alert("メッセージ受信:" + data);
    }
 }

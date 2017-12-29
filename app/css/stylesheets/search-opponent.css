@@ -43,3 +43,73 @@ input.back {
   float: left;
   opacity: 0.7;
 }
+
+div.search-results {
+  display: none;
+  position: absolute;
+  top: 150px;
+  left: 100px;
+  width: 600px;
+  height: 300px;
+  animation-name: fade-in;
+  animation-duration: 10s;
+}
+@keyframes fade-in {
+  0% {
+    display: none;
+    opacity: 0;
+  }
+  1% {
+    display: block;
+    opacity: 0;
+  }
+  100% {
+    display: block;
+    opacity: 1;
+  }
+}
+
+img.my-icon {
+  position: absolute;
+  border: solid 1px #000;
+  top: 40px;
+  left: 30px;
+  width: 150px;
+  height: 150px;
+  box-sizing: border-box;
+}
+
+label.my-name {
+  position: absolute;
+  top: 200px;
+  left: 30px;
+  color: #ffebcd;
+  font-size: x-large;
+}
+
+img.opponent-icon {
+  position: absolute;
+  border: solid 1px #000;
+  top: 40px;
+  left: 420px;
+  width: 150px;
+  height: 150px;
+  box-sizing: border-box;
+}
+
+label.opponent-name {
+  position: absolute;
+  top: 200px;
+  left: 420px;
+  color: #ffebcd;
+  font-size: x-large;
+}
+
+img.versus {
+  position: absolute;
+  top: 50px;
+  left: 225px;
+  width: 150px;
+  height: 150px;
+  box-sizing: border-box;
+}

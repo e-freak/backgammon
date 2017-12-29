@@ -32,7 +32,7 @@ var PeerController = (function () {
 
     this._userSettingController = new _scriptUserSettingController2['default']();
 
-    // メッセージを受信した場合に呼ばれるメソッド
+    // メッセージを受信通知を送るメソッド
     this.receivedMessage = receivedMessage;
   }
 

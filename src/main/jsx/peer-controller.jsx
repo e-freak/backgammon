@@ -1,15 +1,24 @@
 //  http://nttcom.github.io/skyway/docs/
 //  https://qiita.com/daisaru11/items/52c10514ba2fa2dd1b87
 
+
+// http://shared-blog.kddi-web.com/test/skyway/
+import UserSettingController from '../script/user-setting-controller';
+
 const Peer = require('skyway-js');
 const SkyWay_ApiKey = '46fe641a-df1c-42da-b45b-4061347deb7b';
 
 export default class PeerController {
-  constructor() {
+  constructor(receivedMessage) {
       this.onOpen = this.onOpen.bind(this);
       this.onConnection = this.onConnection.bind(this);
       this.onConnectionOpen = this.onConnectionOpen.bind(this);
       this.onReceivedData = this.onReceivedData.bind(this);
+
+      this._userSettingController = new UserSettingController();
+
+      // メッセージを受信通知を送るメソッド
+      this.receivedMessage = receivedMessage;
   }
 
   initialize() {
@@ -18,6 +27,8 @@ export default class PeerController {
     peer.on('open', this.onOpen);
     peer.on('connection', this.onConnection);
     this._peer = peer;
+
+    this._userSettingController.initialize();
   }
 
   onOpen() {
@@ -26,9 +37,11 @@ export default class PeerController {
     this._peer.listAllPeers(function(list){
       if (list.length === 2){
         // 接続（自分より前に接続しているIDのindexは、きっと0だろう。。）
+        alert("接続開始");
         const conn = this._peer.connect(list[0]);
         conn.on('open', this.onConnectionOpen);
         this._conn = conn;
+
       }
     }.bind(this));
   }
@@ -36,19 +49,60 @@ export default class PeerController {
   // 接続イベントの受信
   onConnection(conn) {
     alert("接続イベント受信");
-    conn.on('data', this.onReceivedData);
     this._conn = conn;
+    conn.on('data', this.onReceivedData);
+
   }
 
    // コネクションが利用可能になった
-   onConnectionOpen() {
+   onConnectionOpen(conn) {
+      this.onConnection(this._conn);
       // とりあえず送信してみる
       alert("コネクションが接続利用可能になったので、メッセージを送信してみる");
-      this._conn.send('Hello!');
+      this._sendUserNameAndIcon();
    }
 
    // メッセージを受信
    onReceivedData(data) {
-      alert("メッセージ受信:" + data);
+      var message = data.message;
+      if (message === "userNameAndIcon"){
+        alert("メッセージ受信:" + data.userName);
+        this._receivedUserNameAndIcon();
+      }else if (message === "answerUserNameAndIcon") {
+        alert("メッセージ受信(Answer):" + data.userName);
+      }else {
+        alert("メッセージ受信:" + data)
+      }
+      this.receivedMessage(data);
+   }
+
+   receivedMessage(data) {
+      this.receivedMessage(data);
+   }
+
+   _sendUserNameAndIcon() {
+      // ユーザー名をJSONから取得(JSONにはあるはず)
+      var userName = this._userSettingController.loadUserNameFromJSON();
+      // ユーザーのアイコンをJSONから取得(JSONにはあるはず)
+      var iconBase64 = this._userSettingController.loadImageBase64FromJSON();
+      var obj = { "message"  : "userNameAndIcon",
+                  "userName" : userName,
+                  "iconBase64" : iconBase64};
+      this._conn.send(obj);
+   }
+
+   _sendAnswerUserNameAndIcon(){
+       // ユーザー名をJSONから取得(JSONにはあるはず)
+       var userName = this._userSettingController.loadUserNameFromJSON();
+       // ユーザーのアイコンをJSONから取得(JSONにはあるはず)
+       var iconBase64 = this._userSettingController.loadImageBase64FromJSON();
+       var obj = { "message"  : "answerUserNameAndIcon",
+                   "userName" : userName,
+                   "iconBase64" : iconBase64};
+       this._conn.send(obj);
+   }
+   
+   _receivedUserNameAndIcon() {
+      this._sendAnswerUserNameAndIcon();
    }
 }

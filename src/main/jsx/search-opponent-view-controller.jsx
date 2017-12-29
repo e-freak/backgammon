@@ -26,15 +26,22 @@ export default class SearchOpponentViewController {
         };
         this._target = document.getElementById('spin-area');
         this._spinner = new Spinner(opts);
+
+        // Peerからのメッセージを受信した場合の通知
+        this.notificationOfReceiveMessage = this.notificationOfReceiveMessage.bind(this);
     }
 
     initialize() {
         // spinnerを表示
         this._spinner.spin(this._target);
 
-        this._peerController = new PeerController();
+        this._peerController = new PeerController(this.notificationOfReceiveMessage);
         this._peerController.initialize();
+    }
 
+    // Peerからのメッセージを受信した場合の通知
+    notificationOfReceiveMessage(data) {
+      alert("メッセージ受信(search):" + data.userName);
     }
 
 }

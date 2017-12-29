@@ -1,5 +1,3 @@
-// https://qiita.com/yasumodev/items/e1708f01ff87692185cd
-
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -24,47 +22,6 @@ var Base64Converter = (function () {
       var fs = require('fs');
       var data = fs.readFileSync(fileName, 'base64');
       return data;
-    }
-  }, {
-    key: 'decodeImage',
-    value: function decodeImage(base64Image) {
-      return new Buffer(base64Image, 'base64');
-    }
-
-    // <img>要素 → Base64形式の文字列に変換
-    // [使い方]
-    // var img = document.getElementById('MyImg');
-    // var b64 = ImageToBase64(img, "image/jpeg"); // "data:image/jpeg;base64,XXXXXX..." みたいな文字列
-  }, {
-    key: 'imageToBase64',
-    value: function imageToBase64(img, mime_type) {
-      // New Canvas
-      var canvas = document.createElement('canvas');
-      canvas.width = img.width;
-      canvas.height = img.height;
-      // Draw Image
-      var ctx = canvas.getContext('2d');
-      ctx.drawImage(img, 0, 0);
-      // To Base64
-      return canvas.toDataURL(mime_type);
-    }
-
-    // Base64形式の文字列 → <img>要素に変換
-    // [使い方]
-    // Base64ToImage(base64img, function(img) {
-    //  // <img>要素にすることで幅・高さがわかります
-    //  alert("w=" + img.width + " h=" + img.height);
-    //  // <img>要素としてDOMに追加
-    //  document.getElementById('main').appendChild(img);
-    // });
-  }, {
-    key: 'base64ToImage',
-    value: function base64ToImage(base64img, callback) {
-      var img = new Image();
-      img.onload = function () {
-        callback(img);
-      };
-      img.src = base64img;
     }
   }]);
 

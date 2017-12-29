@@ -44,6 +44,8 @@ var SearchOpponentViewController = (function () {
         };
         this._target = document.getElementById('spin-area');
         this._spinner = new _scriptSpinSpin2['default'](opts);
+        this.receivedMessage = this.receivedMessage.bind(this);
+
     }
 
     _createClass(SearchOpponentViewController, [{
@@ -52,8 +54,20 @@ var SearchOpponentViewController = (function () {
             // spinnerを表示
             this._spinner.spin(this._target);
 
-            this._peerController = new _scriptPeerController2['default']();
+            this._peerController = new _scriptPeerController2['default'](this.receivedMessage);
             this._peerController.initialize();
+
+            this._view.getElementById('button-send').addEventListener('click', this.onClickSendButton.bind(this));
+        }
+    }, {
+        key: 'onClickSendButton',
+        value: function onClickSendButton() {
+            this._peerController._sendUserNameAndIcon();
+        }
+    }, {
+        key: 'receivedMessage',
+        value: function receivedMessage(data) {
+            alert("メッセージ受信(search):" + data.userName);
         }
     }]);
 

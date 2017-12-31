@@ -9,21 +9,23 @@
 </head>
 
 <body class="snowfall">
-  <main>
-    <div id="spin-area">
-      <from>
-        <input class="back" type="image" src="../image/back-button.png" value="戻る" onClick="history.back()">
-      </from>
+  <div class="snowfall">
+    <div id="searchOpponent" class="searchOpponent">
+      <div id="spin-area">
+        <from>
+          <input class="back" type="image" src="../image/back-button.png" value="戻る" onClick="history.back()">
+        </from>
+        <label id="searchOpponent" class="searchOpponent">対戦相手 待ち</label>
+        <div id="search-results" class="search-results">
+          <img id="my-icon" class="my-icon" src="" />
+          <label id="my-name" class="my-name"></label>
+          <img id="versus-image" class="versus" src="../image/versus.png" />
+          <img id="opponent-icon" class="opponent-icon" src="" />
+          <label id="opponent-name" class="opponent-name"></label>
+        </div>
+      </div>
     </div>
-    <label id="searchOpponent" class="searchOpponent">対戦相手 待ち</label>
-    <div id="search-results" class="search-results">
-      <img id="my-icon" class="my-icon" src="" />
-      <label id="my-name" class="my-name"></label>
-      <img id="versus-image" class="versus" src="../image/versus.png" />
-      <img id="opponent-icon" class="opponent-icon" src="" />
-      <label id="opponent-name" class="opponent-name"></label>
-    </div>
-  </main>
+  </div>
   <script src="../script/search-opponent-view-controller-loader.js"></script>
 </body>
 

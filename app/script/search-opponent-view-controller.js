@@ -23,7 +23,7 @@ var _scriptUserSettingController = require('../script/user-setting-controller');
 var _scriptUserSettingController2 = _interopRequireDefault(_scriptUserSettingController);
 
 var SearchOpponentViewController = (function () {
-  function SearchOpponentViewController(view) {
+  function SearchOpponentViewController(view, notificationSearchCompleted) {
     _classCallCheck(this, SearchOpponentViewController);
 
     this._view = view;
@@ -49,6 +49,9 @@ var SearchOpponentViewController = (function () {
     this._target = document.getElementById('spin-area');
     this._spinner = new _scriptSpinSpin2['default'](opts);
 
+    // 対戦相手検索完了を通知するメソッド
+    this.notificationSearchCompleted = notificationSearchCompleted;
+
     // Peerからのメッセージを受信した場合の通知
     this.notificationOfReceiveMessage = this.notificationOfReceiveMessage.bind(this);
 
@@ -69,21 +72,20 @@ var SearchOpponentViewController = (function () {
   }, {
     key: 'notificationOfReceiveMessage',
     value: function notificationOfReceiveMessage(data) {
-      alert("メッセージ受信(search):" + data.userName);
       var message = data.message;
       if (message === "userNameAndIcon" || message === "answerUserNameAndIcon") {
         // 自分と対戦相手のアイコンと名前を設定
         this._setVersusView(data.userName, data.iconBase64);
         // versus ビューを表示
         this._displayVersusView();
-        // 少し待って、ゲーム画面に遷移
-        setTimeout(this._transitionView.bind(this), 6000);
+        // 少し待って、対戦相手検索完了の通知を送る
+        setTimeout(this._notificationSearchCompleted.bind(this, data), 6000);
       }
     }
   }, {
-    key: '_transitionView',
-    value: function _transitionView() {
-      this._view.location.href = './game.html';
+    key: '_notificationSearchCompleted',
+    value: function _notificationSearchCompleted(data) {
+      this.notificationSearchCompleted(data);
     }
   }, {
     key: '_setVersusView',
@@ -98,7 +100,8 @@ var SearchOpponentViewController = (function () {
       var base64 = this._userSettingController.loadImageBase64FromJSON();
       // 自分のアイコンを設定
       var iconImage = this._view.getElementById('my-icon');
-      iconImage.src = this._getImagesrcWithBase64(base64);
+      var iconImageSrc = this._getImagesrcWithBase64(base64);
+      iconImage.src = iconImageSrc;
 
       // 相手の名前を設定
       var opponentNameLabel = this._view.getElementById('opponent-name');
@@ -106,7 +109,8 @@ var SearchOpponentViewController = (function () {
 
       // 相手のアイコンを設定
       var opponentIconImage = this._view.getElementById('opponent-icon');
-      opponentIconImage.src = this._getImagesrcWithBase64(opponent_icon);
+      var opponentIconImageSrc = this._getImagesrcWithBase64(opponent_icon);
+      opponentIconImage.src = opponentIconImageSrc;
     }
   }, {
     key: '_getImagesrcWithBase64',

@@ -1,6 +1,7 @@
 import Piece from '../script/Piece';
 import PeerController from '../script/peer-controller';
 
+import SearchOpponentViewController from '../script/search-opponent-view-controller';
 import InformationViewController from '../script/information-view-controller';
 
 
@@ -17,17 +18,57 @@ export default class GameViewController {
     this._opponentDicePip = 1;
     this._dicePip = [];
     this._informationViewController;
+
+    this.isHost = false;
+
+    // 対戦相手検索完了後に呼ばれるメソッド
+    this.notificationSearchCompleted = this.notificationSearchCompleted.bind(this);
+    this._searchOpponentViewController = new SearchOpponentViewController(this._view, this.notificationSearchCompleted);
+
+    this._informationViewController = new InformationViewController(this._view);
+
   }
 
-  // とりあえずの実装。設計は後から考える
   initialize() {
+    // ボード画面は非表示にする
+    var mainArea = this._view.getElementById('main-area');
+    mainArea.style.display = "none";
+
+    // 検索中の画面を表示
+    this._searchOpponentViewController.initialize();
+  }
+
+  // 対戦相手検索完了後に呼ばれるメソッド
+  notificationSearchCompleted(data) {
+    // informationエリアのアイコンなどを設定する
+    var message = data.message;
+    if (message === "userNameAndIcon" ||
+      message === "answerUserNameAndIcon") {
+      this._informationViewController.initialize(data.userName, data.iconBase64);
+    }
+    if (message === "userNameAndIcon") {
+      this.isHost = true; // ホスト 初回のサイコロの目を決める
+    }
+
+    // 対戦相手検索画面を非表示にする
+    var snowfallArea = this._view.getElementById('snowfall');
+    snowfallArea.style.display = "none";
+
+    // gameのメイン画面を表示する
+    var mainArea = this._view.getElementById('main-area');
+    mainArea.style.display = "flex";
+
+    // ゲーム開始
+    this.gameStart();
+  }
+
+
+  // とりあえずの実装。設計は後から考える
+  gameStart() {
 
     this._loadImages(); // 画像をロードしておく
     this._updateToStartUI(); // ゲーム開始画面のUIに更新する(コマを配る, サイコロの表示/非表示の設定とか)
     this._shakeDice(true); // サイコロ画像を切り替えて振ってる風に見せる
-
-    this._informationViewController = new InformationViewController(this._view);
-    this._informationViewController.initialize();
 
     //        this._peerController = new PeerController();
     //        this._peerController.initialize();

@@ -69,9 +69,9 @@ export default class PeerController {
     this.receivedMessage(data);
   }
 
-  receivedMessage(data) {
-    this.receivedMessage(data);
-  }
+  // receivedMessage(data) {
+  //   this.receivedMessage(data);
+  // }
 
   _sendUserNameAndIcon() {
     // ユーザー名をJSONから取得(JSONにはあるはず)

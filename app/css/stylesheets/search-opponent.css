@@ -73,9 +73,11 @@ img.my-icon {
   border: solid 1px #000;
   top: 40px;
   left: 30px;
-  width: 150px;
-  height: 150px;
+  width: auto;
+  height: auto;
   box-sizing: border-box;
+  max-width:150px;
+  max-height:150px;
 }
 
 label.my-name {
@@ -91,9 +93,12 @@ img.opponent-icon {
   border: solid 1px #000;
   top: 40px;
   left: 420px;
-  width: 150px;
-  height: 150px;
+  width: auto;
+  height: auto;
   box-sizing: border-box;
+  max-width:150px;
+  max-height:150px;
+
 }
 
 label.opponent-name {

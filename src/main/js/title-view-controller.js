@@ -59,7 +59,7 @@ export default class TitleViewController {
     console.log('ex remote');
     main.exampleRemote();
 
-    this._view.location.href = './search-opponent.html';
+    this._view.location.href = './game.html';
   }
 
   onClickChipsBuyButton() {

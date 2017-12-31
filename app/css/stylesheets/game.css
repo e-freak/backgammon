@@ -8,7 +8,7 @@ body {
 }
 
 div.main-area {
-  display: flex;
+  display: none;
 }
 
 div.board-area {
@@ -146,11 +146,14 @@ img.opponent-piece {
 }
 
 div.information-area {
+  position: absolute;
   display: flex;
   flex-direction: column;
   width: 100px;
   height: 580px;
   background-color: #0000ff;
+  top: 0px;
+  left: 700px;
 }
 
 div.opponent-area {
@@ -238,8 +241,11 @@ span.player-name {
 img.icon-image {
   margin-top: 2px;
   margin-left: 5px;
-  width: 90px;
-  height: 90px;
+  width: auto;
+  height: auto;
   display: block;
   border: 1px solid #000000;
+
+  max-width:90px;
+  max-height:90px;
 }

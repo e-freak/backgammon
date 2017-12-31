@@ -68,7 +68,6 @@ var PeerController = (function () {
   }, {
     key: 'onConnection',
     value: function onConnection(conn) {
-      alert("onConnection");
       this._conn = conn;
       conn.on('data', this.onReceivedData);
     }
@@ -77,7 +76,6 @@ var PeerController = (function () {
   }, {
     key: 'onConnectionOpen',
     value: function onConnectionOpen(conn) {
-      alert("onConnectionOpen");
       this._conn.on('data', this.onReceivedData);
       // とりあえず送信してみる
       this._sendUserNameAndIcon();
@@ -87,23 +85,20 @@ var PeerController = (function () {
   }, {
     key: 'onReceivedData',
     value: function onReceivedData(data) {
-      alert("onReceivedData");
       var message = data.message;
       if (message === "userNameAndIcon") {
         this._receivedUserNameAndIcon();
       } else if (message === "answerUserNameAndIcon") {} else {}
       this.receivedMessage(data);
     }
-  }, {
-    key: 'receivedMessage',
-    value: function receivedMessage(data) {
-      this.receivedMessage(data);
-    }
+
+    // receivedMessage(data) {
+    //   this.receivedMessage(data);
+    // }
+
   }, {
     key: '_sendUserNameAndIcon',
     value: function _sendUserNameAndIcon() {
-      alert("_sendUserNameAndIcon");
-
       // ユーザー名をJSONから取得(JSONにはあるはず)
       var userName = this._userSettingController.loadUserNameFromJSON();
       // ユーザーのアイコンをJSONから取得(JSONにはあるはず)
@@ -118,7 +113,6 @@ var PeerController = (function () {
   }, {
     key: '_sendAnswerUserNameAndIcon',
     value: function _sendAnswerUserNameAndIcon() {
-      alert("_sendAnswerUserNameAndIcon");
       // ユーザー名をJSONから取得(JSONにはあるはず)
       var userName = this._userSettingController.loadUserNameFromJSON();
       // ユーザーのアイコンをJSONから取得(JSONにはあるはず)

@@ -11,67 +11,71 @@ export default class UserSettingController {
 
   }
 
-  writeUserNameToJSON(userName){
-    var obj = {"userName" : userName};
+  writeUserNameToJSON(userName) {
+    var obj = {
+      "userName": userName
+    };
     this._writeConfigJSON(obj);
   }
 
-  writeIconPathToJSON(iconPath){
-    var obj = {"iconPath" : iconPath};
+  writeIconPathToJSON(iconPath) {
+    var obj = {
+      "iconPath": iconPath
+    };
     this._writeConfigJSON(obj);
   }
 
-  writeImageBase64ToJSON(base64){
-    var obj = {"iconBase64" : base64};
+  writeImageBase64ToJSON(base64) {
+    var obj = {
+      "iconBase64": base64
+    };
     this._writeConfigJSON(obj);
   }
 
-  writeChipsToJSON(chips){
-    var obj = {"chips" : chips};
+  writeChipsToJSON(chips) {
+    var obj = {
+      "chips": chips
+    };
     this._writeConfigJSON(obj);
   }
 
-  loadUserNameFromJSON(){
+  loadUserNameFromJSON() {
     var jsonObj = this._loadConfigJSON();
     try {
       return jsonObj.userName;
-    }
-    catch (e) {
+    } catch (e) {
       return;
     }
   }
 
-  loadImageBase64FromJSON(){
+  loadImageBase64FromJSON() {
     var jsonObj = this._loadConfigJSON();
     try {
       return jsonObj.iconBase64;
-    }
-    catch (e) {
+    } catch (e) {
       return;
     }
   }
 
-  loadIconPathFromJSON(){
+  loadIconPathFromJSON() {
     var jsonObj = this._loadConfigJSON();
     try {
       return jsonObj.iconPath;
-    }
-    catch (e) {
+    } catch (e) {
       return;
     }
   }
 
-  loadChipsFromJSON(){
+  loadChipsFromJSON() {
     var jsonObj = this._loadConfigJSON();
     try {
       return jsonObj.chips;
-    }
-    catch (e) {
+    } catch (e) {
       return;
     }
   }
 
-  copyIcon(){
+  copyIcon() {
     var fs = require('fs');
     var iconPath = this.loadIconPathFromJSON();
 
@@ -92,7 +96,7 @@ export default class UserSettingController {
     var writeObj;
     if (loadObj === undefined) {
       writeObj = obj;
-    }else{
+    } else {
       writeObj = Object.assign(loadObj, obj);
     }
 
@@ -107,8 +111,7 @@ export default class UserSettingController {
     try {
       var jsonObj = JSON.parse(fs.readFileSync(this._userSettingFile));
       return jsonObj;
-    }
-    catch (e) {
+    } catch (e) {
       return;
     }
   }

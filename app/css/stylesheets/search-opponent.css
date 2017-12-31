@@ -1,39 +1,37 @@
 @charset 'UTF-8';
-
 body {
-    margin-left: auto;
-    margin-right: auto;
-    text-align: center;
-    /* background: linear-gradient(green,white, green); */
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  /* background: linear-gradient(green,white, green); */
 }
 
 label.searchOpponent {
-    position: relative;
-    top: 380px;
-    right: 0px;
-    color: #33ff66;
-    font-size: 170%;
-    opacity: 0.5;
-
-    animation-name: animation01;
-    animation-duration: 2s;
-    animation-timing-function: ease;
-    animation-iteration-count: infinite;
+  position: relative;
+  top: 380px;
+  right: 0px;
+  color: #33ff66;
+  font-size: 170%;
+  opacity: 0.5;
+  animation-name: animation01;
+  animation-duration: 2s;
+  animation-timing-function: ease;
+  animation-iteration-count: infinite;
 }
 
 @keyframes animation01 {
- 0% {
-        opacity: 0.2;
-        color: #33ff00;
-      }
- 50% {
-        opacity: 0.5;
-        color: #33ff66;
-      }
- 100% {
-        opacity: 0.2;
-        color: #33ff00;
-      }
+  0% {
+    opacity: 0.2;
+    color: #33ff00;
+  }
+  50% {
+    opacity: 0.5;
+    color: #33ff66;
+  }
+  100% {
+    opacity: 0.2;
+    color: #33ff00;
+  }
 }
 
 input.back {
@@ -54,6 +52,7 @@ div.search-results {
   animation-name: fade-in;
   animation-duration: 10s;
 }
+
 @keyframes fade-in {
   0% {
     display: none;

@@ -7,7 +7,8 @@
 
 #menu {
   top: 0;
-  left: -100vw; /* あらかじめ画面外へ移動しておく */
+  left: -100vw;
+  /* あらかじめ画面外へ移動しておく */
   width: 100vw;
   height: 100vh;
   text-align: center;
@@ -54,10 +55,14 @@
 }
 
 #menu .show-menu:before {
-  content: '';/*何も入れない*/
-  display: inline-block;/*忘れずに！*/
-  width: 24px;/*画像の幅*/
-  height: 24px;/*画像の高さ*/
+  content: '';
+  /*何も入れない*/
+  display: inline-block;
+  /*忘れずに！*/
+  width: 24px;
+  /*画像の幅*/
+  height: 24px;
+  /*画像の高さ*/
   background-image: url(../../image/settingIcon.png);
   background-size: contain;
   vertical-align: middle;
@@ -90,8 +95,7 @@
   height: 100px;
 }
 
-#dropArea.dragover,
-#dropArea:active {
+#dropArea.dragover, #dropArea:active {
   background: #cfc;
   border-color: #9c9;
   color: #9c9;
@@ -107,14 +111,14 @@
 }
 
 #nameValue {
-    margin-left: 10px;
+  margin-left: 10px;
 }
+
 #iconLabelArea {
   position: relative;
   display: inline-block;
   margin-left: 65px;
   top: -50px;
-
 }
 
 #chipsLabelArea {
@@ -149,6 +153,7 @@
   background-color: #03f;
   color: #fff;
 }
+
 #button-register {
   position: relative;
   margin-top: 50px;

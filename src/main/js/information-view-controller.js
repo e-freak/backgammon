@@ -18,15 +18,15 @@ export default class InformationViewController {
   }
 
   startTime() {
-      this._timeLimit--;
-      var id = setTimeout(this.startTime.bind(this), 1000);
-      if(this._isTurn === false){　
-        this._isTurn = true; // ここでtrueにするの微妙。。。
-        clearTimeout(id);　//idをclearTimeoutで指定している
-      }
-      var min = String(Math.floor(this._timeLimit/60));
-      var second = String(this._timeLimit%60);
-      this._timeElement.innerText  = min + ":" + second;
+    this._timeLimit--;
+    var id = setTimeout(this.startTime.bind(this), 1000);
+    if (this._isTurn === false) {　
+      this._isTurn = true; // ここでtrueにするの微妙。。。
+      clearTimeout(id);　 //idをclearTimeoutで指定している
+    }
+    var min = String(Math.floor(this._timeLimit / 60));
+    var second = String(this._timeLimit % 60);
+    this._timeElement.innerText = min + ":" + second;
   }
 
   stopTime() {
@@ -35,7 +35,7 @@ export default class InformationViewController {
 
   updatePipNumber(num) {
     this._pipCount += num;
-    this._pipElement.innerText  = String(this._pipCount);
+    this._pipElement.innerText = String(this._pipCount);
   }
 
 }

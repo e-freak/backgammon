@@ -1,36 +1,34 @@
 @charset 'UTF-8';
-
 body {
-    margin-left: auto;
-    margin-right: auto;
-    text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
 }
 
 div.option {
-    text-align: right;
+  text-align: right;
 }
 
 button.option {
-    background-color: transparent;
-    border:0;
-    margin-right: 10px;
+  background-color: transparent;
+  border: 0;
+  margin-right: 10px;
 }
 
 div.title {
-    margin-top: 20px;
+  margin-top: 20px;
 }
 
-div.menue-field {
-}
+div.menue-field {}
 
 button.menu {
-    margin-top: 100px;
-    background-color: transparent;
-    border:0;
-    outline: none;
+  margin-top: 100px;
+  background-color: transparent;
+  border: 0;
+  outline: none;
 }
 
 img.dice {
-    width: 142px;
-    height: 92px;
+  width: 142px;
+  height: 92px;
 }

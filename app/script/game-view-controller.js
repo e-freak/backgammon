@@ -26,13 +26,17 @@ var _scriptInformationViewController = require('../script/information-view-contr
 
 var _scriptInformationViewController2 = _interopRequireDefault(_scriptInformationViewController);
 
+var _scriptDiceController = require('../script/dice-controller');
+
+var _scriptDiceController2 = _interopRequireDefault(_scriptDiceController);
+
 var GameViewController = (function () {
   function GameViewController(view) {
     _classCallCheck(this, GameViewController);
 
     this._view = view;
-    this._imageMyDiceResource = []; // 自分のサイコロの画像(indexはサイコロの目と対応, index=0は使用しない)
-    this._imageOpponentDiceResource = []; // 相手のサイコロの画像(indexはサイコロの目と対応, index=0は使用しない)
+    //    this._imageMyDiceResource = []; // 自分のサイコロの画像(indexはサイコロの目と対応, index=0は使用しない)
+    //    this._imageOpponentDiceResource = []; // 相手のサイコロの画像(indexはサイコロの目と対応, index=0は使用しない)
     this._myPieces = []; // Pieceオブジェクトを格納する
     this._opponentPieces = []; // Pieceオブジェクトを格納する
     this._count = 0;
@@ -48,6 +52,16 @@ var GameViewController = (function () {
     this._searchOpponentViewController = new _scriptSearchOpponentViewController2['default'](this._view, this.notificationSearchCompleted);
 
     this._informationViewController = new _scriptInformationViewController2['default'](this._view);
+
+    var myFirstDiceImage = this._view.getElementById('my-firstDice-image');
+    var mySecoundDiceImage = this._view.getElementById('my-secoundDice-image');
+    var opponentFirstDiceImage = this._view.getElementById('opponent-firstDice-image');
+    var opponentSecoundDiceImage = this._view.getElementById('opponent-secoundDice-image');
+
+    this._notificationFirstShakeDice = this._notificationFirstShakeDice.bind(this);
+    this._notificationShakeDice = this._notificationShakeDice.bind(this);
+
+    this._diceController = new _scriptDiceController2['default'](myFirstDiceImage, mySecoundDiceImage, opponentFirstDiceImage, opponentSecoundDiceImage, this._notificationFirstShakeDice, this._notificationShakeDice);
   }
 
   _createClass(GameViewController, [{
@@ -57,6 +71,7 @@ var GameViewController = (function () {
       var mainArea = this._view.getElementById('main-area');
       mainArea.style.display = "none";
 
+      this._diceController.initialize();
       // 検索中の画面を表示
       this._searchOpponentViewController.initialize();
     }
@@ -91,25 +106,33 @@ var GameViewController = (function () {
     key: 'gameStart',
     value: function gameStart() {
 
-      this._loadImages(); // 画像をロードしておく
+      //    this._loadImages(); // 画像をロードしておく
       this._updateToStartUI(); // ゲーム開始画面のUIに更新する(コマを配る, サイコロの表示/非表示の設定とか)
-      this._shakeDice(true); // サイコロ画像を切り替えて振ってる風に見せる
+      //    this._shakeDice(true); // サイコロ画像を切り替えて振ってる風に見せる
 
+      var myPip = Math.ceil(Math.random() * 6); // 1から6までの適当な数字
+      var opponentPip = Math.ceil(Math.random() * 6);
+      if (myPip === opponentPip) {
+        // 初回は同じ目は許さない
+        opponentPip = (opponentPip + Math.ceil(Math.random() * 5)) % 6 + 1;
+      }
+      this._diceController.firstShakeDice(myPip, opponentPip);
       //        this._peerController = new PeerController();
       //        this._peerController.initialize();
     }
-  }, {
-    key: '_loadImages',
-    value: function _loadImages() {
-      // サイコロの画像
-      for (var i = 1; i <= 6; i++) {
-        // ArrayのIndex=サイコロの目(0は使用しない)
-        this._imageMyDiceResource[i] = new Image();
-        this._imageMyDiceResource[i].src = "../image/myDice/dice" + i + ".png";
-        this._imageOpponentDiceResource[i] = new Image();
-        this._imageOpponentDiceResource[i].src = "../image/opponentDice/dice" + i + ".png";
-      }
-    }
+
+    // _loadImages() {
+    //   // サイコロの画像
+    //   for (var i = 1; i <= 6; i++) {
+    //     // ArrayのIndex=サイコロの目(0は使用しない)
+    //     this._imageMyDiceResource[i] = new Image();
+    //     this._imageMyDiceResource[i].src = "../image/myDice/dice" + i + ".png";
+    //     this._imageOpponentDiceResource[i] = new Image();
+    //     this._imageOpponentDiceResource[i].src = "../image/opponentDice/dice" + i + ".png";
+    //   }
+    //
+    //}
+
   }, {
     key: '_updateToStartUI',
     value: function _updateToStartUI() {
@@ -120,10 +143,10 @@ var GameViewController = (function () {
 
       // ゲーム開始時は、サイコロは2つだけ表示する
       // (自分のサイコロ/対戦相手のサイコロを1つずつ表示)
-      this._view.getElementById('my-firstDice-image').style.display = "block"; // 表示
-      this._view.getElementById('my-secoundDice-image').style.display = "none"; // 非表示
-      this._view.getElementById('opponent-firstDice-image').style.display = "block"; // 表示
-      this._view.getElementById('opponent-secoundDice-image').style.display = "none"; // 非表示
+      // this._view.getElementById('my-firstDice-image').style.display = "block" // 表示
+      // this._view.getElementById('my-secoundDice-image').style.display = "none" // 非表示
+      // this._view.getElementById('opponent-firstDice-image').style.display = "block" // 表示
+      // this._view.getElementById('opponent-secoundDice-image').style.display = "none" // 非表示
     }
   }, {
     key: '_appendPiece',
@@ -205,7 +228,7 @@ var GameViewController = (function () {
 
       if (count == 0) {
         this._dicePip = [];
-        this._shakeDice(false); // 再度サイコロを振る
+        //      this._shakeDice(false); // 再度サイコロを振る
       }
     }
   }, {
@@ -291,23 +314,18 @@ var GameViewController = (function () {
         // ターン終了時にカウントをストップしてみる
         this._informationViewController.stopTime();
 
-        this._shakeDice(false);
+        //      this._shakeDice(false);
       }
     }
 
     // isInit:初回はゾロ目ダメ, 先攻or後攻表示
-  }, {
-    key: '_shakeDice',
-    value: function _shakeDice(isInit) {
-
-      this._view.getElementById('my-firstDice-image').style.opacity = "1.0";
+    /*
+    _shakeDice(isInit) {
+       this._view.getElementById('my-firstDice-image').style.opacity = "1.0";
       this._view.getElementById('opponent-firstDice-image').style.opacity = "1.0";
-
-      if (this._count > 20) {
-        // 抜け方は後で考える。とりえず手っ取り早い方法で実現
+       if (this._count > 20) { // 抜け方は後で考える。とりえず手っ取り早い方法で実現
         this._count = 0;
-
-        this._dicePip.push(this._myDicePip);
+         this._dicePip.push(this._myDicePip);
         this._dicePip.push(this._opponentDicePip);
         // ゾロ目なら4回移動できる
         if (this._myDicePip === this._opponentDicePip) {
@@ -318,33 +336,47 @@ var GameViewController = (function () {
           // 順番を表示(first or second)
           if (this._myDicePip > this._opponentDicePip) {
             // img.src = "../image/first.png";
-            this._view.getElementById('first-smoky').style.display = "block"; // 表示
-            this._view.getElementById('opponent-firstDice-image').style.left = "430px";
+            this._view.getElementById('first-smoky').style.display = "block" // 表示
+            this._view.getElementById('opponent-firstDice-image').style.left = "430px"
           } else {
             //img.src = "../image/second.png";
-            this._view.getElementById('second-smoky').style.display = "block"; // 表示
-            this._view.getElementById('my-firstDice-image').style.left = "153px";
+            this._view.getElementById('second-smoky').style.display = "block" // 表示
+            this._view.getElementById('my-firstDice-image').style.left = "153px"
           }
         }
-
-        // とりあえず、ここでカウントスタートしてみる
+         // とりあえず、ここでカウントスタートしてみる
         this._informationViewController.startTime();
-
-        return 0;
+         return 0;
       }
       this._myDicePip = Math.ceil(Math.random() * 6); // 1から6までの適当な数字
       this._view.getElementById('my-firstDice-image').src = this._imageMyDiceResource[this._myDicePip].src;
-
-      this._opponentDicePip = Math.ceil(Math.random() * 6);
-      if (isInit === true && this._myDicePip === this._opponentDicePip) {
+       this._opponentDicePip = Math.ceil(Math.random() * 6);
+      if ((isInit === true) && (this._myDicePip === this._opponentDicePip)) {
         // 同じ目はダメ
         this._opponentDicePip = (this._opponentDicePip + Math.ceil(Math.random() * 5)) % 6 + 1;
       }
       this._view.getElementById('opponent-firstDice-image').src = this._imageOpponentDiceResource[this._opponentDicePip].src;
-
-      this._count++;
+       this._count++;
       setTimeout(this._shakeDice.bind(this, isInit), 50); // 50ミリ秒間隔で表示切り替え
     }
+    */
+
+  }, {
+    key: '_notificationFirstShakeDice',
+    value: function _notificationFirstShakeDice(myPip, opponentPip) {
+
+      // 順番を表示(first or second)
+      if (myPip > opponentPip) {
+        // img.src = "../image/first.png";
+        this._view.getElementById('first-smoky').style.display = "block"; // 表示
+      } else {
+          //img.src = "../image/second.png";
+          this._view.getElementById('second-smoky').style.display = "block"; // 表示
+        }
+    }
+  }, {
+    key: '_notificationShakeDice',
+    value: function _notificationShakeDice() {}
   }]);
 
   return GameViewController;

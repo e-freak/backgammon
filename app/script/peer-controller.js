@@ -39,8 +39,10 @@ var PeerController = (function () {
   _createClass(PeerController, [{
     key: 'initialize',
     value: function initialize() {
-      var peer = new Peer({ key: SkyWay_ApiKey,
-        debug: 3 });
+      var peer = new Peer({
+        key: SkyWay_ApiKey,
+        debug: 3
+      });
       peer.on('open', this.onOpen);
       peer.on('connection', this.onConnection);
       this._peer = peer;
@@ -55,7 +57,6 @@ var PeerController = (function () {
       this._peer.listAllPeers((function (list) {
         if (list.length === 2) {
           // 接続（自分より前に接続しているIDのindexは、きっと0だろう。。）
-          alert("接続開始");
           var conn = this._peer.connect(list[0]);
           conn.on('open', this.onConnectionOpen);
           this._conn = conn;
@@ -67,7 +68,7 @@ var PeerController = (function () {
   }, {
     key: 'onConnection',
     value: function onConnection(conn) {
-      alert("接続イベント受信");
+      alert("onConnection");
       this._conn = conn;
       conn.on('data', this.onReceivedData);
     }
@@ -76,9 +77,9 @@ var PeerController = (function () {
   }, {
     key: 'onConnectionOpen',
     value: function onConnectionOpen(conn) {
-      this.onConnection(this._conn);
+      alert("onConnectionOpen");
+      this._conn.on('data', this.onReceivedData);
       // とりあえず送信してみる
-      alert("コネクションが接続利用可能になったので、メッセージを送信してみる");
       this._sendUserNameAndIcon();
     }
 
@@ -86,15 +87,11 @@ var PeerController = (function () {
   }, {
     key: 'onReceivedData',
     value: function onReceivedData(data) {
+      alert("onReceivedData");
       var message = data.message;
       if (message === "userNameAndIcon") {
-        alert("メッセージ受信:" + data.userName);
         this._receivedUserNameAndIcon();
-      } else if (message === "answerUserNameAndIcon") {
-        alert("メッセージ受信(Answer):" + data.userName);
-      } else {
-        alert("メッセージ受信:" + data);
-      }
+      } else if (message === "answerUserNameAndIcon") {} else {}
       this.receivedMessage(data);
     }
   }, {
@@ -105,25 +102,32 @@ var PeerController = (function () {
   }, {
     key: '_sendUserNameAndIcon',
     value: function _sendUserNameAndIcon() {
+      alert("_sendUserNameAndIcon");
+
       // ユーザー名をJSONから取得(JSONにはあるはず)
       var userName = this._userSettingController.loadUserNameFromJSON();
       // ユーザーのアイコンをJSONから取得(JSONにはあるはず)
       var iconBase64 = this._userSettingController.loadImageBase64FromJSON();
-      var obj = { "message": "userNameAndIcon",
+      var obj = {
+        "message": "userNameAndIcon",
         "userName": userName,
-        "iconBase64": iconBase64 };
+        "iconBase64": iconBase64
+      };
       this._conn.send(obj);
     }
   }, {
     key: '_sendAnswerUserNameAndIcon',
     value: function _sendAnswerUserNameAndIcon() {
+      alert("_sendAnswerUserNameAndIcon");
       // ユーザー名をJSONから取得(JSONにはあるはず)
       var userName = this._userSettingController.loadUserNameFromJSON();
       // ユーザーのアイコンをJSONから取得(JSONにはあるはず)
       var iconBase64 = this._userSettingController.loadImageBase64FromJSON();
-      var obj = { "message": "answerUserNameAndIcon",
+      var obj = {
+        "message": "answerUserNameAndIcon",
         "userName": userName,
-        "iconBase64": iconBase64 };
+        "iconBase64": iconBase64
+      };
       this._conn.send(obj);
     }
   }, {

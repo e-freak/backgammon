@@ -39,18 +39,15 @@ export default class PeerController {
     this._peer.listAllPeers(function(list) {
       if (list.length === 2) {
         // 接続（自分より前に接続しているIDのindexは、きっと0だろう。。）
-        alert("接続開始");
         const conn = this._peer.connect(list[0]);
         conn.on('open', this.onConnectionOpen);
         this._conn = conn;
-
       }
     }.bind(this));
   }
 
   // 接続イベントの受信
   onConnection(conn) {
-    alert("接続イベント受信");
     this._conn = conn;
     conn.on('data', this.onReceivedData);
 
@@ -58,9 +55,8 @@ export default class PeerController {
 
   // コネクションが利用可能になった
   onConnectionOpen(conn) {
-    this.onConnection(this._conn);
+    this._conn.on('data', this.onReceivedData);
     // とりあえず送信してみる
-    alert("コネクションが接続利用可能になったので、メッセージを送信してみる");
     this._sendUserNameAndIcon();
   }
 
@@ -68,13 +64,8 @@ export default class PeerController {
   onReceivedData(data) {
     var message = data.message;
     if (message === "userNameAndIcon") {
-      alert("メッセージ受信:" + data.userName);
       this._receivedUserNameAndIcon();
-    } else if (message === "answerUserNameAndIcon") {
-      alert("メッセージ受信(Answer):" + data.userName);
-    } else {
-      alert("メッセージ受信:" + data)
-    }
+    } else if (message === "answerUserNameAndIcon") {} else {}
     this.receivedMessage(data);
   }
 

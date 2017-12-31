@@ -24,25 +24,33 @@ var UserSettingController = (function () {
   }, {
     key: "writeUserNameToJSON",
     value: function writeUserNameToJSON(userName) {
-      var obj = { "userName": userName };
+      var obj = {
+        "userName": userName
+      };
       this._writeConfigJSON(obj);
     }
   }, {
     key: "writeIconPathToJSON",
     value: function writeIconPathToJSON(iconPath) {
-      var obj = { "iconPath": iconPath };
+      var obj = {
+        "iconPath": iconPath
+      };
       this._writeConfigJSON(obj);
     }
   }, {
     key: "writeImageBase64ToJSON",
     value: function writeImageBase64ToJSON(base64) {
-      var obj = { "iconBase64": base64 };
+      var obj = {
+        "iconBase64": base64
+      };
       this._writeConfigJSON(obj);
     }
   }, {
     key: "writeChipsToJSON",
     value: function writeChipsToJSON(chips) {
-      var obj = { "chips": chips };
+      var obj = {
+        "chips": chips
+      };
       this._writeConfigJSON(obj);
     }
   }, {

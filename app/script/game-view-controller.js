@@ -214,13 +214,17 @@ var GameViewController = (function () {
       if (this._myDicePip === this._opponentDicePip) {
         switch (this._dicePip.length) {
           case 1:
-            this._view.getElementById('opponent-firstDice-image').style.opacity = "0.5";break;
+            this._view.getElementById('opponent-firstDice-image').style.opacity = "0.5";
+            break;
           case 2:
-            this._view.getElementById('opponent-firstDice-image').style.opacity = "0.75";break;
+            this._view.getElementById('opponent-firstDice-image').style.opacity = "0.75";
+            break;
           case 3:
-            this._view.getElementById('my-firstDice-image').style.opacity = "0.5";break;
+            this._view.getElementById('my-firstDice-image').style.opacity = "0.5";
+            break;
           case 4:
-            this._view.getElementById('my-firstDice-image').style.opacity = "0.75";break;
+            this._view.getElementById('my-firstDice-image').style.opacity = "0.75";
+            break;
         }
       } else if (this._myDicePip === diceNum) {
         this._view.getElementById('my-firstDice-image').style.opacity = "0.5";

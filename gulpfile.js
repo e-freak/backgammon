@@ -11,8 +11,8 @@ const $ = require('gulp-load-plugins')();
 
 
 
-const mainSourceDir  = 'src/main/jsx';
-const testSourceDir  = 'src/test/jsx';
+const mainSourceDir  = 'src/main/js';
+const testSourceDir  = 'src/test/js';
 const mainTargetDir  = 'app/script';
 const testTargetDir  = 'cache/test';
 

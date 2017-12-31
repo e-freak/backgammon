@@ -69,6 +69,14 @@ export default class PeerController {
     this.receivedMessage(data);
   }
 
+  sendFirstDice(senderPip, receiverPip) {
+    var obj = {
+      "message": "firstDice",
+      "senderPip": senderPip,
+      "receiverPip": receiverPip
+    };
+    this._conn.send(obj);
+  }
   // receivedMessage(data) {
   //   this.receivedMessage(data);
   // }
@@ -102,4 +110,6 @@ export default class PeerController {
   _receivedUserNameAndIcon() {
     this._sendAnswerUserNameAndIcon();
   }
+
+
 }

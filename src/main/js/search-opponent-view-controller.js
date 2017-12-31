@@ -4,7 +4,7 @@ import UserSettingController from '../script/user-setting-controller';
 
 export default class SearchOpponentViewController {
 
-  constructor(view, notificationSearchCompleted) {
+  constructor(view) {
     this._view = view;
 
     var opts = {
@@ -28,11 +28,11 @@ export default class SearchOpponentViewController {
     this._target = document.getElementById('spin-area');
     this._spinner = new Spinner(opts);
 
-    // 対戦相手検索完了を通知するメソッド
-    this.notificationSearchCompleted = notificationSearchCompleted;
+    // // 対戦相手検索完了を通知するメソッド
+    // this.notificationSearchCompleted = notificationSearchCompleted;
 
     // Peerからのメッセージを受信した場合の通知
-    this.notificationOfReceiveMessage = this.notificationOfReceiveMessage.bind(this);
+    //    this.notificationOfReceiveMessage = this.notificationOfReceiveMessage.bind(this);
 
     this._userSettingController = new UserSettingController();
   }
@@ -41,28 +41,28 @@ export default class SearchOpponentViewController {
     // spinnerを表示
     this._spinner.spin(this._target);
 
-    this._peerController = new PeerController(this.notificationOfReceiveMessage);
-    this._peerController.initialize();
+    // this._peerController = new PeerController(this.notificationOfReceiveMessage);
+    // this._peerController.initialize();
   }
 
-  // Peerからのメッセージを受信した場合の通知
-  notificationOfReceiveMessage(data) {
-    var message = data.message;
-    if (message === "userNameAndIcon" ||
-      message === "answerUserNameAndIcon") {
-      // 自分と対戦相手のアイコンと名前を設定
-      this._setVersusView(data.userName, data.iconBase64);
-      // versus ビューを表示
-      this._displayVersusView();
-      // 少し待って、対戦相手検索完了の通知を送る
-      setTimeout(this._notificationSearchCompleted.bind(this, data), 6000);
-    }
-  }
-
-  _notificationSearchCompleted(data){
-    this.notificationSearchCompleted(data);
-  }
-  _setVersusView(opponent_userName, opponent_icon) {
+  // // Peerからのメッセージを受信した場合の通知
+  // notificationOfReceiveMessage(data) {
+  //   var message = data.message;
+  //   if (message === "userNameAndIcon" ||
+  //     message === "answerUserNameAndIcon") {
+  //     // 自分と対戦相手のアイコンと名前を設定
+  //     this._setVersusView(data.userName, data.iconBase64);
+  //     // versus ビューを表示
+  //     this._displayVersusView();
+  //     // 少し待って、対戦相手検索完了の通知を送る
+  //     setTimeout(this._notificationSearchCompleted.bind(this, data), 6000);
+  //   }
+  // }
+  //
+  // _notificationSearchCompleted(data){
+  //   this.notificationSearchCompleted(data);
+  // }
+  setVersusView(opponent_userName, opponent_icon) {
     // 自分の名前をJSONから取得
     var userName = this._userSettingController.loadUserNameFromJSON();
     // 自分の名前を設定
@@ -73,7 +73,7 @@ export default class SearchOpponentViewController {
     var base64 = this._userSettingController.loadImageBase64FromJSON();
     // 自分のアイコンを設定
     var iconImage = this._view.getElementById('my-icon');
-    var iconImageSrc =  this._getImagesrcWithBase64(base64);
+    var iconImageSrc = this._getImagesrcWithBase64(base64);
     iconImage.src = iconImageSrc;
 
     // 相手の名前を設定
@@ -82,7 +82,7 @@ export default class SearchOpponentViewController {
 
     // 相手のアイコンを設定
     var opponentIconImage = this._view.getElementById('opponent-icon');
-    var opponentIconImageSrc =  this._getImagesrcWithBase64(opponent_icon);
+    var opponentIconImageSrc = this._getImagesrcWithBase64(opponent_icon);
     opponentIconImage.src = opponentIconImageSrc;
   }
 
@@ -106,7 +106,7 @@ export default class SearchOpponentViewController {
     return src;
   }
 
-  _displayVersusView() {
+  displayVersusView() {
     // 対戦相手待ちのラベルを非表示にする
     var searchOpponent = this._view.getElementById('searchOpponent');
     searchOpponent.style.display = "none";

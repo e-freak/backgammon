@@ -18,11 +18,11 @@ export default class GameViewController {
     this._dicePip = [];
     this._informationViewController;
 
-    this.isHost = false;
+    this._isHost = false;
 
     // 対戦相手検索完了後に呼ばれるメソッド
-    this.notificationSearchCompleted = this.notificationSearchCompleted.bind(this);
-    this._searchOpponentViewController = new SearchOpponentViewController(this._view, this.notificationSearchCompleted);
+    // this.notificationSearchCompleted = this.notificationSearchCompleted.bind(this);
+    this._searchOpponentViewController = new SearchOpponentViewController(this._view);
 
     this._informationViewController = new InformationViewController(this._view);
 
@@ -30,7 +30,6 @@ export default class GameViewController {
     var mySecoundDiceImage = this._view.getElementById('my-secoundDice-image');
     var opponentFirstDiceImage = this._view.getElementById('opponent-firstDice-image');
     var opponentSecoundDiceImage = this._view.getElementById('opponent-secoundDice-image');
-
     this._notificationFirstShakeDice = this._notificationFirstShakeDice.bind(this);
     this._notificationShakeDice = this._notificationShakeDice.bind(this);
 
@@ -40,6 +39,10 @@ export default class GameViewController {
       opponentSecoundDiceImage,
       this._notificationFirstShakeDice,
       this._notificationShakeDice);
+
+    // Peerからのメッセージを受信した場合の通知
+    this.notificationOfReceiveMessage = this.notificationOfReceiveMessage.bind(this);
+    this._peerController = new PeerController(this.notificationOfReceiveMessage);
   }
 
   initialize() {
@@ -50,20 +53,57 @@ export default class GameViewController {
     this._diceController.initialize();
     // 検索中の画面を表示
     this._searchOpponentViewController.initialize();
+
+    this._peerController.initialize();
+
   }
 
-  // 対戦相手検索完了後に呼ばれるメソッド
-  notificationSearchCompleted(data) {
-    // informationエリアのアイコンなどを設定する
+  // Peerからのメッセージを受信した場合の通知
+  notificationOfReceiveMessage(data) {
+
     var message = data.message;
     if (message === "userNameAndIcon" ||
       message === "answerUserNameAndIcon") {
-      this._informationViewController.initialize(data.userName, data.iconBase64);
+
+      this._searchOpponentViewController.setVersusView(data.userName, data.iconBase64);
+      this._searchOpponentViewController.displayVersusView();
+
+      // ゲーム開始
+      setTimeout(this.gameStart.bind(this, data.userName, data.iconBase64), 6000);
     }
     if (message === "userNameAndIcon") {
-      this.isHost = true; // ホスト 初回のサイコロの目を決める
+      this._isHost = true; // ホスト 初回のサイコロの目を決める
     }
 
+    if (message === "firstDice") {
+      this._diceController.firstShakeDice(data.receiverPip, data.senderPip);
+    }
+  }
+
+
+  // とりあえずの実装。設計は後から考える
+  gameStart(userName, iconBase64) {
+
+    this._updateToStartUI(userName, iconBase64); // ゲーム開始画面のUIに更新する(コマを配る, サイコロの表示/非表示の設定とか)
+
+    if (this._isHost) { // ホストなら初回のサイコロの目を決める
+      var myPip = Math.ceil(Math.random() * 6); // 1から6までの適当な数字
+      var opponentPip = Math.ceil(Math.random() * 6);
+      if (myPip === opponentPip) { // 初回は同じ目は許さない
+        opponentPip = (opponentPip + Math.ceil(Math.random() * 5)) % 6 + 1;
+      }
+
+      // 対戦相手にサイコロの目を送る
+      this._peerController.sendFirstDice(myPip, opponentPip);
+
+      this._diceController.firstShakeDice(myPip, opponentPip);
+    }
+  }
+
+  _updateToStartUI(userName, iconBase64) {
+
+    // informationエリアのアイコンなどを設定する
+    this._informationViewController.initialize(userName, iconBase64);
     // 対戦相手検索画面を非表示にする
     var snowfallArea = this._view.getElementById('snowfall');
     snowfallArea.style.display = "none";
@@ -72,25 +112,6 @@ export default class GameViewController {
     var mainArea = this._view.getElementById('main-area');
     mainArea.style.display = "flex";
 
-    // ゲーム開始
-    this.gameStart();
-  }
-
-
-  // とりあえずの実装。設計は後から考える
-  gameStart() {
-    this._updateToStartUI(); // ゲーム開始画面のUIに更新する(コマを配る, サイコロの表示/非表示の設定とか)
-
-    var myPip = Math.ceil(Math.random() * 6); // 1から6までの適当な数字
-    var opponentPip = Math.ceil(Math.random() * 6);
-    if (myPip === opponentPip) { // 初回は同じ目は許さない
-      opponentPip = (opponentPip + Math.ceil(Math.random() * 5)) % 6 + 1;
-    }
-    this._diceController.firstShakeDice(myPip, opponentPip);
-
-  }
-
-  _updateToStartUI() {
     // 試行錯誤中
     this._view.getElementById('my-double-button').style.animationIterationCount = "infinite";
     // コマを配りたい

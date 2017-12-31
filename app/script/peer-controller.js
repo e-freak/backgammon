@@ -91,6 +91,16 @@ var PeerController = (function () {
       } else if (message === "answerUserNameAndIcon") {} else {}
       this.receivedMessage(data);
     }
+  }, {
+    key: 'sendFirstDice',
+    value: function sendFirstDice(senderPip, receiverPip) {
+      var obj = {
+        "message": "firstDice",
+        "senderPip": senderPip,
+        "receiverPip": receiverPip
+      };
+      this._conn.send(obj);
+    }
 
     // receivedMessage(data) {
     //   this.receivedMessage(data);

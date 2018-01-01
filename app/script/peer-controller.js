@@ -22,7 +22,7 @@ var Peer = require('skyway-js');
 var SkyWay_ApiKey = '46fe641a-df1c-42da-b45b-4061347deb7b';
 
 var PeerController = (function () {
-  function PeerController(receivedMessage) {
+  function PeerController(receivedMessageToGameViewController) {
     _classCallCheck(this, PeerController);
 
     this.onOpen = this.onOpen.bind(this);
@@ -33,7 +33,7 @@ var PeerController = (function () {
     this._userSettingController = new _scriptUserSettingController2['default']();
 
     // メッセージを受信通知を送るメソッド
-    this.receivedMessage = receivedMessage;
+    this.receivedMessage = receivedMessageToGameViewController;
   }
 
   _createClass(PeerController, [{
@@ -98,6 +98,16 @@ var PeerController = (function () {
         "message": "firstDice",
         "senderPip": senderPip,
         "receiverPip": receiverPip
+      };
+      this._conn.send(obj);
+    }
+  }, {
+    key: 'sendMovedPiece',
+    value: function sendMovedPiece(destPoint, sourcePoint) {
+      var obj = {
+        "message": "movedPiece",
+        "destPoint": destPoint,
+        "sourcePoint": sourcePoint
       };
       this._conn.send(obj);
     }

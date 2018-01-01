@@ -9,7 +9,7 @@ const Peer = require('skyway-js');
 const SkyWay_ApiKey = '46fe641a-df1c-42da-b45b-4061347deb7b';
 
 export default class PeerController {
-  constructor(receivedMessage) {
+  constructor(receivedMessageToGameViewController) {
     this.onOpen = this.onOpen.bind(this);
     this.onConnection = this.onConnection.bind(this);
     this.onConnectionOpen = this.onConnectionOpen.bind(this);
@@ -18,7 +18,7 @@ export default class PeerController {
     this._userSettingController = new UserSettingController();
 
     // メッセージを受信通知を送るメソッド
-    this.receivedMessage = receivedMessage;
+    this.receivedMessage = receivedMessageToGameViewController;
   }
 
   initialize() {
@@ -74,6 +74,15 @@ export default class PeerController {
       "message": "firstDice",
       "senderPip": senderPip,
       "receiverPip": receiverPip
+    };
+    this._conn.send(obj);
+  }
+
+  sendMovedPiece(destPoint, sourcePoint){
+    var obj = {
+      "message": "movedPiece",
+      "destPoint": destPoint,
+      "sourcePoint": sourcePoint
     };
     this._conn.send(obj);
   }

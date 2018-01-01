@@ -14,6 +14,8 @@ export default class DiceController {
     this._notificationShakeDice = notificationShakeDice;
 
     this._timeCount = 0;
+
+    this._dicePips = []; // ボード上に出ているサイコロの目の配列
   }
 
   initialize() {
@@ -28,7 +30,7 @@ export default class DiceController {
 
   // ゲーム開始時にサイコロを振る
   // 対戦相手と通信するため、出る目はGame controllerで設定する
-  firstShakeDice(myPip, opponentPip){
+  firstShakeDice(myPip, opponentPip) {
     this._myFirstDiceImage.style.display = "block" // 表示;
     this._mySecoundDiceImage.style.display = "none" // 非表示;
     this._opponentFirstDiceImage.style.display = "block" // 表示;
@@ -39,10 +41,19 @@ export default class DiceController {
     this._opponentFirstDiceImage.style.opacity = "1.0";
     this._opponentSecoundDiceImage.style.opacity = "0.0";
 
+    this._dicePips.push(myPip);
+    this._dicePips.push(opponentPip);
     // 降っている風に見せる
     this._firstShakeAnimation(myPip, opponentPip);
   }
 
+  clearPips() {
+    this._dicePips = [];
+  }
+
+  getDicePips() {
+    return this._dicePips;
+  }
   _firstShakeAnimation(myPip, opponentPip) {
     if (this._timeCount > 20) {
       this._timeCount = 0;
@@ -52,7 +63,7 @@ export default class DiceController {
 
       if (myPip > opponentPip) {
         this._opponentFirstDiceImage.style.left = "430px"
-      }else {
+      } else {
         this._myFirstDiceImage.style.left = "153px"
       }
       // game controller に通知

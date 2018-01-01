@@ -25,6 +25,8 @@ var DiceController = (function () {
     this._notificationShakeDice = notificationShakeDice;
 
     this._timeCount = 0;
+
+    this._dicePips = []; // ボード上に出ているサイコロの目の配列
   }
 
   _createClass(DiceController, [{
@@ -53,8 +55,20 @@ var DiceController = (function () {
       this._opponentFirstDiceImage.style.opacity = "1.0";
       this._opponentSecoundDiceImage.style.opacity = "0.0";
 
+      this._dicePips.push(myPip);
+      this._dicePips.push(opponentPip);
       // 降っている風に見せる
       this._firstShakeAnimation(myPip, opponentPip);
+    }
+  }, {
+    key: "clearPips",
+    value: function clearPips() {
+      this._dicePips = [];
+    }
+  }, {
+    key: "getDicePips",
+    value: function getDicePips() {
+      return this._dicePips;
     }
   }, {
     key: "_firstShakeAnimation",

@@ -53,49 +53,52 @@ img.firstOrSecond {
   display: none;
 }
 
-img.my-firstDice {
+button.my-firstDice {
   position: absolute;
   top: 240px;
   left: 483px;
   width: 100px;
   height: 100px;
-  opacity: 1.0;
   transition: all .5s;
+  border:0;
+  background:none;
+  outline:none;
 }
 
-img.my-secoundDice {
+button.my-secoundDice {
   position: absolute;
   top: 240px;
   left: 430px;
   width: 100px;
   height: 100px;
-  opacity: 1.0;
   transition: all .5s;
+  border:0;
+  background:none;
+  outline:none;
 }
 
-img.opponent-firstDice {
+button.opponent-firstDice {
   position: absolute;
   top: 240px;
   left: 100px;
   width: 100px;
   height: 100px;
-  opacity: 1.0;
   transition: all .5s;
-  /*表示/非表示はjsで切り替える*/
-  /*    display: none;*/
+  border:0;
+  background:none;
+  outline:none;
 }
 
-img.opponent-secoundDice {
+button.opponent-secoundDice {
   position: absolute;
   top: 240px;
   left: 153px;
   width: 100px;
   height: 100px;
-  /*
-    display: none;  表示/非表示はjsで切り替える
-    */
-  opacity: 1.0;
   transition: all .5s;
+  border:0;
+  background:none;
+  outline:none;
 }
 
 img.piece-field {

@@ -38,6 +38,7 @@ var GameViewController = (function () {
     this._view = view;
     this._count = 0;
     this._isHost = false;
+    this._isMyTurn = false;
 
     // 対戦相手検索完了後に呼ばれるメソッド
     // this.notificationSearchCompleted = this.notificationSearchCompleted.bind(this);
@@ -45,13 +46,14 @@ var GameViewController = (function () {
 
     this._informationViewController = new _scriptInformationViewController2['default'](this._view);
 
-    var myFirstDiceImage = this._view.getElementById('my-firstDice-image');
-    var mySecoundDiceImage = this._view.getElementById('my-secoundDice-image');
-    var opponentFirstDiceImage = this._view.getElementById('opponent-firstDice-image');
-    var opponentSecoundDiceImage = this._view.getElementById('opponent-secoundDice-image');
+    var myFirstDiceButton = this._view.getElementById('my-firstDice-button');
+    var mySecoundDiceButton = this._view.getElementById('my-secoundDice-button');
+    var opponentFirstDiceButton = this._view.getElementById('opponent-firstDice-button');
+    var opponentSecoundDiceButton = this._view.getElementById('opponent-secoundDice-button');
     this._notificationFirstShakeDice = this._notificationFirstShakeDice.bind(this);
     this._notificationShakeDice = this._notificationShakeDice.bind(this);
-    this._diceController = new _scriptDiceController2['default'](myFirstDiceImage, mySecoundDiceImage, opponentFirstDiceImage, opponentSecoundDiceImage, this._notificationFirstShakeDice, this._notificationShakeDice);
+    this._notificationChangeTurn = this._notificationChangeTurn.bind(this);
+    this._diceController = new _scriptDiceController2['default'](myFirstDiceButton, mySecoundDiceButton, opponentFirstDiceButton, opponentSecoundDiceButton, this._notificationFirstShakeDice, this._notificationShakeDice, this._notificationChangeTurn);
 
     this._notificationMovedPiece = this._notificationMovedPiece.bind(this);
     // piceController
@@ -101,10 +103,15 @@ var GameViewController = (function () {
       }
       if (message === "movedPiece") {
         this._pieceController.movedOpponentPiece(data.destPoint, data.sourcePoint);
+
+        this._diceController.movedPiece(data.destPoint - data.sourcePoint);
       }
 
       if (message === "undo") {
         this._pieceController.undoOpponent(data.undoOjb);
+        // 移動数
+        var point = data.undoOjb.opponentPiece.sourcePoint - data.undoOjb.opponentPiece.destPoint;
+        this._diceController.movedPiece(point);
       }
     }
 
@@ -185,6 +192,9 @@ var GameViewController = (function () {
       if (this._pieceController.getUndoListCount() <= 0) {
         this._undoButton.style.display = "none";
       }
+
+      // undoの場合はマイナス値を引数にする（マイナス値の場合、不透明にする）
+      this._diceController.movedPiece(undoMyPiece.destPoint - undoMyPiece.sourcePoint);
     }
   }, {
     key: '_notificationFirstShakeDice',
@@ -192,18 +202,29 @@ var GameViewController = (function () {
       // 順番を表示(first or second)
       if (myPip > opponentPip) {
         this._view.getElementById('first-smoky').style.display = "block"; // 表示
-
         // コマを動かせる
-        this._pieceController.setIsMovable(true);
+        this._isMyTurn = true;
       } else {
         this._view.getElementById('second-smoky').style.display = "block"; // 表示
         // コマを動かせない
-        this._pieceController.setIsMovable(false);
+        this._isMyTurn = false;
       }
+      // 自分のターンか対戦相手のターンかを設定する
+      this._pieceController.setIsMovable(this._isMyTurn);
     }
   }, {
     key: '_notificationShakeDice',
     value: function _notificationShakeDice() {}
+  }, {
+    key: '_notificationChangeTurn',
+    value: function _notificationChangeTurn() {
+      // ターン交代
+      if (this._isMyTurn) {
+        alert("ターン交代");
+      } else {
+        alert("相手のターン中");
+      }
+    }
   }, {
     key: '_notificationMovedPiece',
     value: function _notificationMovedPiece(destPoint, sourcePoint) {
@@ -212,6 +233,9 @@ var GameViewController = (function () {
       var convertDestPoint = 25 - destPoint;
       var convertSourcePoint = 25 - sourcePoint;
       this._peerController.sendMovedPiece(convertDestPoint, convertSourcePoint);
+
+      // サイコロの透過度を変更して、ユーザーに残り進めることの数が分かるようにする
+      this._diceController.movedPiece(sourcePoint - destPoint);
 
       this._undoButton.style.display = "block"; // undoボタン表示
     }

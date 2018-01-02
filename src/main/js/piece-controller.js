@@ -269,7 +269,7 @@ export default class PieceController {
     return this._undoList.length;
   }
 
-  undo(){
+  undo() {
     let undoOjb = this._undoList.pop();
     let undoMyPiece = undoOjb.myPiece;
     let target = this._getTopPiece(undoMyPiece.destPoint, this._myPieces);
@@ -283,7 +283,7 @@ export default class PieceController {
     return undoOjb;
   }
 
-  undoOpponent(undoObje){
+  undoOpponent(undoObje) {
     let undoOpponentPiece = undoObje.opponentPiece;
     let target = this._getTopPiece(undoOpponentPiece.destPoint, this._opponentPieces);
     var position = this._getPiecePosition(undoOpponentPiece.sourcePoint, this._opponentPieces);
@@ -351,14 +351,17 @@ export default class PieceController {
     } else {
       // 2〜4分の移動
       var sumNumberOfMoving = 0;
-      // ヒットするならヒットさせたいので。。。
-      if (this._numberOfOpponentPeiceOnPoint(this._movableDicePips[0]) !== 1) {
+      // 移動先に相手のコマが2個以上あるのはダメ
+      // ヒットするならヒットさせたい
+      if (this._numberOfOpponentPeiceOnPoint(point - this._movableDicePips[0]) > 1 ||
+        this._numberOfOpponentPeiceOnPoint(point - this._movableDicePips[1]) === 1) {
         // ヒットしなければindexを事前に入れ替えておく
         let tmp = this._movableDicePips[0];
         this._movableDicePips[0] = this._movableDicePips[1];
         this._movableDicePips[1] = tmp;
       }
-      var delNum = 0; // _movableDicePipsの先頭か何個削除するか
+
+      var delNum = 0; // _movableDicePipsの先頭から何個の要素を削除するか
       for (var i = 0; i < this._movableDicePips.length; i++) {
         delNum++;
         sumNumberOfMoving += this._movableDicePips[i];

@@ -394,13 +394,15 @@ var PieceController = (function () {
           case 16:
             sumNumberOfMoving = 0;
 
-            // ヒットするならヒットさせたいので。。。
-            if (this._numberOfOpponentPeiceOnPoint(this._movableDicePips[0]) !== 1) {
+            // 移動先に相手のコマが2個以上あるのはダメ
+            // ヒットするならヒットさせたい
+            if (this._numberOfOpponentPeiceOnPoint(point - this._movableDicePips[0]) > 1 || this._numberOfOpponentPeiceOnPoint(point - this._movableDicePips[1]) === 1) {
               tmp = this._movableDicePips[0];
 
               this._movableDicePips[0] = this._movableDicePips[1];
               this._movableDicePips[1] = tmp;
             }
+
             delNum = 0;
             i = 0;
 
@@ -518,6 +520,6 @@ module.exports = exports['default'];
 // 2〜4分の移動
 
 // ヒットしなければindexを事前に入れ替えておく
-// _movableDicePipsの先頭か何個削除するか
+// _movableDicePipsの先頭から何個の要素を削除するか
 
 // 移動先に対戦相手のPieceが1個だけある場合、バーに移動させる

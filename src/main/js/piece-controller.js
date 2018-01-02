@@ -265,6 +265,33 @@ export default class PieceController {
     return returnValue;
   }
 
+  getUndoListCount() {
+    return this._undoList.length;
+  }
+
+  undo(){
+    let undoOjb = this._undoList.pop();
+    let undoMyPiece = undoOjb.myPiece;
+    let target = this._getTopPiece(undoMyPiece.destPoint, this._myPieces);
+    var position = this._getPiecePosition(undoMyPiece.sourcePoint, this._myPieces);
+    target.move(position[0], position[1], undoMyPiece.sourcePoint);
+
+    //
+    this._movableDicePips.push(undoMyPiece.sourcePoint - undoMyPiece.destPoint);
+    // 対戦相手(opponentPiece)の分はヒット実装後に
+
+    return undoOjb;
+  }
+
+  undoOpponent(undoObje){
+    let undoOpponentPiece = undoObje.opponentPiece;
+    let target = this._getTopPiece(undoOpponentPiece.destPoint, this._opponentPieces);
+    var position = this._getPiecePosition(undoOpponentPiece.sourcePoint, this._opponentPieces);
+    target.move(position[0], position[1], undoOpponentPiece.sourcePoint);
+
+    // 対戦相手(myPiece)の分はヒット実装後に
+
+  }
   _addUndoList(destPoint, sourcePoint, isMoveOpponentPieceToBar) {
     var undoOjb = {
       "myPiece": {
@@ -280,6 +307,7 @@ export default class PieceController {
     }
     this._undoList.push(undoOjb);
   }
+
 
   // piece を movablePiece の位置に移動
   async _movePiece(movablePiece, piece) {
@@ -397,6 +425,7 @@ export default class PieceController {
       return maxPiece;
     }
   }
+
 
   _sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));

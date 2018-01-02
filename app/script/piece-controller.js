@@ -296,6 +296,36 @@ var PieceController = (function () {
       return returnValue;
     }
   }, {
+    key: 'getUndoListCount',
+    value: function getUndoListCount() {
+      return this._undoList.length;
+    }
+  }, {
+    key: 'undo',
+    value: function undo() {
+      var undoOjb = this._undoList.pop();
+      var undoMyPiece = undoOjb.myPiece;
+      var target = this._getTopPiece(undoMyPiece.destPoint, this._myPieces);
+      var position = this._getPiecePosition(undoMyPiece.sourcePoint, this._myPieces);
+      target.move(position[0], position[1], undoMyPiece.sourcePoint);
+
+      //
+      this._movableDicePips.push(undoMyPiece.sourcePoint - undoMyPiece.destPoint);
+      // 対戦相手(opponentPiece)の分はヒット実装後に
+
+      return undoOjb;
+    }
+  }, {
+    key: 'undoOpponent',
+    value: function undoOpponent(undoObje) {
+      var undoOpponentPiece = undoObje.opponentPiece;
+      var target = this._getTopPiece(undoOpponentPiece.destPoint, this._opponentPieces);
+      var position = this._getPiecePosition(undoOpponentPiece.sourcePoint, this._opponentPieces);
+      target.move(position[0], position[1], undoOpponentPiece.sourcePoint);
+
+      // 対戦相手(myPiece)の分はヒット実装後に
+    }
+  }, {
     key: '_addUndoList',
     value: function _addUndoList(destPoint, sourcePoint, isMoveOpponentPieceToBar) {
       var undoOjb = {

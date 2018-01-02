@@ -41,9 +41,14 @@ export default class GameViewController {
     // Peerからのメッセージを受信した場合の通知
     this.notificationOfReceiveMessage = this.notificationOfReceiveMessage.bind(this);
     this._peerController = new PeerController(this.notificationOfReceiveMessage);
+
+    this._undoButton = this._view.getElementById('undo-button');
   }
 
   initialize() {
+
+    this._undoButton.addEventListener('click', this._onClickUndoButton.bind(this));
+
     // ボード画面は非表示にする
     var mainArea = this._view.getElementById('main-area');
     mainArea.style.display = "none";
@@ -73,8 +78,12 @@ export default class GameViewController {
       this._diceController.firstShakeDice(data.receiverPip, data.senderPip);
       this._pieceController.setMovableDicePips(data.receiverPip, data.senderPip);
     }
-    if (message == "movedPiece") {
+    if (message === "movedPiece") {
       this._pieceController.movedOpponentPiece(data.destPoint, data.sourcePoint);
+    }
+
+    if (message === "undo") {
+      this._pieceController.undoOpponent(data.undoOjb);
     }
   }
 
@@ -94,7 +103,7 @@ export default class GameViewController {
       // 対戦相手にサイコロの目を送る
       this._peerController.sendFirstDice(myPip, opponentPip);
       this._diceController.firstShakeDice(myPip, opponentPip);
-      
+
       this._pieceController.setMovableDicePips(myPip, opponentPip);
     }
   }
@@ -110,6 +119,8 @@ export default class GameViewController {
     var mainArea = this._view.getElementById('main-area');
     mainArea.style.display = "flex";
 
+    this._undoButton.style.display = "none";
+
     // 試行錯誤中
     this._view.getElementById('my-double-button').style.animationIterationCount = "infinite";
     // コマを配りたい
@@ -123,6 +134,33 @@ export default class GameViewController {
     }.bind(this));
   }
 
+  _onClickUndoButton() {
+    // undo実行
+    let  undoObje = this._pieceController.undo();
+
+    let undoMyPiece = undoObje.myPiece;
+
+    // undoObjeを対戦相手もに通知する
+    // 通知するときに相手側のPointに変換して通知する
+    let sendUndoOjb = {
+      "opponentPiece": {
+        "destPoint": 25 - undoMyPiece.destPoint,
+        "sourcePoint": 25 - undoMyPiece.sourcePoint
+      }
+    };
+    if (undoObje.opponentPiece) {
+      sendUndoOjb["myPiece"] = {
+        "destPoint": -1,
+        "sourcePoint": 25 - destPoint
+      }
+    }
+    this._peerController.sendUndoPiece(sendUndoOjb);
+
+
+    if (this._pieceController.getUndoListCount() <= 0 ){
+      this._undoButton.style.display = "none";
+    }
+  }
   _notificationFirstShakeDice(myPip, opponentPip) {
     // 順番を表示(first or second)
     if (myPip > opponentPip) {
@@ -147,5 +185,8 @@ export default class GameViewController {
     var convertDestPoint = 25 - destPoint;
     var convertSourcePoint = 25 - sourcePoint;
     this._peerController.sendMovedPiece(convertDestPoint, convertSourcePoint);
+
+    this._undoButton.style.display = "block"; // undoボタン表示
+
   }
 }

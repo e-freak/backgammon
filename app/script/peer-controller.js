@@ -111,6 +111,15 @@ var PeerController = (function () {
       };
       this._conn.send(obj);
     }
+  }, {
+    key: 'sendUndoPiece',
+    value: function sendUndoPiece(sentUndoOjb) {
+      var obj = {
+        "message": "undo",
+        "undoOjb": sentUndoOjb
+      };
+      this._conn.send(obj);
+    }
 
     // receivedMessage(data) {
     //   this.receivedMessage(data);

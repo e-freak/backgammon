@@ -28,8 +28,6 @@ var DiceController = (function () {
 
     this._notificationChangeTurn = notificationChangeTurn;
 
-    this._timeCount = 0;
-
     this._dicePips = []; // ボード上に出ているサイコロの目の配列
   }
 
@@ -70,14 +68,54 @@ var DiceController = (function () {
       this._firstShakeAnimation(myPip, opponentPip);
     }
   }, {
-    key: "clearPips",
-    value: function clearPips() {
-      this._dicePips = [];
+    key: "shakeMyDice",
+    value: function shakeMyDice(pip1, pip2) {
+      this._myFirstDiceButton.style.display = "block"; // 非表示;
+      this._mySecoundDiceButton.style.display = "block"; // 非表示;
+      this._opponentFirstDiceButton.style.display = "none"; // 表示;
+      this._opponentSecoundDiceButton.style.display = "none"; // 表示;
+
+      this._myFirstDiceButton.firstChild.style.opacity = "1.0";
+      this._mySecoundDiceButton.firstChild.style.opacity = "1.0";
+      this._opponentFirstDiceButton.firstChild.style.opacity = "0.0";
+      this._opponentSecoundDiceButton.firstChild.style.opacity = "0.0";
+
+      this._dicePips.push(pip1);
+      this._dicePips.push(pip2);
+      // 降っている風に見せる
+      this._shakeMyDiceAnimation(pip1, pip2);
     }
   }, {
-    key: "getDicePips",
-    value: function getDicePips() {
-      return this._dicePips;
+    key: "shakeOpponentDice",
+    value: function shakeOpponentDice(pip1, pip2) {
+      this._myFirstDiceButton.style.display = "none"; // 非表示;
+      this._mySecoundDiceButton.style.display = "none"; // 非表示;
+      this._opponentFirstDiceButton.style.display = "block"; // 表示;
+      this._opponentSecoundDiceButton.style.display = "block"; // 表示;
+
+      this._myFirstDiceButton.firstChild.style.opacity = "0.0";
+      this._mySecoundDiceButton.firstChild.style.opacity = "0.0";
+      this._opponentFirstDiceButton.firstChild.style.opacity = "1.0";
+      this._opponentSecoundDiceButton.firstChild.style.opacity = "1.0";
+
+      this._dicePips.push(pip1);
+      this._dicePips.push(pip2);
+      // 降っている風に見せる
+      this._shakeOpponentDiceAnimation(pip1, pip2);
+    }
+  }, {
+    key: "clear",
+    value: function clear() {
+      this._dicePips = [];
+
+      this._myFirstDiceButton.style.display = "none"; // 非表示;
+      this._mySecoundDiceButton.style.display = "none"; // 非表示;
+      this._opponentFirstDiceButton.style.display = "none"; // 非表示;
+      this._opponentSecoundDiceButton.style.display = "none"; // 非表示;
+
+      // 位置を移動しているので、その情報をクリア
+      this._opponentFirstDiceButton.style.left = "";
+      this._myFirstDiceButton.style.left = "";
     }
   }, {
     key: "movedPiece",
@@ -184,6 +222,86 @@ var DiceController = (function () {
             this._notificationFirstShakeDice(myPip, opponentPip);
 
           case 15:
+          case "end":
+            return context$2$0.stop();
+        }
+      }, null, this);
+    }
+  }, {
+    key: "_shakeMyDiceAnimation",
+    value: function _shakeMyDiceAnimation(pip1, pip2) {
+      var i, num1, num2;
+      return regeneratorRuntime.async(function _shakeMyDiceAnimation$(context$2$0) {
+        while (1) switch (context$2$0.prev = context$2$0.next) {
+          case 0:
+            i = 0;
+
+          case 1:
+            if (!(i < 20)) {
+              context$2$0.next = 11;
+              break;
+            }
+
+            num1 = Math.ceil(Math.random() * 6);
+            num2 = Math.ceil(Math.random() * 6);
+
+            this._myFirstDiceButton.firstChild.src = this._imageMyDiceResource[num1].src;
+            this._mySecoundDiceButton.firstChild.src = this._imageMyDiceResource[num2].src;
+
+            // 少し待つ
+            context$2$0.next = 8;
+            return regeneratorRuntime.awrap(this._sleep(50));
+
+          case 8:
+            i++;
+            context$2$0.next = 1;
+            break;
+
+          case 11:
+            this._myFirstDiceButton.firstChild.src = this._imageMyDiceResource[pip1].src;
+            this._mySecoundDiceButton.firstChild.src = this._imageMyDiceResource[pip2].src;
+
+          case 13:
+          case "end":
+            return context$2$0.stop();
+        }
+      }, null, this);
+    }
+  }, {
+    key: "_shakeOpponentDiceAnimation",
+    value: function _shakeOpponentDiceAnimation(pip1, pip2) {
+      var i, num1, num2;
+      return regeneratorRuntime.async(function _shakeOpponentDiceAnimation$(context$2$0) {
+        while (1) switch (context$2$0.prev = context$2$0.next) {
+          case 0:
+            i = 0;
+
+          case 1:
+            if (!(i < 20)) {
+              context$2$0.next = 11;
+              break;
+            }
+
+            num1 = Math.ceil(Math.random() * 6);
+            num2 = Math.ceil(Math.random() * 6);
+
+            this._opponentFirstDiceButton.firstChild.src = this._imageOpponentDiceResource[num1].src;
+            this._opponentSecoundDiceButton.firstChild.src = this._imageOpponentDiceResource[num2].src;
+
+            // 少し待つ
+            context$2$0.next = 8;
+            return regeneratorRuntime.awrap(this._sleep(50));
+
+          case 8:
+            i++;
+            context$2$0.next = 1;
+            break;
+
+          case 11:
+            this._opponentFirstDiceButton.firstChild.src = this._imageOpponentDiceResource[pip1].src;
+            this._opponentSecoundDiceButton.firstChild.src = this._imageOpponentDiceResource[pip2].src;
+
+          case 13:
           case "end":
             return context$2$0.stop();
         }

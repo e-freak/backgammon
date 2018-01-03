@@ -36,7 +36,6 @@ var GameViewController = (function () {
     _classCallCheck(this, GameViewController);
 
     this._view = view;
-    this._count = 0;
     this._isHost = false;
     this._isMyTurn = false;
 
@@ -97,7 +96,7 @@ var GameViewController = (function () {
       if (message === "userNameAndIcon") {
         this._isHost = true; // ホスト 初回のサイコロの目を決める
       }
-      if (message === "firstDice") {
+      if (message === "firstDices") {
         this._diceController.firstShakeDice(data.receiverPip, data.senderPip);
         this._pieceController.setMovableDicePips(data.receiverPip, data.senderPip);
       }
@@ -112,6 +111,34 @@ var GameViewController = (function () {
         // 移動数
         var point = data.undoOjb.opponentPiece.sourcePoint - data.undoOjb.opponentPiece.destPoint;
         this._diceController.movedPiece(point);
+      }
+
+      if (message === "changeTurn") {
+        // double/roll/take/passの実装は後から
+
+        // flagを変更
+        this._isMyTurn = true;
+        // サイコロの情報をクリア
+        this._diceController.clear();
+        // PieceControllerの情報をクリア
+        this._pieceController.clear();
+        this._pieceController.setIsMovable(this._isMyTurn);
+        // サイコロの目を決める
+        var pip1 = Math.ceil(Math.random() * 6); // 1から6までの適当な数字
+        var pip2 = Math.ceil(Math.random() * 6);
+
+        pip1 = 2;
+        pip2 = 2;
+
+        // 対戦相手にサイコロの目を送る
+        this._peerController.sendDices(pip1, pip2); // 実装中
+        this._diceController.shakeMyDice(pip1, pip2); // 実装中
+
+        this._pieceController.setMovableDicePips(pip1, pip2);
+      }
+      if (message === "dices") {
+        this._diceController.shakeOpponentDice(data.pips[0], data.pips[1]);
+        this._pieceController.setMovableDicePips(data.pips[0], data.pips[1]);
       }
     }
 
@@ -132,7 +159,7 @@ var GameViewController = (function () {
         }
 
         // 対戦相手にサイコロの目を送る
-        this._peerController.sendFirstDice(myPip, opponentPip);
+        this._peerController.sendFirstDices(myPip, opponentPip);
         this._diceController.firstShakeDice(myPip, opponentPip);
 
         this._pieceController.setMovableDicePips(myPip, opponentPip);
@@ -219,11 +246,21 @@ var GameViewController = (function () {
     key: '_notificationChangeTurn',
     value: function _notificationChangeTurn() {
       // ターン交代
-      if (this._isMyTurn) {
-        alert("ターン交代");
-      } else {
-        alert("相手のターン中");
+
+      // 対戦相手のターンなら何もしない
+      if (this._isMyTurn === false) {
+        return;
       }
+      // flagを変更
+      this._isMyTurn = false;
+      // undoボタンを消す
+      this._undoButton.style.display = "none";
+      // サイコロの情報をクリア
+      this._diceController.clear();
+      // PieceControllerの情報をクリア
+      this._pieceController.clear();
+      // 相手のターンになったことを対戦相手に通知（サイコロを振るのは相手側でやる）
+      this._peerController.sendChangeTurn();
     }
   }, {
     key: '_notificationMovedPiece',

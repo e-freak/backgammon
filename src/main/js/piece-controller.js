@@ -21,7 +21,7 @@ export default class PieceController {
 
     this._isMovable = false; // コマを動かせるターンか？
 
-    this._undoList = []; // undoするように移動履歴を保持
+    this._undoList = []; // undo用に移動履歴を保持
     // 移動可能サイコロの目
     // サイコロの目がゾロ目{x, x}の場合、movableDicePipsは{x, x, x, x}とする
     this._movableDicePips = [];
@@ -32,12 +32,16 @@ export default class PieceController {
 
   initialize() {}
 
+  clear() {
+    this._isMovable = false; // コマを動かせるターンか？
+    this._undoList = []; // undo用に移動履歴を保持
+    this._movableDicePips = [];
+  }
+
   setMovableDicePips(dicePip1, dicePip2) {
     if (dicePip1 === dicePip2) {
       // ゾロ目の場合
-      this._movableDicePips = [dicePip1, dicePip1 * 2,
-        dicePip1 * 3, dicePip1 * 4
-      ];
+      this._movableDicePips = [dicePip1, dicePip1, dicePip1, dicePip1];
     } else {
       this._movableDicePips = [dicePip1, dicePip2];
     }
@@ -332,9 +336,10 @@ export default class PieceController {
 
     // 1. もし_movableDicePipsの足し算の移動分なら移動は2〜4回分の移動に分ける
     var numberOfMoving = point - destPoint; // 移動数
+    // _movableDicePipsは、ゾロ目なら[x, x, x, x]、それ以外は[x, y]の配列
     var index = this._movableDicePips.indexOf(numberOfMoving);
 
-    if (index >= 0) { // 1回分の移動
+    if (index == 0 || index == 1) { // 1回分の移動
       // 移動先に対戦相手のPieceが1個だけある場合、バーに移動させる
       let isMoveOpponentPieceToBar = this._moveOpponentPieceToBar(destPoint);
       // 移動する

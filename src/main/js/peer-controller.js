@@ -69,11 +69,19 @@ export default class PeerController {
     this.receivedMessage(data);
   }
 
-  sendFirstDice(senderPip, receiverPip) {
+  sendFirstDices(senderPip, receiverPip) {
     var obj = {
-      "message": "firstDice",
+      "message": "firstDices",
       "senderPip": senderPip,
       "receiverPip": receiverPip
+    };
+    this._conn.send(obj);
+  }
+
+  sendDices(pip1, pip2) {
+    var obj = {
+      "message": "dices",
+      "pips": [pip1, pip2]
     };
     this._conn.send(obj);
   }
@@ -94,9 +102,13 @@ export default class PeerController {
     };
     this._conn.send(obj);
   }
-  // receivedMessage(data) {
-  //   this.receivedMessage(data);
-  // }
+
+  sendChangeTurn(){
+    var obj = {
+      "message": "changeTurn",
+    };
+    this._conn.send(obj);
+  }
 
   _sendUserNameAndIcon() {
     // ユーザー名をJSONから取得(JSONにはあるはず)

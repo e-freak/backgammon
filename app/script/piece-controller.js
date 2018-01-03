@@ -50,11 +50,18 @@ var PieceController = (function () {
     key: 'initialize',
     value: function initialize() {}
   }, {
+    key: 'clear',
+    value: function clear() {
+      this._isMovable = false; // コマを動かせるターンか？
+      this._undoList = []; // undoするように移動履歴を保持
+      this._movableDicePips = [];
+    }
+  }, {
     key: 'setMovableDicePips',
     value: function setMovableDicePips(dicePip1, dicePip2) {
       if (dicePip1 === dicePip2) {
         // ゾロ目の場合
-        this._movableDicePips = [dicePip1, dicePip1 * 2, dicePip1 * 3, dicePip1 * 4];
+        this._movableDicePips = [dicePip1, dicePip1, dicePip1, dicePip1];
       } else {
         this._movableDicePips = [dicePip1, dicePip2];
       }
@@ -371,7 +378,7 @@ var PieceController = (function () {
             numberOfMoving = point - destPoint;
             index = this._movableDicePips.indexOf(numberOfMoving);
 
-            if (!(index >= 0)) {
+            if (!(index == 0 || index == 1)) {
               context$2$0.next = 16;
               break;
             }
@@ -512,6 +519,7 @@ module.exports = exports['default'];
 
 // 1. もし_movableDicePipsの足し算の移動分なら移動は2〜4回分の移動に分ける
 // 移動数
+// _movableDicePipsは、ゾロ目なら[x, x, x, x]、それ以外は[x, y]の配列
 // 1回分の移動
 // 移動先に対戦相手のPieceが1個だけある場合、バーに移動させる
 

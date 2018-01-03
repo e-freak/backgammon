@@ -17,8 +17,6 @@ export default class DiceController {
 
     this._notificationChangeTurn = notificationChangeTurn;
 
-    this._timeCount = 0;
-
     this._dicePips = []; // ボード上に出ているサイコロの目の配列
   }
 
@@ -55,12 +53,51 @@ export default class DiceController {
     this._firstShakeAnimation(myPip, opponentPip);
   }
 
-  clearPips() {
-    this._dicePips = [];
+  shakeMyDice(pip1, pip2) {
+    this._myFirstDiceButton.style.display = "block" // 非表示;
+    this._mySecoundDiceButton.style.display = "block" // 非表示;
+    this._opponentFirstDiceButton.style.display = "none" // 表示;
+    this._opponentSecoundDiceButton.style.display = "none" // 表示;
+
+    this._myFirstDiceButton.firstChild.style.opacity = "1.0";
+    this._mySecoundDiceButton.firstChild.style.opacity = "1.0";
+    this._opponentFirstDiceButton.firstChild.style.opacity = "0.0";
+    this._opponentSecoundDiceButton.firstChild.style.opacity = "0.0";
+
+    this._dicePips.push(pip1);
+    this._dicePips.push(pip2);
+    // 降っている風に見せる
+    this._shakeMyDiceAnimation(pip1, pip2);
   }
 
-  getDicePips() {
-    return this._dicePips;
+  shakeOpponentDice(pip1, pip2) {
+    this._myFirstDiceButton.style.display = "none" // 非表示;
+    this._mySecoundDiceButton.style.display = "none" // 非表示;
+    this._opponentFirstDiceButton.style.display = "block" // 表示;
+    this._opponentSecoundDiceButton.style.display = "block" // 表示;
+
+    this._myFirstDiceButton.firstChild.style.opacity = "0.0";
+    this._mySecoundDiceButton.firstChild.style.opacity = "0.0";
+    this._opponentFirstDiceButton.firstChild.style.opacity = "1.0";
+    this._opponentSecoundDiceButton.firstChild.style.opacity = "1.0";
+
+    this._dicePips.push(pip1);
+    this._dicePips.push(pip2);
+    // 降っている風に見せる
+    this._shakeOpponentDiceAnimation(pip1, pip2);
+  }
+
+  clear() {
+    this._dicePips = [];
+
+    this._myFirstDiceButton.style.display = "none" // 非表示;
+    this._mySecoundDiceButton.style.display = "none" // 非表示;
+    this._opponentFirstDiceButton.style.display = "none" // 非表示;
+    this._opponentSecoundDiceButton.style.display = "none" // 非表示;
+
+    // 位置を移動しているので、その情報をクリア
+    this._opponentFirstDiceButton.style.left = ""
+    this._myFirstDiceButton.style.left = ""
   }
 
   movedPiece(point) {
@@ -142,6 +179,36 @@ export default class DiceController {
     }
     // game controller に通知
     this._notificationFirstShakeDice(myPip, opponentPip);
+  }
+
+  async _shakeMyDiceAnimation(pip1, pip2) {
+    for (let i = 0; i < 20; i++) {
+      var num1 = Math.ceil(Math.random() * 6);
+      var num2 = Math.ceil(Math.random() * 6);
+
+      this._myFirstDiceButton.firstChild.src = this._imageMyDiceResource[num1].src;
+      this._mySecoundDiceButton.firstChild.src = this._imageMyDiceResource[num2].src;
+
+      // 少し待つ
+      await this._sleep(50);
+    }
+    this._myFirstDiceButton.firstChild.src = this._imageMyDiceResource[pip1].src;
+    this._mySecoundDiceButton.firstChild.src = this._imageMyDiceResource[pip2].src;
+  }
+
+  async _shakeOpponentDiceAnimation(pip1, pip2) {
+    for (let i = 0; i < 20; i++) {
+      var num1 = Math.ceil(Math.random() * 6);
+      var num2 = Math.ceil(Math.random() * 6);
+
+      this._opponentFirstDiceButton.firstChild.src = this._imageOpponentDiceResource[num1].src;
+      this._opponentSecoundDiceButton.firstChild.src = this._imageOpponentDiceResource[num2].src;
+
+      // 少し待つ
+      await this._sleep(50);
+    }
+    this._opponentFirstDiceButton.firstChild.src = this._imageOpponentDiceResource[pip1].src;
+    this._opponentSecoundDiceButton.firstChild.src = this._imageOpponentDiceResource[pip2].src;
   }
 
   _loadImages() {

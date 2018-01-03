@@ -92,12 +92,21 @@ var PeerController = (function () {
       this.receivedMessage(data);
     }
   }, {
-    key: 'sendFirstDice',
-    value: function sendFirstDice(senderPip, receiverPip) {
+    key: 'sendFirstDices',
+    value: function sendFirstDices(senderPip, receiverPip) {
       var obj = {
-        "message": "firstDice",
+        "message": "firstDices",
         "senderPip": senderPip,
         "receiverPip": receiverPip
+      };
+      this._conn.send(obj);
+    }
+  }, {
+    key: 'sendDices',
+    value: function sendDices(pip1, pip2) {
+      var obj = {
+        "message": "dices",
+        "pips": [pip1, pip2]
       };
       this._conn.send(obj);
     }
@@ -120,11 +129,14 @@ var PeerController = (function () {
       };
       this._conn.send(obj);
     }
-
-    // receivedMessage(data) {
-    //   this.receivedMessage(data);
-    // }
-
+  }, {
+    key: 'sendChangeTurn',
+    value: function sendChangeTurn() {
+      var obj = {
+        "message": "changeTurn"
+      };
+      this._conn.send(obj);
+    }
   }, {
     key: '_sendUserNameAndIcon',
     value: function _sendUserNameAndIcon() {

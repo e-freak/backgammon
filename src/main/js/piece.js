@@ -35,9 +35,6 @@ export default class Piece {
     this._point = point;
   }
 
-  moveBar() {
-    alert("[moveBar] バーに移動");
-  }
 
   initialize() {
     // コマの画像を設定

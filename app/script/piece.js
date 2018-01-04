@@ -51,11 +51,6 @@ var Piece = (function () {
       this._point = point;
     }
   }, {
-    key: "moveBar",
-    value: function moveBar() {
-      alert("[moveBar] バーに移動");
-    }
-  }, {
     key: "initialize",
     value: function initialize() {
       // コマの画像を設定

@@ -14,7 +14,7 @@ import Piece from '../script/piece';
 
 export default class PieceController {
 
-  constructor(view, notificationMovedPiece) {
+  constructor(view, notificationMovedPiece, notificationMovedPieceToBar) {
     this._view = view;
     this._myPieces = []; // Pieceオブジェクトを格納する
     this._opponentPieces = []; // Pieceオブジェクトを格納する
@@ -28,6 +28,8 @@ export default class PieceController {
 
     // コマが移動したことを伝えるメソッド
     this._notificationMovedPiece = notificationMovedPiece;
+
+    this._notificationMovedPieceToBar = notificationMovedPieceToBar;
   }
 
   initialize() {}
@@ -111,6 +113,31 @@ export default class PieceController {
     return [position_x, position_y];
   }
 
+  _getBarPiecePosition(isMoveOpponent) {
+    var base_y = 290;
+    var base_x;
+    var addPositon = 40;
+    var pieces;
+    if (isMoveOpponent) {
+      base_x = 240;
+      addPositon *= -1;
+      pieces = this._opponentPieces;
+    } else {
+      base_x = 290;
+      pieces = this._myPieces;
+    }
+
+    var num = 0;
+    pieces.forEach(function(value) {
+      if (value.getPoint() === 25) {
+        num++;
+      }
+    });
+
+    let position_x = base_x + (addPositon * num);
+    return [position_x, base_y];
+  }
+
   _preMovePiece(piece) {
     // コマを動かせるターンでない場合は何もしない
     if (this._isMovable === false) {
@@ -118,7 +145,7 @@ export default class PieceController {
     }
 
     // 一番上以外のコマを選択した場合も何もしない
-    let target = this._getTopPiece(piece.getPoint(), this._myPieces);
+    let target = this._getTopPiece(piece.getPoint(), false);
     if (target.getTop() !== piece.getTop()) {
       return;
     }
@@ -257,14 +284,16 @@ export default class PieceController {
     var returnValue = false;
     if (this._numberOfOpponentPeiceOnPoint(point) === 1) {
       this._opponentPieces.forEach(function(value) {
-        if (value.getPoint === point) {
-          value.moveBar();
+        if (value.getPoint() === point) {
+          var position = this._getBarPiecePosition(true);
+          value.move(position[0], position[1], 25);
           // GameViewControllerに通知する
+          this._notificationMovedPieceToBar(point);
           // undo用の処理も考えること
 
           returnValue = true; // 移動させた
         }
-      });
+      }.bind(this));
     }
     return returnValue;
   }
@@ -276,24 +305,36 @@ export default class PieceController {
   undo() {
     let undoOjb = this._undoList.pop();
     let undoMyPiece = undoOjb.myPiece;
-    let target = this._getTopPiece(undoMyPiece.destPoint, this._myPieces);
+    let target = this._getTopPiece(undoMyPiece.destPoint, false);
     var position = this._getPiecePosition(undoMyPiece.sourcePoint, this._myPieces);
     target.move(position[0], position[1], undoMyPiece.sourcePoint);
 
-    //
     this._movableDicePips.push(undoMyPiece.sourcePoint - undoMyPiece.destPoint);
-    // 対戦相手(opponentPiece)の分はヒット実装後に
+
+    // 対戦相手のコマを移動
+    if (undoOjb.opponentPiece) {
+      let undoOpponentPiece = undoOjb.opponentPiece;
+      let target = this._getTopPiece(undoOpponentPiece.destPoint, true);
+      var position = this._getPiecePosition(undoOpponentPiece.sourcePoint, this._myPieces);
+      target.move(position[0], position[1], undoOpponentPiece.sourcePoint);
+    }
 
     return undoOjb;
   }
 
-  undoOpponent(undoObje) {
-    let undoOpponentPiece = undoObje.opponentPiece;
-    let target = this._getTopPiece(undoOpponentPiece.destPoint, this._opponentPieces);
+  undoOpponent(undoObj) {
+    let undoOpponentPiece = undoObj.opponentPiece;
+    let target = this._getTopPiece(undoOpponentPiece.destPoint, true);
     var position = this._getPiecePosition(undoOpponentPiece.sourcePoint, this._opponentPieces);
     target.move(position[0], position[1], undoOpponentPiece.sourcePoint);
 
-    // 対戦相手(myPiece)の分はヒット実装後に
+    // 対戦相手(myPiece)の分
+    if (undoObj.myPiece) {
+      let undoMyPiece = undoObj.myPiece;
+      let target = this._getTopPiece(undoMyPiece.destPoint, false);
+      var position = this._getPiecePosition(undoMyPiece.sourcePoint, this._opponentPieces);
+      target.move(position[0], position[1], undoMyPiece.sourcePoint);
+    }
 
   }
   _addUndoList(destPoint, sourcePoint, isMoveOpponentPieceToBar) {
@@ -305,7 +346,7 @@ export default class PieceController {
     };
     if (isMoveOpponentPieceToBar) {
       undoOjb["opponentPiece"] = {
-        "destPoint": -1,
+        "destPoint": 25,
         "sourcePoint": destPoint
       }
     }
@@ -397,12 +438,24 @@ export default class PieceController {
   }
 
   movedOpponentPiece(destPoint, sourcePoint) {
-    let target = this._getTopPiece(sourcePoint, this._opponentPieces);
+    let target = this._getTopPiece(sourcePoint, true);
     var position = this._getPiecePosition(destPoint, this._opponentPieces);
     target.move(position[0], position[1], destPoint);
   }
 
-  _getTopPiece(point, pieces) {
+  movedMyPieceToBar(destPoint, sourcePoint) {
+    let target = this._getTopPiece(sourcePoint, false);
+    var position = this._getBarPiecePosition(false);
+    target.move(position[0], position[1], destPoint);
+  }
+
+  _getTopPiece(point, isOpponent) {
+    var pieces = [];
+    if (isOpponent){
+      pieces = this._opponentPieces;
+    }else{
+      pieces = this._myPieces;
+    }
     let samePointPieces = [];
     pieces.forEach(function(value) {
       if (value.getPoint() === point) {
@@ -427,6 +480,15 @@ export default class PieceController {
       }
     });
 
+    // Barエリアの場合は特別
+    if (point === 25) {
+      if (isOpponent){
+        return miniPiece;
+      }else{
+        return maxPiece;
+      }
+    }
+    // Barエリア以外
     if (point <= 12) {
       return miniPiece;
     } else {

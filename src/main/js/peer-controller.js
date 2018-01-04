@@ -95,6 +95,16 @@ export default class PeerController {
     this._conn.send(obj);
   }
 
+  sendMovedPieceToBar(destPoint, sourcePoint) {
+    var obj = {
+      "message": "movedPieceToBar",
+      "destPoint": destPoint,
+      "sourcePoint": sourcePoint
+    };
+    this._conn.send(obj);
+  }
+
+
   sendUndoPiece(sentUndoOjb) {
     var obj = {
       "message": "undo",

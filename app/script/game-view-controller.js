@@ -31,6 +31,8 @@ var _scriptDiceController = require('../script/dice-controller');
 
 var _scriptDiceController2 = _interopRequireDefault(_scriptDiceController);
 
+var BAR_POINT = 25;
+
 var GameViewController = (function () {
   function GameViewController(view) {
     _classCallCheck(this, GameViewController);
@@ -55,8 +57,10 @@ var GameViewController = (function () {
     this._diceController = new _scriptDiceController2['default'](myFirstDiceButton, mySecoundDiceButton, opponentFirstDiceButton, opponentSecoundDiceButton, this._notificationFirstShakeDice, this._notificationShakeDice, this._notificationChangeTurn);
 
     this._notificationMovedPiece = this._notificationMovedPiece.bind(this);
+    this._notificationMovedPieceToBar = this._notificationMovedPieceToBar.bind(this);
+
     // piceController
-    this._pieceController = new _scriptPieceController2['default'](this._view, this._notificationMovedPiece);
+    this._pieceController = new _scriptPieceController2['default'](this._view, this._notificationMovedPiece, this._notificationMovedPieceToBar);
 
     // Peerからのメッセージを受信した場合の通知
     this.notificationOfReceiveMessage = this.notificationOfReceiveMessage.bind(this);
@@ -102,8 +106,16 @@ var GameViewController = (function () {
       }
       if (message === "movedPiece") {
         this._pieceController.movedOpponentPiece(data.destPoint, data.sourcePoint);
+        var movedPiece = data.destPoint - data.sourcePoint;
+        if (data.sourcePoint == BAR_POINT) {
+          // バーエリアのときは特別
+          movedPiece = data.destPoint;
+        }
+        this._diceController.movedPiece(movedPiece);
+      }
 
-        this._diceController.movedPiece(data.destPoint - data.sourcePoint);
+      if (message === "movedPieceToBar") {
+        this._pieceController.movedMyPieceToBar(data.destPoint, data.sourcePoint);
       }
 
       if (message === "undo") {
@@ -201,14 +213,15 @@ var GameViewController = (function () {
       // 通知するときに相手側のPointに変換して通知する
       var sendUndoOjb = {
         "opponentPiece": {
-          "destPoint": 25 - undoMyPiece.destPoint,
-          "sourcePoint": 25 - undoMyPiece.sourcePoint
+          "destPoint": BAR_POINT - undoMyPiece.destPoint,
+          "sourcePoint": BAR_POINT - undoMyPiece.sourcePoint
         }
       };
       if (undoObje.opponentPiece) {
+        var undoOpponentPiece = undoObje.opponentPiece;
         sendUndoOjb["myPiece"] = {
-          "destPoint": -1,
-          "sourcePoint": 25 - destPoint
+          "destPoint": BAR_POINT,
+          "sourcePoint": BAR_POINT - undoOpponentPiece.sourcePoint
         };
       }
       this._peerController.sendUndoPiece(sendUndoOjb);
@@ -264,14 +277,28 @@ var GameViewController = (function () {
     value: function _notificationMovedPiece(destPoint, sourcePoint) {
       // 対戦相手に通知
       // 通知するときに相手側のPointに変換して通知する
-      var convertDestPoint = 25 - destPoint;
-      var convertSourcePoint = 25 - sourcePoint;
+      var convertDestPoint = BAR_POINT - destPoint;
+      var convertSourcePoint = BAR_POINT - sourcePoint;
+
+      // barのときは特別(微妙。。。)
+      if (sourcePoint === BAR_POINT) {
+        convertSourcePoint = BAR_POINT;
+      }
       this._peerController.sendMovedPiece(convertDestPoint, convertSourcePoint);
 
       // サイコロの透過度を変更して、ユーザーに残り進めることの数が分かるようにする
       this._diceController.movedPiece(sourcePoint - destPoint);
 
       this._undoButton.style.display = "block"; // undoボタン表示
+    }
+  }, {
+    key: '_notificationMovedPieceToBar',
+    value: function _notificationMovedPieceToBar(sourcePoint) {
+      // 対戦相手に通知
+      // 通知するときに相手側のPointに変換して通知する
+      var convertDestPoint = BAR_POINT;
+      var convertSourcePoint = BAR_POINT - sourcePoint;
+      this._peerController.sendMovedPieceToBar(convertDestPoint, convertSourcePoint);
     }
   }]);
 

@@ -121,6 +121,16 @@ var PeerController = (function () {
       this._conn.send(obj);
     }
   }, {
+    key: 'sendMovedPieceToBar',
+    value: function sendMovedPieceToBar(destPoint, sourcePoint) {
+      var obj = {
+        "message": "movedPieceToBar",
+        "destPoint": destPoint,
+        "sourcePoint": sourcePoint
+      };
+      this._conn.send(obj);
+    }
+  }, {
     key: 'sendUndoPiece',
     value: function sendUndoPiece(sentUndoOjb) {
       var obj = {

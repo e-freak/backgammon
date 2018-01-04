@@ -151,10 +151,7 @@ export default class PieceController {
     }
 
     // まずは、すでに表示されている移動可能な場所の表示をクリア
-    var elements = this._view.getElementsByClassName("movable-field");
-    while (elements.length > 0) {
-      elements[0].parentNode.removeChild(elements[0]);
-    }
+    this._clearMovableField;
 
     // 移動可能な場所を表示
     var currentPoint = piece.getPoint();
@@ -319,6 +316,8 @@ export default class PieceController {
       target.move(position[0], position[1], undoOpponentPiece.sourcePoint);
     }
 
+    // 移動可能な箇所の表示もクリア
+    this._clearMovableField();
     return undoOjb;
   }
 
@@ -353,14 +352,17 @@ export default class PieceController {
     this._undoList.push(undoOjb);
   }
 
-
-  // piece を movablePiece の位置に移動
-  async _movePiece(movablePiece, piece) {
-    // まずは、すでに表示されている移動可能な場所の表示をクリア
+  _clearMovableField() {
     var elements = this._view.getElementsByClassName("movable-field");
     while (elements.length > 0) {
       elements[0].parentNode.removeChild(elements[0]);
     }
+  }
+
+  // piece を movablePiece の位置に移動
+  async _movePiece(movablePiece, piece) {
+    // まずは、すでに表示されている移動可能な場所の表示をクリア
+    this._clearMovableField();
     // やること
     // 1. もし_movableDicePipsの足し算の移動分なら移動は2〜4回分の移動に分ける
     // 1.1 this._movableDicePipsから移動分を削除
@@ -451,9 +453,9 @@ export default class PieceController {
 
   _getTopPiece(point, isOpponent) {
     var pieces = [];
-    if (isOpponent){
+    if (isOpponent) {
       pieces = this._opponentPieces;
-    }else{
+    } else {
       pieces = this._myPieces;
     }
     let samePointPieces = [];
@@ -482,9 +484,9 @@ export default class PieceController {
 
     // Barエリアの場合は特別
     if (point === 25) {
-      if (isOpponent){
+      if (isOpponent) {
         return miniPiece;
-      }else{
+      } else {
         return maxPiece;
       }
     }

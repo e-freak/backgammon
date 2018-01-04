@@ -174,10 +174,7 @@ var PieceController = (function () {
       }
 
       // まずは、すでに表示されている移動可能な場所の表示をクリア
-      var elements = this._view.getElementsByClassName("movable-field");
-      while (elements.length > 0) {
-        elements[0].parentNode.removeChild(elements[0]);
-      }
+      this._clearMovableField;
 
       // 移動可能な場所を表示
       var currentPoint = piece.getPoint();
@@ -356,6 +353,8 @@ var PieceController = (function () {
         _target.move(position[0], position[1], undoOpponentPiece.sourcePoint);
       }
 
+      // 移動可能な箇所の表示もクリア
+      this._clearMovableField();
       return undoOjb;
     }
   }, {
@@ -391,20 +390,25 @@ var PieceController = (function () {
       }
       this._undoList.push(undoOjb);
     }
+  }, {
+    key: '_clearMovableField',
+    value: function _clearMovableField() {
+      var elements = this._view.getElementsByClassName("movable-field");
+      while (elements.length > 0) {
+        elements[0].parentNode.removeChild(elements[0]);
+      }
+    }
 
     // piece を movablePiece の位置に移動
   }, {
     key: '_movePiece',
     value: function _movePiece(movablePiece, piece) {
-      var elements, point, destPoint, numberOfMoving, index, isMoveOpponentPieceToBar, destTop, destLeft, sumNumberOfMoving, tmp, delNum, i, tmpDestPoint, tmpSourcePoint, position;
+      var point, destPoint, numberOfMoving, index, isMoveOpponentPieceToBar, destTop, destLeft, sumNumberOfMoving, tmp, delNum, i, tmpDestPoint, tmpSourcePoint, position;
       return regeneratorRuntime.async(function _movePiece$(context$2$0) {
         while (1) switch (context$2$0.prev = context$2$0.next) {
           case 0:
-            elements = this._view.getElementsByClassName("movable-field");
-
-            while (elements.length > 0) {
-              elements[0].parentNode.removeChild(elements[0]);
-            }
+            // まずは、すでに表示されている移動可能な場所の表示をクリア
+            this._clearMovableField();
             // やること
             // 1. もし_movableDicePipsの足し算の移動分なら移動は2〜4回分の移動に分ける
             // 1.1 this._movableDicePipsから移動分を削除
@@ -421,7 +425,7 @@ var PieceController = (function () {
             index = this._movableDicePips.indexOf(numberOfMoving);
 
             if (!(index == 0 || index == 1)) {
-              context$2$0.next = 16;
+              context$2$0.next = 15;
               break;
             }
 
@@ -437,10 +441,10 @@ var PieceController = (function () {
             this._movableDicePips.splice(index, 1);
             // undo配列に追加
             this._addUndoList(destPoint, point, isMoveOpponentPieceToBar);
-            context$2$0.next = 38;
+            context$2$0.next = 37;
             break;
 
-          case 16:
+          case 15:
             sumNumberOfMoving = 0;
 
             // 移動先に相手のコマが2個以上あるのはダメ
@@ -455,9 +459,9 @@ var PieceController = (function () {
             delNum = 0;
             i = 0;
 
-          case 20:
+          case 19:
             if (!(i < this._movableDicePips.length)) {
-              context$2$0.next = 38;
+              context$2$0.next = 37;
               break;
             }
 
@@ -479,24 +483,24 @@ var PieceController = (function () {
             this._addUndoList(tmpDestPoint, tmpSourcePoint, isMoveOpponentPieceToBar);
 
             // アニメーションの時間分待つ
-            context$2$0.next = 32;
+            context$2$0.next = 31;
             return regeneratorRuntime.awrap(this._sleep(500));
 
-          case 32:
+          case 31:
             if (!(sumNumberOfMoving === numberOfMoving)) {
-              context$2$0.next = 35;
+              context$2$0.next = 34;
               break;
             }
 
             this._movableDicePips.splice(0, delNum);
-            return context$2$0.abrupt('break', 38);
+            return context$2$0.abrupt('break', 37);
 
-          case 35:
+          case 34:
             i++;
-            context$2$0.next = 20;
+            context$2$0.next = 19;
             break;
 
-          case 38:
+          case 37:
           case 'end':
             return context$2$0.stop();
         }
@@ -578,8 +582,6 @@ var PieceController = (function () {
 
 exports['default'] = PieceController;
 module.exports = exports['default'];
-
-// まずは、すでに表示されている移動可能な場所の表示をクリア
 
 // 1. もし_movableDicePipsの足し算の移動分なら移動は2〜4回分の移動に分ける
 // 移動数

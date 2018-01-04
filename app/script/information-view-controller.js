@@ -19,14 +19,17 @@ var InformationViewController = (function () {
     _classCallCheck(this, InformationViewController);
 
     this._view = view;
-    this._playerName = "name";
-    this._iconImag;
-    this._pipCount = 167;
-    this._timeLimit = 600; // 制限時間
+    this._myPipCount = 167;
+    this._myTimeLimit = 600; // 制限時間
+    this._opponentPipCount = 167;
+    this._opponentTimeLimit = 600; // 制限時間
+
     this._isTurn = true; // 自分のターンか？
 
-    this._pipElement;
-    this._timeElement;
+    this._myPipElement;
+    this._myTimeElement;
+    this._opponentPipElement;
+    this._opponentTimeElement;
 
     this._userSettingController = new _scriptUserSettingController2['default']();
   }
@@ -38,32 +41,67 @@ var InformationViewController = (function () {
       this.setMyIcon();
       this.setOpponentName(opponentName);
       this.setOpponentIcon(opponentIconBase64);
-      this._pipElement = this._view.getElementById('my-pipCount');
-      this._timeElement = this._view.getElementById('my-timeLimit');
+      this._myPipElement = this._view.getElementById('my-pipCount');
+      this._myTimeElement = this._view.getElementById('my-timeLimit');
+
+      this._opponentPipElement = this._view.getElementById('opponent-pipCount');
+      this._opponentTimeElement = this._view.getElementById('opponent-timeLimit');
+    }
+  }, {
+    key: 'setIsTuru',
+    value: function setIsTuru(flag) {
+      this._isTurn = flag;
     }
   }, {
     key: 'startTime',
     value: function startTime() {
-      this._timeLimit--;
-      var id = setTimeout(this.startTime.bind(this), 1000);
+      if (this._isTurn) {
+        this._startMyTimeLimit();
+      } else {
+        this._startOpponentTimeLimit();
+      }
+    }
+  }, {
+    key: '_startMyTimeLimit',
+    value: function _startMyTimeLimit() {
+      this._myTimeLimit--;
+      var id = setTimeout(this._startMyTimeLimit.bind(this), 1000);
       if (this._isTurn === false) {
-        this._isTurn = true; // ここでtrueにするの微妙。。。
         clearTimeout(id); //idをclearTimeoutで指定している
       }
-      var min = String(Math.floor(this._timeLimit / 60));
-      var second = String(this._timeLimit % 60);
-      this._timeElement.innerText = min + ":" + second;
+      var min = ("00" + String(Math.floor(this._myTimeLimit / 60))).slice(-2);
+      var second = ("00" + String(this._myTimeLimit % 60)).slice(-2);
+      this._myTimeElement.innerText = min + ":" + second;
+      if (this._myTimeLimit < 0) {
+        alert("時間切れ〜");
+      }
     }
   }, {
-    key: 'stopTime',
-    value: function stopTime() {
-      this._isTurn = false;
+    key: '_startOpponentTimeLimit',
+    value: function _startOpponentTimeLimit() {
+      this._opponentTimeLimit--;
+      var id = setTimeout(this._startOpponentTimeLimit.bind(this), 1000);
+      if (this._isTurn === true) {
+        clearTimeout(id); //idをclearTimeoutで指定している
+      }
+      var min = ("00" + String(Math.floor(this._opponentTimeLimit / 60))).slice(-2);
+      var second = ("00" + String(this._opponentTimeLimit % 60)).slice(-2);
+      this._opponentTimeElement.innerText = min + ":" + second;
+      if (this._opponentTimeLimit < 0) {
+        alert("対戦相手の時間切れ〜");
+      }
     }
   }, {
-    key: 'updatePipNumber',
-    value: function updatePipNumber(num) {
-      this._pipCount += num;
-      this._pipElement.innerText = String(this._pipCount);
+    key: 'updateMyPipCount',
+    value: function updateMyPipCount(count) {
+      this._myPipCount -= count;
+      this._myPipElement.innerText = String(this._myPipCount);
+    }
+  }, {
+    key: 'updateOpponentPipCount',
+    value: function updateOpponentPipCount(count) {
+      this._opponentPieces -= count;
+      this._opponentPipElement.innerText = String(this._opponentPipCount);
     }
   }, {
     key: 'setMyName',

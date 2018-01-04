@@ -84,12 +84,15 @@ export default class GameViewController {
     }
     if (message === "movedPiece") {
       this._pieceController.movedOpponentPiece(data.destPoint, data.sourcePoint);
-      var movedPiece = data.destPoint - data.sourcePoint;
+      var point = data.destPoint - data.sourcePoint;
       if (data.sourcePoint == BAR_POINT) {
         // バーエリアのときは特別
-        movedPiece = data.destPoint;
+        point = data.destPoint;
       }
-      this._diceController.movedPiece(movedPiece);
+      this._diceController.movedPiece(point);
+
+      // Pip Countを更新
+      this._informationViewController.updateOpponentPipCount(point);
     }
 
     if (message === "movedPieceToBar") {
@@ -101,6 +104,9 @@ export default class GameViewController {
       // 移動数
       let point = data.undoOjb.opponentPiece.sourcePoint - data.undoOjb.opponentPiece.destPoint;
       this._diceController.movedPiece(point);
+
+      // Pip Countを更新
+      this._informationViewController.updateOpponentPipCount(point);
     }
 
     if (message === "changeTurn") {
@@ -113,6 +119,10 @@ export default class GameViewController {
       // PieceControllerの情報をクリア
       this._pieceController.clear();
       this._pieceController.setIsMovable(this._isMyTurn);
+      this._informationViewController.setIsTuru(this._isMyTurn);
+      // タイマースタート
+      this._informationViewController.startTime();
+
       // サイコロの目を決める
       var pip1 = Math.ceil(Math.random() * 6); // 1から6までの適当な数字
       var pip2 = Math.ceil(Math.random() * 6);
@@ -205,6 +215,9 @@ export default class GameViewController {
 
     // undoの場合はマイナス値を引数にする（マイナス値の場合、不透明にする）
     this._diceController.movedPiece(undoMyPiece.destPoint - undoMyPiece.sourcePoint);
+
+    // Pip Countを更新
+    this._informationViewController.updateMyPipCount(undoMyPiece.destPoint - undoMyPiece.sourcePoint);
   }
   _notificationFirstShakeDice(myPip, opponentPip) {
     // 順番を表示(first or second)
@@ -219,6 +232,9 @@ export default class GameViewController {
     }
     // 自分のターンか対戦相手のターンかを設定する
     this._pieceController.setIsMovable(this._isMyTurn);
+    this._informationViewController.setIsTuru(this._isMyTurn);
+    // タイマースタート
+    this._informationViewController.startTime();
   }
 
   _notificationShakeDice() {
@@ -242,6 +258,11 @@ export default class GameViewController {
     this._pieceController.clear();
     // 相手のターンになったことを対戦相手に通知（サイコロを振るのは相手側でやる）
     this._peerController.sendChangeTurn();
+
+    this._pieceController.setIsMovable(this._isMyTurn);
+    this._informationViewController.setIsTuru(this._isMyTurn);
+    // タイマースタート
+    this._informationViewController.startTime();
   }
 
   _notificationMovedPiece(destPoint, sourcePoint) {
@@ -259,6 +280,8 @@ export default class GameViewController {
     // サイコロの透過度を変更して、ユーザーに残り進めることの数が分かるようにする
     this._diceController.movedPiece(sourcePoint - destPoint);
 
+    // Pip Countを更新
+    this._informationViewController.updateMyPipCount(sourcePoint - destPoint);
     this._undoButton.style.display = "block"; // undoボタン表示
   }
 

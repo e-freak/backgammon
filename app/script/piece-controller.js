@@ -37,7 +37,7 @@ var PieceController = (function () {
 
     this._isMovable = false; // コマを動かせるターンか？
 
-    this._undoList = []; // undoするように移動履歴を保持
+    this._undoList = []; // undo用に移動履歴を保持
     // 移動可能サイコロの目
     // サイコロの目がゾロ目{x, x}の場合、movableDicePipsは{x, x, x, x}とする
     this._movableDicePips = [];
@@ -53,7 +53,7 @@ var PieceController = (function () {
     key: 'clear',
     value: function clear() {
       this._isMovable = false; // コマを動かせるターンか？
-      this._undoList = []; // undoするように移動履歴を保持
+      this._undoList = []; // undo用に移動履歴を保持
       this._movableDicePips = [];
     }
   }, {
@@ -113,8 +113,8 @@ var PieceController = (function () {
     key: '_getPiecePosition',
     value: function _getPiecePosition(point, pieces) {
       // 0番目の要素はダミー
-      var base_x = [-1, 520, 520, 520, 520, 520, 520, 520, 520, 520, 520, 520, 520, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10];
-      var base_y = [-1, 580, 531, 482, 433, 384, 335, 255, 206, 157, 108, 59, 10, 10, 59, 108, 157, 206, 255, 335, 384, 433, 482, 531, 580];
+      var base_x = [-1, 512, 512, 512, 512, 512, 512, 512, 512, 512, 512, 512, 512, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20];
+      var base_y = [-1, 573, 525, 478, 433, 386, 340, 242, 195, 148, 101, 55, 9, 9, 55, 101, 148, 195, 242, 340, 386, 433, 478, 525, 573];
 
       var base = 40;
       if (point <= 12) {

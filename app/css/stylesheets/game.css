@@ -8,17 +8,45 @@ body {
 }
 
 div.main-area {
-  display: none;
+  display: flex;
 }
 
 div.board-area {
   width: 700px;
   height: 580px;
+  background-color: #8b0000
 }
 
-img.board-image {
-  width: 700px;
-  height: 580px;
+img.inner-image {
+  position: absolute;
+  width: 280px;
+  height: 540px;
+  left: 10px;
+  top: 20px;
+}
+
+img.outer-image {
+  position: absolute;
+  width: 280px;
+  height: 540px;
+  left: 340px;
+  top: 20px;
+}
+
+img.my-bearoff {
+  position: absolute;
+  width: 60px;
+  height: 250px;
+  left: 630px;
+  top: 20px;
+}
+
+img.opponent-bearoff {
+  position: absolute;
+  width: 60px;
+  height: 250px;
+  left: 630px;
+  top: 310px;
 }
 
 button.undo-button {

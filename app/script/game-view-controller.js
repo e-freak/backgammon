@@ -127,12 +127,9 @@ var GameViewController = (function () {
         var pip1 = Math.ceil(Math.random() * 6); // 1から6までの適当な数字
         var pip2 = Math.ceil(Math.random() * 6);
 
-        pip1 = 2;
-        pip2 = 2;
-
         // 対戦相手にサイコロの目を送る
-        this._peerController.sendDices(pip1, pip2); // 実装中
-        this._diceController.shakeMyDice(pip1, pip2); // 実装中
+        this._peerController.sendDices(pip1, pip2);
+        this._diceController.shakeMyDice(pip1, pip2);
 
         this._pieceController.setMovableDicePips(pip1, pip2);
       }

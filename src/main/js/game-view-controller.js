@@ -6,6 +6,7 @@ import PeerController from '../script/peer-controller';
 import SearchOpponentViewController from '../script/search-opponent-view-controller';
 import InformationViewController from '../script/information-view-controller';
 import DiceController from '../script/dice-controller';
+import WinLoseViewController from '../script/win-lose-view-controller';
 
 const BAR_POINT = 25;
 
@@ -48,11 +49,16 @@ export default class GameViewController {
     this._peerController = new PeerController(this.notificationOfReceiveMessage);
 
     this._undoButton = this._view.getElementById('undo-button');
+    this._giveupButton = this._view.getElementById('giveup-button');
+
+    this._winloseViewController = new WinLoseViewController(this._view);
+
   }
 
   initialize() {
 
     this._undoButton.addEventListener('click', this._onClickUndoButton.bind(this));
+    this._giveupButton.addEventListener('click', this._onClickGiveupButton.bind(this));
 
     // ボード画面は非表示にする
     var mainArea = this._view.getElementById('main-area');
@@ -137,6 +143,15 @@ export default class GameViewController {
       this._diceController.shakeOpponentDice(data.pips[0], data.pips[1]);
       this._pieceController.setMovableDicePips(data.pips[0], data.pips[1]);
     }
+
+    if (message === "matchResult") {
+      this._informationViewController.setIsTimerForcedTermination(true);
+      // Giveup画面を表示
+      let myData = this._informationViewController.getMyData();
+      let opponentData = this._informationViewController.getOpponentData();
+      let result = data.result;
+      this._winloseViewController.display(result.isVictory, myData, opponentData, result.reasonString);
+    }
   }
 
 
@@ -173,8 +188,6 @@ export default class GameViewController {
 
     this._undoButton.style.display = "none";
 
-    // 試行錯誤中
-    this._view.getElementById('my-double-button').style.animationIterationCount = "infinite";
     // コマを配りたい
     var myPieceButtons = this._pieceController.appendMyPiece();
     myPieceButtons.forEach(function(value) {
@@ -219,6 +232,24 @@ export default class GameViewController {
     // Pip Countを更新
     this._informationViewController.updateMyPipCount(undoMyPiece.destPoint - undoMyPiece.sourcePoint);
   }
+
+  _onClickGiveupButton() {
+    // タイマーストップ
+    this._informationViewController.setIsTimerForcedTermination(true);
+
+    // Giveup画面を表示
+    let myData = this._informationViewController.getMyData();
+    let opponentData = this._informationViewController.getOpponentData();
+    this._winloseViewController.display(false, myData, opponentData, "Give UP");
+    // 対戦相手に通知
+    let matchResult = {
+      "isVictory": true,
+      "reasonString": "Give UP"
+    };
+    this._peerController.sendMatchResult(matchResult);
+
+  }
+
   _notificationFirstShakeDice(myPip, opponentPip) {
     // 順番を表示(first or second)
     if (myPip > opponentPip) {
@@ -272,7 +303,7 @@ export default class GameViewController {
     var convertSourcePoint = BAR_POINT - sourcePoint;
 
     // barのときは特別(微妙。。。)
-    if (sourcePoint === BAR_POINT){
+    if (sourcePoint === BAR_POINT) {
       convertSourcePoint = BAR_POINT;
     }
     this._peerController.sendMovedPiece(convertDestPoint, convertSourcePoint);

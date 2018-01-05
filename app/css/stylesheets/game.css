@@ -219,32 +219,6 @@ button.giveup-button {
   font-size: 20px;
 }
 
-button.double-button {
-  margin: 5px auto;
-  display: block;
-  width: 80px;
-  font-size: 20px;
-  animation-name: animation01;
-  animation-duration: 2s;
-  animation-timing-function: ease;
-  animation-iteration-count: infinite;
-}
-
-@keyframes animation01 {
-  0% {
-    opacity: 0.3;
-    color: #DC143C;
-  }
-  50% {
-    opacity: 1;
-    color: #DC143C;
-  }
-  100% {
-    opacity: 0.3;
-    color: #DC143C;
-  }
-}
-
 div.pip-count {
   margin: 5px auto;
   margin-top: 5px;

@@ -140,6 +140,15 @@ var PeerController = (function () {
       this._conn.send(obj);
     }
   }, {
+    key: 'sendMatchResult',
+    value: function sendMatchResult(matchResult) {
+      var obj = {
+        "message": "matchResult",
+        "result": matchResult
+      };
+      this._conn.send(obj);
+    }
+  }, {
     key: 'sendChangeTurn',
     value: function sendChangeTurn() {
       var obj = {

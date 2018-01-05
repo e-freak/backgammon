@@ -104,7 +104,6 @@ export default class PeerController {
     this._conn.send(obj);
   }
 
-
   sendUndoPiece(sentUndoOjb) {
     var obj = {
       "message": "undo",
@@ -113,6 +112,13 @@ export default class PeerController {
     this._conn.send(obj);
   }
 
+  sendMatchResult(matchResult) {
+    var obj = {
+      "message": "matchResult",
+      "result": matchResult
+    };
+    this._conn.send(obj);
+  }
   sendChangeTurn(){
     var obj = {
       "message": "changeTurn",

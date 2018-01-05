@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="../css/stylesheets/game.css" />
   <link rel="stylesheet" href="../css/stylesheets/smokyText.css" />
   <link rel="stylesheet" href="../css/stylesheets/search-opponent.css" />
+  <link rel="stylesheet" href="../css/stylesheets/winningOrLosing.css" />
   <link rel="stylesheet" href="../css/stylesheets/snowfall.css" />
   <audio src="../sound/game_maoudamashii_1_battle37.mp3" autoplay loop></audio>
 </head>
@@ -58,8 +59,6 @@
           <div class="pip-count" id="opponent-pipCount">167</div>
           <div class="timelimit-title">持ち時間</div>
           <div class="timelimit" id="opponent-timeLimit">10:00</div>
-          <button type="button" class="double-button">double</button>
-          <button type="button" class="giveup-button">giveup</button>
         </div>
         <div class="my-area">
           <div class="player-name">
@@ -70,9 +69,19 @@
           <div class="pip-count" id="my-pipCount">167</div>
           <div class="timelimit-title">持ち時間</div>
           <div class="timelimit" id="my-timeLimit">10:00</div>
-          <button type="button" class="double-button" id="my-double-button">double</button>
-          <button type="button" class="giveup-button">giveup</button>
+          <button type="button" class="giveup-button" id="giveup-button">giveup</button>
         </div>
+      </div>
+      <div id="winning-losing-area" class="winningOrLosingArea">
+        <button type="button" class="goToTopButton" id="go-to-top-button">Top</button>
+        <div id="win-lose-label" class="winningOrLosing"></div>
+        <div id="winning-losing-reason" class="winningOrLosingReason"></div>
+        <img id="winning-losing-my-icon" class="winningOrLosingMyIcon" src="">
+        <label id="winning-losing-my-name" class="winningOrLosingMyName"></label>
+        <img id="winning-losing-opponent-icon" class="winningOrLosingOpponentIcon" src="">
+        <label id="winning-losing-opponent-name" class="winningOrLosingOpponentName"></label>
+        <img id="winner-icon" class="winnerIcon" src="../image/winner.png">
+        <img id="loser-icon" class="loserIcon" src="../image/loser.png">
       </div>
     </div>
   </main>

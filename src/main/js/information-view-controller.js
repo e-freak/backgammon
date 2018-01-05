@@ -9,7 +9,13 @@ export default class InformationViewController {
     this._opponentPipCount = 167;
     this._opponentTimeLimit = 600; // 制限時間
 
+    this._myData={};
+    this._opponentData={};
+
+
     this._isTurn = true; // 自分のターンか？
+
+    this._isTimerForcedTermination = false; // タイマーの強制終了
 
     this._myPipElement;
     this._myTimeElement;
@@ -35,6 +41,10 @@ export default class InformationViewController {
     this._isTurn = flag;
   }
 
+  setIsTimerForcedTermination(flag) {
+    this._isTimerForcedTermination = flag;
+  }
+
   startTime() {
     if (this._isTurn){
       this._startMyTimeLimit();
@@ -46,13 +56,14 @@ export default class InformationViewController {
   _startMyTimeLimit() {
     this._myTimeLimit--;
     var id = setTimeout(this._startMyTimeLimit.bind(this), 1000);
-    if (this._isTurn === false) {　
+    if (this._isTurn === false || this._isTimerForcedTermination === true) {　
       clearTimeout(id);　 //idをclearTimeoutで指定している
     }
     var min = ("00" + String(Math.floor(this._myTimeLimit / 60))).slice(-2);
     var second = ("00" + String(this._myTimeLimit % 60)).slice(-2);
     this._myTimeElement.innerText = min + ":" + second;
     if (this._myTimeLimit < 0){
+      this._isTimerForcedTermination = true;
       alert("時間切れ〜");
     }
   }
@@ -60,13 +71,14 @@ export default class InformationViewController {
   _startOpponentTimeLimit() {
     this._opponentTimeLimit--;
     var id = setTimeout(this._startOpponentTimeLimit.bind(this), 1000);
-    if (this._isTurn === true) {　
+    if (this._isTurn === true || this._isTimerForcedTermination === true) {　
       clearTimeout(id);　 //idをclearTimeoutで指定している
     }
     var min = ("00" + String(Math.floor(this._opponentTimeLimit / 60))).slice(-2);
     var second =  ("00" + String(this._opponentTimeLimit % 60)).slice(-2);
     this._opponentTimeElement.innerText = min + ":" + second;
     if (this._opponentTimeLimit < 0){
+      this._isTimerForcedTermination = true;
       alert("対戦相手の時間切れ〜");
     }
   }
@@ -82,27 +94,43 @@ export default class InformationViewController {
 
   setMyName() {
     var name = this._userSettingController.loadUserNameFromJSON();
-    var myName = this._view.getElementById('my-information-name');
-    myName.innerHTML = name;
+    var myNameElement = this._view.getElementById('my-information-name');
+    myNameElement.innerHTML = name;
+
+    this._myData["name"] = name;
   }
+
 
   setMyIcon(iconSrc) {
     var base64 = this._userSettingController.loadImageBase64FromJSON();
     var iconImageSrc = this._getImagesrcWithBase64(base64);
     var myIcon = this._view.getElementById('my-information-icon');
     myIcon.src = iconImageSrc;
+
+    this._myData["imageSrc"] = myIcon.src;
   }
 
   setOpponentName(name) {
     var opponentName = this._view.getElementById('opponent-information-name');
     opponentName.innerHTML = name;
 
+    this._opponentData["name"] = name;
   }
 
   setOpponentIcon(icon) {
     var opponentIcon = this._view.getElementById('opponent-information-icon');
     var opponentIconImageSrc = this._getImagesrcWithBase64(icon);
     opponentIcon.src = opponentIconImageSrc;
+
+    this._opponentData["imageSrc"] = opponentIcon.src;
+  }
+
+  getMyData(){
+    return this._myData;
+  }
+
+  getOpponentData(){
+    return this._opponentData;
   }
 
   _getImagesrcWithBase64(base64) {

@@ -31,6 +31,10 @@ var _scriptDiceController = require('../script/dice-controller');
 
 var _scriptDiceController2 = _interopRequireDefault(_scriptDiceController);
 
+var _scriptWinLoseViewController = require('../script/win-lose-view-controller');
+
+var _scriptWinLoseViewController2 = _interopRequireDefault(_scriptWinLoseViewController);
+
 var BAR_POINT = 25;
 
 var GameViewController = (function () {
@@ -67,6 +71,9 @@ var GameViewController = (function () {
     this._peerController = new _scriptPeerController2['default'](this.notificationOfReceiveMessage);
 
     this._undoButton = this._view.getElementById('undo-button');
+    this._giveupButton = this._view.getElementById('giveup-button');
+
+    this._winloseViewController = new _scriptWinLoseViewController2['default'](this._view);
   }
 
   _createClass(GameViewController, [{
@@ -74,6 +81,7 @@ var GameViewController = (function () {
     value: function initialize() {
 
       this._undoButton.addEventListener('click', this._onClickUndoButton.bind(this));
+      this._giveupButton.addEventListener('click', this._onClickGiveupButton.bind(this));
 
       // ボード画面は非表示にする
       var mainArea = this._view.getElementById('main-area');
@@ -159,6 +167,15 @@ var GameViewController = (function () {
         this._diceController.shakeOpponentDice(data.pips[0], data.pips[1]);
         this._pieceController.setMovableDicePips(data.pips[0], data.pips[1]);
       }
+
+      if (message === "matchResult") {
+        this._informationViewController.setIsTimerForcedTermination(true);
+        // Giveup画面を表示
+        var myData = this._informationViewController.getMyData();
+        var opponentData = this._informationViewController.getOpponentData();
+        var result = data.result;
+        this._winloseViewController.display(result.isVictory, myData, opponentData, result.reasonString);
+      }
     }
 
     // とりあえずの実装。設計は後から考える
@@ -199,8 +216,6 @@ var GameViewController = (function () {
 
       this._undoButton.style.display = "none";
 
-      // 試行錯誤中
-      this._view.getElementById('my-double-button').style.animationIterationCount = "infinite";
       // コマを配りたい
       var myPieceButtons = this._pieceController.appendMyPiece();
       myPieceButtons.forEach((function (value) {
@@ -245,6 +260,23 @@ var GameViewController = (function () {
 
       // Pip Countを更新
       this._informationViewController.updateMyPipCount(undoMyPiece.destPoint - undoMyPiece.sourcePoint);
+    }
+  }, {
+    key: '_onClickGiveupButton',
+    value: function _onClickGiveupButton() {
+      // タイマーストップ
+      this._informationViewController.setIsTimerForcedTermination(true);
+
+      // Giveup画面を表示
+      var myData = this._informationViewController.getMyData();
+      var opponentData = this._informationViewController.getOpponentData();
+      this._winloseViewController.display(false, myData, opponentData, "Give UP");
+      // 対戦相手に通知
+      var matchResult = {
+        "isVictory": true,
+        "reasonString": "Give UP"
+      };
+      this._peerController.sendMatchResult(matchResult);
     }
   }, {
     key: '_notificationFirstShakeDice',

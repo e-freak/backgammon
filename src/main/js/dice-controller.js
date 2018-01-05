@@ -18,6 +18,8 @@ export default class DiceController {
     this._notificationChangeTurn = notificationChangeTurn;
 
     this._dicePips = []; // ボード上に出ているサイコロの目の配列
+
+    this.isAllowTurnChange = false;
   }
 
   initialize() {
@@ -98,13 +100,15 @@ export default class DiceController {
     // 位置を移動しているので、その情報をクリア
     this._opponentFirstDiceButton.style.left = ""
     this._myFirstDiceButton.style.left = ""
+
+    this.isAllowTurnChange = false;
   }
 
   movedPiece(point) {
     // サイコロかボード状に必ず2つ出ている
     // つまりthis._dicePipsの要素数は必ず2つ
     var addOpacity = -0.6;
-    if (this._dicePips[0] == this._dicePips[1]) {
+    if (this._dicePips[0] === this._dicePips[1]) {
       // ゾロ目の場合、透過度の変更は0.5単位
       addOpacity = -0.3;
     }
@@ -223,6 +227,10 @@ export default class DiceController {
   }
 
 
+  allowTurnChange() {
+    this.isAllowTurnChange = true;
+  }
+
   _onClickDiceButton() {
     // 表示中のサイコロの透過度が全て"0.0"の場合、ターン交代
     // 自分のターン or 対戦相手のターンかの判断はGameViewControllerに任せる
@@ -234,7 +242,7 @@ export default class DiceController {
       }
     });
 
-    if (flag) {
+    if (flag || this.isAllowTurnChange) {
       this._notificationChangeTurn();
     }
   }

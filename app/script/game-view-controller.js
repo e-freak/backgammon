@@ -162,6 +162,14 @@ var GameViewController = (function () {
         this._diceController.shakeMyDice(pip1, pip2);
 
         this._pieceController.setMovableDicePips(pip1, pip2);
+
+        // 移動できるかを確認
+        var isMovable = this._pieceController.isMovableMyPiece();
+        if (isMovable === false) {
+          // 移動できない場合、_diceControllerに伝えて、ターン交代できるようにする
+          this._informationViewController.displayBalloonMessage("これ以上コマを動かせられません！！");
+          this._diceController.allowTurnChange();
+        }
       }
       if (message === "dices") {
         this._diceController.shakeOpponentDice(data.pips[0], data.pips[1]);
@@ -254,6 +262,8 @@ var GameViewController = (function () {
 
       // Pip Countを更新
       this._informationViewController.updateMyPipCount(undoMyPiece.destPoint - undoMyPiece.sourcePoint);
+
+      this._informationViewController.clearBalloonMessage();
     }
   }, {
     key: '_onClickGiveupButton',
@@ -318,6 +328,8 @@ var GameViewController = (function () {
       this._informationViewController.setIsTuru(this._isMyTurn);
       // タイマースタート
       this._informationViewController.startTime();
+
+      this._informationViewController.clearBalloonMessage();
     }
   }, {
     key: '_notificationMovedPiece',
@@ -339,6 +351,14 @@ var GameViewController = (function () {
       // Pip Countを更新
       this._informationViewController.updateMyPipCount(sourcePoint - destPoint);
       this._undoButton.style.display = "block"; // undoボタン表示
+
+      // まだ移動できるかを確認
+      var isMovable = this._pieceController.isMovableMyPiece();
+      if (isMovable === false) {
+        // 移動できない場合、_diceControllerに伝えて、ターン交代できるようにする
+        this._informationViewController.displayBalloonMessage("これ以上コマを動かせられません！！");
+        this._diceController.allowTurnChange();
+      }
     }
   }, {
     key: '_notificationMovedPieceToBar',

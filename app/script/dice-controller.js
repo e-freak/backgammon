@@ -29,6 +29,8 @@ var DiceController = (function () {
     this._notificationChangeTurn = notificationChangeTurn;
 
     this._dicePips = []; // ボード上に出ているサイコロの目の配列
+
+    this.isAllowTurnChange = false;
   }
 
   _createClass(DiceController, [{
@@ -116,6 +118,8 @@ var DiceController = (function () {
       // 位置を移動しているので、その情報をクリア
       this._opponentFirstDiceButton.style.left = "";
       this._myFirstDiceButton.style.left = "";
+
+      this.isAllowTurnChange = false;
     }
   }, {
     key: "movedPiece",
@@ -123,7 +127,7 @@ var DiceController = (function () {
       // サイコロかボード状に必ず2つ出ている
       // つまりthis._dicePipsの要素数は必ず2つ
       var addOpacity = -0.6;
-      if (this._dicePips[0] == this._dicePips[1]) {
+      if (this._dicePips[0] === this._dicePips[1]) {
         // ゾロ目の場合、透過度の変更は0.5単位
         addOpacity = -0.3;
       }
@@ -320,6 +324,11 @@ var DiceController = (function () {
       }
     }
   }, {
+    key: "allowTurnChange",
+    value: function allowTurnChange() {
+      this.isAllowTurnChange = true;
+    }
+  }, {
     key: "_onClickDiceButton",
     value: function _onClickDiceButton() {
       // 表示中のサイコロの透過度が全て"0.0"の場合、ターン交代
@@ -332,7 +341,7 @@ var DiceController = (function () {
         }
       });
 
-      if (flag) {
+      if (flag || this.isAllowTurnChange) {
         this._notificationChangeTurn();
       }
     }

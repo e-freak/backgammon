@@ -129,6 +129,33 @@ button.opponent-secoundDice {
   outline:none;
 }
 
+button.dice-border {
+  display: none;
+  position: absolute;
+  top: 240px;
+  left: 410px;
+  width: 200px;
+  height: 100px;
+  border:0;
+  background:none;
+  outline:none;
+  animation: flashingAnimation 1s linear infinite;
+  -webkit-animation:flashingAnimation 1s linear infinite;
+}
+
+@keyframes flashingAnimation {
+    0% {
+        opacity: 0.0;
+    }
+    50% {
+        opacity: 1.0;
+    }
+    100% {
+        opacity: 0.0;
+    }
+}
+
+
 img.piece-field {
   width: 50px;
   height: 50px;
@@ -284,4 +311,29 @@ img.icon-image {
 
   max-width:90px;
   max-height:90px;
+}
+
+
+div.balloon-message {
+ 	position: absolute;
+	display: none;
+ 	margin: 1.5em 15px 1.5em 0;
+	padding: 7px 10px;
+	min-width: 280px;
+ 	max-width: 100%;
+ 	color: white;
+	font-size: 16px;
+	background: #3cb371;
+  top: 25px;
+  left: -310px;
+}
+
+div.balloon-messag:before{
+	content: "";
+	position: absolute;
+	top: 50%;
+	left: 100%;
+ 	margin-top: -15px;
+	border: 15px solid transparent;
+	border-left: 15px solid #3cb371;
 }

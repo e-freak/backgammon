@@ -142,7 +142,7 @@ export default class PieceController {
   _isExistInBar() {
     var returnValue = false;
     for (let i = 0; i < this._myPieces.length; i++) {
-      if((this._myPieces[i]).getPoint() === 25) {
+      if ((this._myPieces[i]).getPoint() === 25) {
         returnValue = true;
         break;
       }
@@ -157,7 +157,7 @@ export default class PieceController {
     }
 
     // バーにコマがある場合は、バーのコマした動かせない
-    if (piece.getPoint() !== 25 && this._isExistInBar()){
+    if (piece.getPoint() !== 25 && this._isExistInBar()) {
       // 自身がバー以外のあるコマ かつ バーにコマがある場合は何もしない
       return;
     }
@@ -169,7 +169,7 @@ export default class PieceController {
     }
 
     // まずは、すでに表示されている移動可能な場所の表示をクリア
-    this._clearMovableField;
+    this._clearMovableField();
 
     // 移動可能な場所を表示
     var currentPoint = piece.getPoint();
@@ -223,6 +223,49 @@ export default class PieceController {
         break;
     }
     return returnValue;
+  }
+
+  // サイコロの目に対して、移動できるかを返す
+  isMovableMyPiece() {
+    // 検査対象のサイコロの目（重複は除く）
+    var targetPips = this._movableDicePips.filter(function(x, i, self) {
+      return self.indexOf(x) === i;
+    });
+    // コマがどのPointあるか(重複は除く)
+    var targetPiecePoints = [];
+    this._myPieces.forEach(function(value) {
+      var point = value.getPoint();
+      if (targetPiecePoints.indexOf(point) < 0) { // 配列に含まれていなかったら追加
+        targetPiecePoints.push(point);
+      }
+    });
+    // バーにコマがある場合は検査対象はバーのコマのみにする
+    if (this._isExistInBar()){
+      targetPiecePoints = [25];
+    }
+
+    // 移動先 = 自分のコマのPoint - サイコロの目
+    var movablePoints = [];
+    targetPips.forEach(function(pip) {
+      targetPiecePoints.forEach(function(point) {
+        movablePoints.push(point - pip);
+      });
+    });
+
+    var returnValue = false;
+    // 対戦相手のコマが 0個 or 1個のPoint かつ
+    // movablePoints(移動可能先)に含まれる
+    var movableOpponentPoints = [];
+    for (let i = 1; i <= 24 ;i++) {
+      if (this._numberOfOpponentPeiceOnPoint(i) <= 1){
+        if (movablePoints.indexOf(i) >= 0){
+          returnValue = true;
+          break;
+        }
+      }
+    }
+    return returnValue;
+
   }
 
   // 移動可能なpointを返す
@@ -407,13 +450,12 @@ export default class PieceController {
       let destTop = movablePiece.getTop();
       let destLeft = movablePiece.getLeft();
       piece.move(destTop, destLeft, destPoint);
-      // 移動をGameViewControllerに伝える
-      this._notificationMovedPiece(destPoint, point);
-
       // 移動分を削除
       this._movableDicePips.splice(index, 1);
       // undo配列に追加
       this._addUndoList(destPoint, point, isMoveOpponentPieceToBar);
+      // 移動をGameViewControllerに伝える
+      this._notificationMovedPiece(destPoint, point);
     } else {
       // 2〜4分の移動
       var sumNumberOfMoving = 0;
@@ -427,32 +469,30 @@ export default class PieceController {
         this._movableDicePips[1] = tmp;
       }
 
-      var delNum = 0; // _movableDicePipsの先頭から何個の要素を削除するか
-      for (var i = 0; i < this._movableDicePips.length; i++) {
-        delNum++;
-        sumNumberOfMoving += this._movableDicePips[i];
+      // for文での中でthis._movableDicePipsの要素を削除するとインデックスがずれるので
+      var copyMovableDicePips = this._movableDicePips.concat();
+      for (var i = 0; i < copyMovableDicePips.length; i++) {
+        sumNumberOfMoving += copyMovableDicePips[i];
         let tmpDestPoint = point - sumNumberOfMoving;
-        let tmpSourcePoint = tmpDestPoint + this._movableDicePips[i];
+        let tmpSourcePoint = tmpDestPoint + copyMovableDicePips[i];
         // 移動先に対戦相手のPieceが1個だけある場合、バーに移動させる
         let isMoveOpponentPieceToBar = this._moveOpponentPieceToBar(tmpDestPoint);
         let position = this._getPiecePosition(tmpDestPoint, this._myPieces);
         // 移動する
         piece.move(position[0], position[1], tmpDestPoint);
 
-        // 移動をGameViewControllerに伝える
-        this._notificationMovedPiece(tmpDestPoint, tmpSourcePoint);
-        // // 移動分を削除
-        // this._movableDicePips.splice(i, 1);
         // undo配列に追加
         this._addUndoList(tmpDestPoint, tmpSourcePoint, isMoveOpponentPieceToBar);
-
-        // アニメーションの時間分待つ
-        await this._sleep(500);
+        // 移動分を削除
+        this._movableDicePips.splice(i, 1);
+        // 移動をGameViewControllerに伝える
+        this._notificationMovedPiece(tmpDestPoint, tmpSourcePoint);
 
         if (sumNumberOfMoving === numberOfMoving) {
-          this._movableDicePips.splice(0, delNum);
           break;
         }
+        // アニメーションの時間分待つ
+        await this._sleep(500);
       }
     }
   }

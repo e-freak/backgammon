@@ -39,6 +39,7 @@ var InformationViewController = (function () {
     this._userSettingController = new _scriptUserSettingController2['default']();
 
     this._informationAreaWrapper = this._view.getElementById('information-area-wrapper');
+    this._balloonMessageElement = this._view.getElementById('balloon-message');
   }
 
   _createClass(InformationViewController, [{
@@ -55,6 +56,8 @@ var InformationViewController = (function () {
       this._opponentTimeElement = this._view.getElementById('opponent-timeLimit');
 
       this._informationAreaWrapper.style.display = "block";
+
+      this._balloonMessageElement.style.display = "none";
     }
   }, {
     key: 'hideWrapper',
@@ -169,6 +172,18 @@ var InformationViewController = (function () {
     key: 'getOpponentData',
     value: function getOpponentData() {
       return this._opponentData;
+    }
+  }, {
+    key: 'displayBalloonMessage',
+    value: function displayBalloonMessage(message) {
+      this._balloonMessageElement.style.display = "block";
+      this._balloonMessageElement.innerHTML = message;
+    }
+  }, {
+    key: 'clearBalloonMessage',
+    value: function clearBalloonMessage() {
+      this._balloonMessageElement.style.display = "none";
+      this._balloonMessageElement.innerHTML = "";
     }
   }, {
     key: '_getImagesrcWithBase64',

@@ -1,52 +1,84 @@
 @charset 'UTF-8';
-body {
-  margin-left: auto;
-  margin-right: auto;
-  text-align: center;
-  /* background: linear-gradient(green,white, green); */
+
+div.searchOpponentArea {
+  display: block;
+  position: absolute;
+  top: 100px;
+  left: 15px;
+  width: 600px;
+  height: 300px;
+  background-color: rgba(0, 100, 0, 0.9);
+  background-color: rgba(0, 0, 0, 0.8);
 }
 
-label.searchOpponent {
+span.loading {
   position: relative;
-  top: 380px;
-  right: 0px;
-  color: #33ff66;
-  font-size: 170%;
-  opacity: 0.5;
-  animation-name: animation01;
-  animation-duration: 2s;
-  animation-timing-function: ease;
-  animation-iteration-count: infinite;
+  display: inline-block;
+  top: 150px;
+  left: 231px;
+  font-family: "arial black", sans-serif;
+  font-size: xx-large;
+  color: #FFF;
 }
 
-@keyframes animation01 {
+span.loading span {
+  position: absolute;
+  display: inline-block;
+  left: 0;
+  top: 100%;
+  width: 100%;
+  height: 2px;
+  background-position: 0 0;
+  background-image: linear-gradient(to right, #FFF, transparent);
+  -webkit-animation: animation 2s linear infinite;
+  animation: animation 2s linear infinite;
+}
+
+@keyframes animation {
   0% {
-    opacity: 0.2;
-    color: #33ff00;
+    width: 0;
+    background-color: transparent;
   }
-  50% {
-    opacity: 0.5;
-    color: #33ff66;
+  40% {
+    width: 100%;
+    background-color: transparent;
+  }
+  80% {
+    width: 100%;
+    background-color: #36f;
   }
   100% {
-    opacity: 0.2;
-    color: #33ff00;
+    width: 100%;
+    background-color: #36f;
   }
 }
 
-input.back {
-  position: relative;
-  width: 50px;
-  height: 50px;
-  float: left;
-  opacity: 0.7;
+button.searchOpponentGoToTopButton {
+  display: inline-block;
+  padding: 0.3em 1em;
+  text-decoration: none;
+  font-size: large;
+  position: absolute;
+  left: 520px;
+  color: #248;
+  outline:none;
+  border: solid 2px #248;
+  border-radius: 3px;
+  transition: .4s;
+  outline:none;
 }
+
+button.searchOpponentGoToTopButton:hover {
+  background: #248;
+  color: white;
+}
+
 
 div.search-results {
   display: none;
   position: absolute;
-  top: 150px;
-  left: 100px;
+  top: 50px;
+  left: 0px;
   width: 600px;
   height: 300px;
   animation-name: fade-in;
@@ -76,8 +108,8 @@ img.my-icon {
   width: auto;
   height: auto;
   box-sizing: border-box;
-  max-width:150px;
-  max-height:150px;
+  max-width: 150px;
+  max-height: 150px;
 }
 
 label.my-name {
@@ -97,9 +129,8 @@ img.opponent-icon {
   width: auto;
   height: auto;
   box-sizing: border-box;
-  max-width:150px;
-  max-height:150px;
-
+  max-width: 150px;
+  max-height: 150px;
 }
 
 label.opponent-name {

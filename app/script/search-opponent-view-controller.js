@@ -10,10 +10,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'd
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _scriptSpinSpin = require('../script/spin/spin');
-
-var _scriptSpinSpin2 = _interopRequireDefault(_scriptSpinSpin);
-
 var _scriptPeerController = require('../script/peer-controller');
 
 var _scriptPeerController2 = _interopRequireDefault(_scriptPeerController);
@@ -27,64 +23,14 @@ var SearchOpponentViewController = (function () {
     _classCallCheck(this, SearchOpponentViewController);
 
     this._view = view;
-
-    var opts = {
-      lines: 13, // The number of lines to draw
-      length: 33, // The length of each line
-      width: 11, // The line thickness
-      radius: 16, // The radius of the inner circle
-      corners: 1, // Corner roundness (0..1)
-      rotate: 74, // The rotation offset
-      direction: 1, // 1: clockwise, -1: counterclockwise
-      color: '#000', // #rgb or #rrggbb or array of colors
-      speed: 1.5, // Rounds per second
-      trail: 71, // Afterglow percentage
-      shadow: true, // Whether to render a shadow
-      hwaccel: true, // Whether to use hardware acceleration
-      className: 'spinner', // The CSS class to assign to the spinner
-      zIndex: 2e9, // The z-index (defaults to 2000000000)
-      top: '50%', // Top position relative to parent
-      left: '50%' // Left position relative to parent
-    };
-    this._target = document.getElementById('spin-area');
-    this._spinner = new _scriptSpinSpin2['default'](opts);
-
-    // // 対戦相手検索完了を通知するメソッド
-    // this.notificationSearchCompleted = notificationSearchCompleted;
-
-    // Peerからのメッセージを受信した場合の通知
-    //    this.notificationOfReceiveMessage = this.notificationOfReceiveMessage.bind(this);
-
     this._userSettingController = new _scriptUserSettingController2['default']();
   }
 
   _createClass(SearchOpponentViewController, [{
     key: 'initialize',
     value: function initialize() {
-      // spinnerを表示
-      this._spinner.spin(this._target);
-
-      // this._peerController = new PeerController(this.notificationOfReceiveMessage);
-      // this._peerController.initialize();
+      this._view.getElementById('searchOpponent-go-top-button').addEventListener('click', this.onClickGotoTopButton.bind(this));
     }
-
-    // // Peerからのメッセージを受信した場合の通知
-    // notificationOfReceiveMessage(data) {
-    //   var message = data.message;
-    //   if (message === "userNameAndIcon" ||
-    //     message === "answerUserNameAndIcon") {
-    //     // 自分と対戦相手のアイコンと名前を設定
-    //     this._setVersusView(data.userName, data.iconBase64);
-    //     // versus ビューを表示
-    //     this._displayVersusView();
-    //     // 少し待って、対戦相手検索完了の通知を送る
-    //     setTimeout(this._notificationSearchCompleted.bind(this, data), 6000);
-    //   }
-    // }
-    //
-    // _notificationSearchCompleted(data){
-    //   this.notificationSearchCompleted(data);
-    // }
   }, {
     key: 'setVersusView',
     value: function setVersusView(opponent_userName, opponent_icon) {
@@ -135,15 +81,24 @@ var SearchOpponentViewController = (function () {
     key: 'displayVersusView',
     value: function displayVersusView() {
       // 対戦相手待ちのラベルを非表示にする
-      var searchOpponent = this._view.getElementById('searchOpponent');
-      searchOpponent.style.display = "none";
-
-      // spinを停止
-      this._spinner.spin();
+      var loadingLabel = this._view.getElementById('loadingLabel');
+      loadingLabel.style.display = "none";
 
       // 対戦相手を表示
       var target = this._view.getElementById('search-results');
       target.style.display = "block";
+    }
+  }, {
+    key: 'hideVersusView',
+    value: function hideVersusView() {
+      // 対戦相手を表示
+      var target = this._view.getElementById('searchOpponent');
+      target.style.display = "none";
+    }
+  }, {
+    key: 'onClickGotoTopButton',
+    value: function onClickGotoTopButton() {
+      history.back();
     }
   }]);
 

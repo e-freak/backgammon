@@ -8,29 +8,11 @@
   <link rel="stylesheet" href="../css/stylesheets/smokyText.css" />
   <link rel="stylesheet" href="../css/stylesheets/search-opponent.css" />
   <link rel="stylesheet" href="../css/stylesheets/winningOrLosing.css" />
-  <link rel="stylesheet" href="../css/stylesheets/snowfall.css" />
   <audio src="../sound/game_maoudamashii_1_battle37.mp3" autoplay loop></audio>
 </head>
 
 <body>
   <main>
-    <div id="snowfall" class="snowfall">
-      <div id="searchOpponent" class="searchOpponent">
-        <div id="spin-area">
-          <from>
-            <input class="back" type="image" src="../image/back-button.png" value="戻る" onClick="history.back()">
-          </from>
-          <label id="searchOpponent" class="searchOpponent">対戦相手 待ち</label>
-        </div>
-      </div>
-      <div id="search-results" class="search-results">
-        <img id="my-icon" class="my-icon" src="" />
-        <label id="my-name" class="my-name"></label>
-        <img id="versus-image" class="versus" src="../image/versus.png" />
-        <img id="opponent-icon" class="opponent-icon" src="" />
-        <label id="opponent-name" class="opponent-name"></label>
-      </div>
-    </div>
     <div class="main-area" id="main-area">
       <div class="board-area" id="board-area">
         <img class="inner-image" src="../image/inner.png" />
@@ -55,7 +37,7 @@
             <img class="piece-image" src="../image/opponent_piece.png" />
             <span id="opponent-information-name" class="player-name">name</span>
           </div>
-          <img id="opponent-information-icon" class="icon-image" src="../image/opponent_icon.jpg" />
+          <img id="opponent-information-icon" class="icon-image" src="" />
           <div class="pip-count" id="opponent-pipCount">167</div>
           <div class="timelimit-title">持ち時間</div>
           <div class="timelimit" id="opponent-timeLimit">10:00</div>
@@ -65,11 +47,23 @@
             <img class="piece-image" src="../image/my_piece.png" />
             <span id="my-information-name" class="player-name">name</span>
           </div>
-          <img id="my-information-icon" class="icon-image" src="../image/my_icon.jpg" />
+          <img id="my-information-icon" class="icon-image" src="" />
           <div class="pip-count" id="my-pipCount">167</div>
           <div class="timelimit-title">持ち時間</div>
           <div class="timelimit" id="my-timeLimit">10:00</div>
           <button type="button" class="giveup-button" id="giveup-button">giveup</button>
+        </div>
+        <div id="information-area-wrapper" class="informationAreaWrapper"></div>
+      </div>
+      <div id="searchOpponent" class="searchOpponentArea">
+        <button type="button" class="searchOpponentGoToTopButton" id="searchOpponent-go-top-button">Top</button>
+        <span id="loadingLabel" class="loading">Loading<span></span></span>
+        <div id="search-results" class="search-results">
+          <img id="my-icon" class="my-icon" src="" />
+          <label id="my-name" class="my-name"></label>
+          <img id="versus-image" class="versus" src="../image/versus.png" />
+          <img id="opponent-icon" class="opponent-icon" src="" />
+          <label id="opponent-name" class="opponent-name"></label>
         </div>
       </div>
       <div id="winning-losing-area" class="winningOrLosingArea">
@@ -86,7 +80,6 @@
     </div>
   </main>
   <script src="../script/game-view-controller-loader.js"></script>
-  <script src="../script/spin/spin.js"></script>
 </body>
 
 </html>

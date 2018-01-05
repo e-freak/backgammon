@@ -23,6 +23,8 @@ export default class InformationViewController {
     this._opponentTimeElement;
 
     this._userSettingController = new UserSettingController();
+
+    this._informationAreaWrapper = this._view.getElementById('information-area-wrapper');
   }
 
   initialize(opponentName, opponentIconBase64) {
@@ -36,6 +38,10 @@ export default class InformationViewController {
     this._opponentPipElement = this._view.getElementById('opponent-pipCount');
     this._opponentTimeElement = this._view.getElementById('opponent-timeLimit');
 
+    this._informationAreaWrapper.style.display = "block";
+  }
+  hideWrapper() {
+    this._informationAreaWrapper.style.display = "none";
   }
   setIsTuru(flag) {
     this._isTurn = flag;

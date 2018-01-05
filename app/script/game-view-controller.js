@@ -83,15 +83,11 @@ var GameViewController = (function () {
       this._undoButton.addEventListener('click', this._onClickUndoButton.bind(this));
       this._giveupButton.addEventListener('click', this._onClickGiveupButton.bind(this));
 
-      // ボード画面は非表示にする
-      var mainArea = this._view.getElementById('main-area');
-      mainArea.style.display = "none";
-
       this._diceController.initialize();
-      // 検索中の画面を表示
+
       this._searchOpponentViewController.initialize();
 
-      this._peerController.initialize();
+      setTimeout(this._peerController.initialize(), 1000);
     }
 
     // Peerからのメッセージを受信した場合の通知
@@ -102,6 +98,10 @@ var GameViewController = (function () {
       if (message === "userNameAndIcon" || message === "answerUserNameAndIcon") {
         this._searchOpponentViewController.setVersusView(data.userName, data.iconBase64);
         this._searchOpponentViewController.displayVersusView();
+
+        // informationエリアのアイコンなどを設定する
+        this._informationViewController.initialize(data.userName, data.iconBase64);
+
         // ゲーム開始
         setTimeout(this.gameStart.bind(this, data.userName, data.iconBase64), 6000);
       }
@@ -204,17 +204,11 @@ var GameViewController = (function () {
   }, {
     key: '_updateToStartUI',
     value: function _updateToStartUI(userName, iconBase64) {
-      // informationエリアのアイコンなどを設定する
-      this._informationViewController.initialize(userName, iconBase64);
-      // 対戦相手検索画面を非表示にする
-      var snowfallArea = this._view.getElementById('snowfall');
-      snowfallArea.style.display = "none";
+      // informationエリアを表示する（wrapperビューを非表示にする）
+      this._informationViewController.hideWrapper();
 
-      // gameのメイン画面を表示する
-      var mainArea = this._view.getElementById('main-area');
-      mainArea.style.display = "flex";
-
-      this._undoButton.style.display = "none";
+      // 対戦相手表示画面を非表示にする
+      this._searchOpponentViewController.hideVersusView();
 
       // コマを配りたい
       var myPieceButtons = this._pieceController.appendMyPiece();

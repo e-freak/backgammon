@@ -37,6 +37,8 @@ var InformationViewController = (function () {
     this._opponentTimeElement;
 
     this._userSettingController = new _scriptUserSettingController2['default']();
+
+    this._informationAreaWrapper = this._view.getElementById('information-area-wrapper');
   }
 
   _createClass(InformationViewController, [{
@@ -51,6 +53,13 @@ var InformationViewController = (function () {
 
       this._opponentPipElement = this._view.getElementById('opponent-pipCount');
       this._opponentTimeElement = this._view.getElementById('opponent-timeLimit');
+
+      this._informationAreaWrapper.style.display = "block";
+    }
+  }, {
+    key: 'hideWrapper',
+    value: function hideWrapper() {
+      this._informationAreaWrapper.style.display = "none";
     }
   }, {
     key: 'setIsTuru',

@@ -1,4 +1,3 @@
-import Spinner from '../script/spin/spin';
 import PeerController from '../script/peer-controller';
 import UserSettingController from '../script/user-setting-controller';
 
@@ -6,62 +5,14 @@ export default class SearchOpponentViewController {
 
   constructor(view) {
     this._view = view;
-
-    var opts = {
-      lines: 13, // The number of lines to draw
-      length: 33, // The length of each line
-      width: 11, // The line thickness
-      radius: 16, // The radius of the inner circle
-      corners: 1, // Corner roundness (0..1)
-      rotate: 74, // The rotation offset
-      direction: 1, // 1: clockwise, -1: counterclockwise
-      color: '#000', // #rgb or #rrggbb or array of colors
-      speed: 1.5, // Rounds per second
-      trail: 71, // Afterglow percentage
-      shadow: true, // Whether to render a shadow
-      hwaccel: true, // Whether to use hardware acceleration
-      className: 'spinner', // The CSS class to assign to the spinner
-      zIndex: 2e9, // The z-index (defaults to 2000000000)
-      top: '50%', // Top position relative to parent
-      left: '50%' // Left position relative to parent
-    };
-    this._target = document.getElementById('spin-area');
-    this._spinner = new Spinner(opts);
-
-    // // 対戦相手検索完了を通知するメソッド
-    // this.notificationSearchCompleted = notificationSearchCompleted;
-
-    // Peerからのメッセージを受信した場合の通知
-    //    this.notificationOfReceiveMessage = this.notificationOfReceiveMessage.bind(this);
-
     this._userSettingController = new UserSettingController();
   }
 
   initialize() {
-    // spinnerを表示
-    this._spinner.spin(this._target);
+    this._view.getElementById('searchOpponent-go-top-button').addEventListener('click', this.onClickGotoTopButton.bind(this));
 
-    // this._peerController = new PeerController(this.notificationOfReceiveMessage);
-    // this._peerController.initialize();
   }
 
-  // // Peerからのメッセージを受信した場合の通知
-  // notificationOfReceiveMessage(data) {
-  //   var message = data.message;
-  //   if (message === "userNameAndIcon" ||
-  //     message === "answerUserNameAndIcon") {
-  //     // 自分と対戦相手のアイコンと名前を設定
-  //     this._setVersusView(data.userName, data.iconBase64);
-  //     // versus ビューを表示
-  //     this._displayVersusView();
-  //     // 少し待って、対戦相手検索完了の通知を送る
-  //     setTimeout(this._notificationSearchCompleted.bind(this, data), 6000);
-  //   }
-  // }
-  //
-  // _notificationSearchCompleted(data){
-  //   this.notificationSearchCompleted(data);
-  // }
   setVersusView(opponent_userName, opponent_icon) {
     // 自分の名前をJSONから取得
     var userName = this._userSettingController.loadUserNameFromJSON();
@@ -108,14 +59,21 @@ export default class SearchOpponentViewController {
 
   displayVersusView() {
     // 対戦相手待ちのラベルを非表示にする
-    var searchOpponent = this._view.getElementById('searchOpponent');
-    searchOpponent.style.display = "none";
-
-    // spinを停止
-    this._spinner.spin();
+    let loadingLabel = this._view.getElementById('loadingLabel');
+    loadingLabel.style.display = "none";
 
     // 対戦相手を表示
-    var target = this._view.getElementById('search-results');
+    let target = this._view.getElementById('search-results');
     target.style.display = "block";
+  }
+
+  hideVersusView() {
+    // 対戦相手を表示
+    let target = this._view.getElementById('searchOpponent');
+    target.style.display = "none";
+  }
+
+  onClickGotoTopButton() {
+    history.back();
   }
 }

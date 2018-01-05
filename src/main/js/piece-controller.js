@@ -104,7 +104,7 @@ export default class PieceController {
 
     var num = 0;
     pieces.forEach(function(value) {
-      if (value._point === point) {
+      if (value.getPoint() === point) {
         num++;
       }
     });
@@ -138,9 +138,27 @@ export default class PieceController {
     return [position_x, base_y];
   }
 
+  // バーにコマが存在するか？
+  _isExistInBar() {
+    var returnValue = false;
+    for (let i = 0; i < this._myPieces.length; i++) {
+      if((this._myPieces[i]).getPoint() === 25) {
+        returnValue = true;
+        break;
+      }
+    }
+    return returnValue;
+  }
+
   _preMovePiece(piece) {
     // コマを動かせるターンでない場合は何もしない
     if (this._isMovable === false) {
+      return;
+    }
+
+    // バーにコマがある場合は、バーのコマした動かせない
+    if (piece.getPoint() !== 25 && this._isExistInBar()){
+      // 自身がバー以外のあるコマ かつ バーにコマがある場合は何もしない
       return;
     }
 

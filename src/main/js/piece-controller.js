@@ -484,7 +484,7 @@ export default class PieceController {
         // undo配列に追加
         this._addUndoList(tmpDestPoint, tmpSourcePoint, isMoveOpponentPieceToBar);
         // 移動分を削除
-        this._movableDicePips.splice(i, 1);
+        this._movableDicePips.splice(0, 1);
         // 移動をGameViewControllerに伝える
         this._notificationMovedPiece(tmpDestPoint, tmpSourcePoint);
 

@@ -234,7 +234,6 @@ export default class DiceController {
     }
   }
 
-
   allowTurnChange() {
     this.isAllowTurnChange = true;
   }
@@ -257,13 +256,14 @@ export default class DiceController {
 
   displayDiceBorder() {
     // サイコロの枠を表示する
-    for (let index = 0; index < this._diceBorderElements.length; index++){
+    for (let index = 0; index < this._diceBorderElements.length; index++) {
       this._diceBorderElements[index].style.display = "block";
     }
   }
+  
   clearDiceBorder() {
     // サイコロの枠を非表示にする
-    for (let index = 0; index < this._diceBorderElements.length; index++){
+    for (let index = 0; index < this._diceBorderElements.length; index++) {
       this._diceBorderElements[index].style.display = "none";
     }
   }

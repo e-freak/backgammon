@@ -38,9 +38,9 @@ var TitleViewController = (function () {
     value: function initialize() {
       this._view.getElementById('main').addEventListener('drop', this.banDrop.bind(this));
 
-      this._view.getElementById('button-battle').addEventListener('click', this.onClickBattleButton.bind(this));
-      this._view.getElementById('button-register').addEventListener('click', this.onClickRegisterButton.bind(this));
-      this._view.getElementById('button-buy').addEventListener('click', this.onClickChipsBuyButton.bind(this));
+      this._view.getElementById('battleStartButton').addEventListener('click', this.onClickBattleButton.bind(this));
+      this._view.getElementById('userInfoRegisterButton').addEventListener('click', this.onClickRegisterButton.bind(this));
+      this._view.getElementById('chipsBuyButton').addEventListener('click', this.onClickChipsBuyButton.bind(this));
       this._dropArea = this._view.getElementById('dropArea');
       this._fileInput = this._view.getElementById('fileInput');
 

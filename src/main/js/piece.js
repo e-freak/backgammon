@@ -35,7 +35,6 @@ export default class Piece {
     this._point = point;
   }
 
-
   initialize() {
     // コマの画像を設定
     this._image = new Image();
@@ -77,5 +76,4 @@ export default class Piece {
 
     return this._btn;
   }
-
 }

@@ -48,6 +48,7 @@ export default class PieceController {
       this._movableDicePips = [dicePip1, dicePip2];
     }
   }
+
   setIsMovable(isMovable) {
     this._isMovable = isMovable;
   }
@@ -240,7 +241,7 @@ export default class PieceController {
       }
     });
     // バーにコマがある場合は検査対象はバーのコマのみにする
-    if (this._isExistInBar()){
+    if (this._isExistInBar()) {
       targetPiecePoints = [25];
     }
 
@@ -256,16 +257,15 @@ export default class PieceController {
     // 対戦相手のコマが 0個 or 1個のPoint かつ
     // movablePoints(移動可能先)に含まれる
     var movableOpponentPoints = [];
-    for (let i = 1; i <= 24 ;i++) {
-      if (this._numberOfOpponentPeiceOnPoint(i) <= 1){
-        if (movablePoints.indexOf(i) >= 0){
+    for (let i = 1; i <= 24; i++) {
+      if (this._numberOfOpponentPeiceOnPoint(i) <= 1) {
+        if (movablePoints.indexOf(i) >= 0) {
           returnValue = true;
           break;
         }
       }
     }
     return returnValue;
-
   }
 
   // 移動可能なpointを返す
@@ -334,7 +334,7 @@ export default class PieceController {
     btn.onclick = this._movePiece.bind(this, movablePiece, piece);
 
     // 表示
-    this._view.getElementById("board-area").appendChild(btn);
+    this._view.getElementById("boardArea").appendChild(btn);
   }
 
   // 引数のpointに対戦相手のPieceが1個の場合、バーに移動させる
@@ -395,8 +395,8 @@ export default class PieceController {
       var position = this._getPiecePosition(undoMyPiece.sourcePoint, this._opponentPieces);
       target.move(position[0], position[1], undoMyPiece.sourcePoint);
     }
-
   }
+
   _addUndoList(destPoint, sourcePoint, isMoveOpponentPieceToBar) {
     var undoOjb = {
       "myPiece": {
@@ -436,7 +436,6 @@ export default class PieceController {
 
     var point = piece.getPoint();
     var destPoint = movablePiece.getPoint();
-
 
     // 1. もし_movableDicePipsの足し算の移動分なら移動は2〜4回分の移動に分ける
     var numberOfMoving = point - destPoint; // 移動数
@@ -555,7 +554,6 @@ export default class PieceController {
       return maxPiece;
     }
   }
-
 
   _sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));

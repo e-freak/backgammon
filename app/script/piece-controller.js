@@ -371,7 +371,7 @@ var PieceController = (function () {
       btn.onclick = this._movePiece.bind(this, movablePiece, piece);
 
       // 表示
-      this._view.getElementById("board-area").appendChild(btn);
+      this._view.getElementById("boardArea").appendChild(btn);
     }
 
     // 引数のpointに対戦相手のPieceが1個の場合、バーに移動させる

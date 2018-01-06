@@ -24,14 +24,14 @@ export default class GameViewController {
     this._notificationTimeup = this._notificationTimeup.bind(this);
     this._informationViewController = new InformationViewController(this._view, this._notificationTimeup);
 
-    var myFirstDiceButton = this._view.getElementById('my-firstDice-button');
-    var mySecoundDiceButton = this._view.getElementById('my-secoundDice-button');
-    var opponentFirstDiceButton = this._view.getElementById('opponent-firstDice-button');
-    var opponentSecoundDiceButton = this._view.getElementById('opponent-secoundDice-button');
+    var myFirstDiceButton = this._view.getElementById('myFirstDiceButton');
+    var mySecoundDiceButton = this._view.getElementById('mySecoundDiceButton');
+    var opponentFirstDiceButton = this._view.getElementById('opponentFirstDiceButton');
+    var opponentSecoundDiceButton = this._view.getElementById('opponentSecoundDiceButton');
     this._notificationFirstShakeDice = this._notificationFirstShakeDice.bind(this);
     this._notificationShakeDice = this._notificationShakeDice.bind(this);
     this._notificationChangeTurn = this._notificationChangeTurn.bind(this);
-    var diceBorderElements = this._view.getElementsByClassName("diceBorderBaseStyle");
+    var diceBorderElements = this._view.getElementsByClassName("dice-border-base");
 
     this._diceController = new DiceController(myFirstDiceButton,
       mySecoundDiceButton,
@@ -52,14 +52,13 @@ export default class GameViewController {
     this.notificationOfReceiveMessage = this.notificationOfReceiveMessage.bind(this);
     this._peerController = new PeerController(this.notificationOfReceiveMessage);
 
-    this._undoButton = this._view.getElementById('undo-button');
-    this._giveupButton = this._view.getElementById('giveup-button');
+    this._undoButton = this._view.getElementById('undoButton');
+    this._giveupButton = this._view.getElementById('giveupButton');
 
     this._winloseViewController = new WinLoseViewController(this._view);
   }
 
   initialize() {
-
     this._undoButton.addEventListener('click', this._onClickUndoButton.bind(this));
     this._giveupButton.addEventListener('click', this._onClickGiveupButton.bind(this));
 
@@ -166,7 +165,6 @@ export default class GameViewController {
     }
   }
 
-
   // とりあえずの実装。設計は後から考える
   gameStart(userName, iconBase64) {
     // ゲーム開始画面のUIに更新する(コマを配る, サイコロの表示/非表示の設定とか)
@@ -197,11 +195,11 @@ export default class GameViewController {
     // コマを配りたい
     var myPieceButtons = this._pieceController.appendMyPiece();
     myPieceButtons.forEach(function(value) {
-      this._view.getElementById("board-area").appendChild(value);
+      this._view.getElementById("boardArea").appendChild(value);
     }.bind(this));
     var opponentPieceButtons = this._pieceController.appendOpponentPiece();
     opponentPieceButtons.forEach(function(value) {
-      this._view.getElementById("board-area").appendChild(value);
+      this._view.getElementById("boardArea").appendChild(value);
     }.bind(this));
   }
 
@@ -274,11 +272,11 @@ export default class GameViewController {
   _notificationFirstShakeDice(myPip, opponentPip) {
     // 順番を表示(first or second)
     if (myPip > opponentPip) {
-      this._view.getElementById('first-smoky').style.display = "block" // 表示
+      this._view.getElementById('firstSmoky').style.display = "block" // 表示
       // コマを動かせる
       this._isMyTurn = true;
     } else {
-      this._view.getElementById('second-smoky').style.display = "block" // 表示
+      this._view.getElementById('secondSmoky').style.display = "block" // 表示
       // コマを動かせない
       this._isMyTurn = false;
     }
@@ -355,6 +353,4 @@ export default class GameViewController {
     var convertSourcePoint = BAR_POINT - sourcePoint;
     this._peerController.sendMovedPieceToBar(convertDestPoint, convertSourcePoint);
   }
-
-
 }

@@ -90,7 +90,6 @@ export default class UserSettingController {
     this.writeIconPathToJSON(copyIconPath);
   }
 
-
   _writeConfigJSON(obj) {
     var loadObj = this._loadConfigJSON();
     var writeObj;
@@ -115,5 +114,4 @@ export default class UserSettingController {
       return;
     }
   }
-
 }

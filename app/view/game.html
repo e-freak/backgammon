@@ -13,79 +13,79 @@
 
 <body>
   <main>
-    <div class="main-area" id="main-area">
-      <div class="board-area" id="board-area">
+    <div class="main-area">
+      <div id="boardArea" class="board-area">
         <img class="inner-image" src="../image/inner.png" />
         <img class="outer-image" src="../image/inner.png" />
-        <img class="my-bearoff" src="../image/bearoff.png" />
-        <img class="opponent-bearoff" src="../image/bearoff.png" />
-        <div class="smoky-area" id="first-smoky">
+        <img class="my-bear-off-image" src="../image/bearoff.png" />
+        <img class="opponent-bear-off-image" src="../image/bearoff.png" />
+        <div id="firstSmoky" class="smoky-area">
           <span class="smoky-span">You GO First</span>
         </div>
-        <div class="smoky-area" id="second-smoky">
+        <div id="secondSmoky" class="smoky-area">
           <span class="smoky-span">You GO Second</span>
         </div>
-        <button type="button" class="undo-button" id="undo-button">undo</button>
-        <button type="button" class="my-firstDice" id="my-firstDice-button"><image src="../image/myDice/dice1.png" /></button>
-        <button type="button" class="my-secoundDice" id="my-secoundDice-button"><image src="../image/myDice/dice2.png" /></button>
-        <button type="button" class="opponent-firstDice" id="opponent-firstDice-button"><image src="../image/opponentDice/dice1.png" /></button>
-        <button type="button" class="opponent-secoundDice" id="opponent-secoundDice-button"><image src="../image/opponentDice/dice2.png" /></button>
-        <hr class="diceBorderBaseStyle diceBorderStyle1">
-        <hr class="diceBorderBaseStyle diceBorderStyle2">
-        <hr class="diceBorderBaseStyle diceBorderStyle3">
-        <hr class="diceBorderBaseStyle diceBorderStyle4">
-        <hr class="diceBorderBaseStyle diceBorderStyle5">
-        <hr class="diceBorderBaseStyle diceBorderStyle6">
-        <hr class="diceBorderBaseStyle diceBorderStyle7">
-        <hr class="diceBorderBaseStyle diceBorderStyle8">
-        <hr class="diceBorderBaseStyle diceBorderStyle9">
-        <hr class="diceBorderBaseStyle diceBorderStyle10">
+        <button type="button" id="undoButton" class="undo-button">undo</button>
+        <button type="button" id="myFirstDiceButton" class="my-first-dice-button"><image src="../image/myDice/dice1.png" /></button>
+        <button type="button" id="mySecoundDiceButton" class="my-secound-dice-button"><image src="../image/myDice/dice2.png" /></button>
+        <button type="button" id="opponentFirstDiceButton" class="opponent-first-dice-button"><image src="../image/opponentDice/dice1.png" /></button>
+        <button type="button" id="opponentSecoundDiceButton" class="opponent-secound-dice-button"><image src="../image/opponentDice/dice2.png" /></button>
+        <hr class="dice-border-base dice-border01">
+        <hr class="dice-border-base dice-border02">
+        <hr class="dice-border-base dice-border03">
+        <hr class="dice-border-base dice-border04">
+        <hr class="dice-border-base dice-border05">
+        <hr class="dice-border-base dice-border06">
+        <hr class="dice-border-base dice-border07">
+        <hr class="dice-border-base dice-border08">
+        <hr class="dice-border-base dice-border09">
+        <hr class="dice-border-base dice-border10">
       </div>
       <div class="information-area">
         <div class="opponent-area">
           <div class="player-name">
             <img class="piece-image" src="../image/opponent_piece.png" />
-            <span id="opponent-information-name" class="player-name">name</span>
+            <span id="opponentInformationName" class="player-name">name</span>
           </div>
-          <img id="opponent-information-icon" class="icon-image" src="" />
-          <div class="pip-count" id="opponent-pipCount">167</div>
+          <img id="opponentInformationIcon" class="icon-image" src="" />
+          <div id="opponentPipCount" class="pip-count">167</div>
           <div class="timelimit-title">持ち時間</div>
-          <div class="timelimit" id="opponent-timeLimit">10:00</div>
+          <div id="opponentTimeLimit" class="timelimit">10:00</div>
         </div>
         <div class="my-area">
           <div class="player-name">
             <img class="piece-image" src="../image/my_piece.png" />
-            <span id="my-information-name" class="player-name">name</span>
+            <span id="myInformationName" class="player-name">name</span>
           </div>
-          <img id="my-information-icon" class="icon-image" src="" />
-          <div class="pip-count" id="my-pipCount">167</div>
+          <img id="myInformationIcon" class="icon-image" src="" />
+          <div id="myPipCount" class="pip-count">167</div>
           <div class="timelimit-title">持ち時間</div>
-          <div class="timelimit" id="my-timeLimit">10:00</div>
-          <button type="button" class="giveup-button" id="giveup-button">giveup</button>
+          <div id="myTimeLimit" class="timelimit">10:00</div>
+          <button type="button" id="giveupButton" class="giveup-button">giveup</button>
         </div>
-        <div id="information-area-wrapper" class="informationAreaWrapper"></div>
+        <div id="informationAreaWrapper" class="information-area-wrapper"></div>
       </div>
-      <div id="searchOpponent" class="searchOpponentArea">
-        <button type="button" class="searchOpponentGoToTopButton" id="searchOpponent-go-top-button">Top</button>
+      <div id="searchOpponent" class="search-opponent-area">
+        <button type="button" class="search-opponent-go-to-top-button" id="searchOpponentGoToTopButton">Top</button>
         <span id="searchingLabel" class="searching">対戦相手を検索中...<span></span></span>
-        <div id="search-results" class="search-results">
-          <img id="my-icon" class="my-icon" src="" />
-          <label id="my-name" class="my-name"></label>
-          <img id="versus-image" class="versus" src="../image/versus.png" />
-          <img id="opponent-icon" class="opponent-icon" src="" />
-          <label id="opponent-name" class="opponent-name"></label>
+        <div id="searchResults" class="search-results">
+          <img id="searchResultsMyIcon" class="my-icon" src="" />
+          <label id="searchResultsMyName" class="my-name"></label>
+          <img class="versus" src="../image/versus.png" />
+          <img id="searchResultsOpponentIcon" class="opponent-icon" src="" />
+          <label id="searchResultsOpponentName" class="opponent-name"></label>
         </div>
       </div>
-      <div id="winning-losing-area" class="winningOrLosingArea">
-        <button type="button" class="goToTopButton" id="go-to-top-button">Top</button>
-        <div id="win-lose-label" class="winningOrLosing"></div>
-        <div id="winning-losing-reason" class="winningOrLosingReason"></div>
-        <img id="winning-losing-my-icon" class="winningOrLosingMyIcon" src="">
-        <label id="winning-losing-my-name" class="winningOrLosingMyName"></label>
-        <img id="winning-losing-opponent-icon" class="winningOrLosingOpponentIcon" src="">
-        <label id="winning-losing-opponent-name" class="winningOrLosingOpponentName"></label>
-        <img id="winner-icon" class="winnerIcon" src="../image/winner.png">
-        <img id="loser-icon" class="loserIcon" src="../image/loser.png">
+      <div id="winningLosingArea" class="winning-losing-area">
+        <button type="button" id="goToTopButton" class="go-top-button">Top</button>
+        <div id="winLoseLabel" class="winning-losing"></div>
+        <div id="winningLosingReason" class="winning-losing-reason"></div>
+        <img id="winningLosingMyIcon" class="winning-losing-my-icon" src="">
+        <label id="winningLosingMyName" class="winning-losing-my-name"></label>
+        <img id="winningLosingOpponentIcon" class="winning-losing-opponent-icon" src="">
+        <label id="winningLosingOpponentName" class="winning-losing-opponent-name"></label>
+        <img id="winnerIcon" class="winner-icon" src="../image/winner.png">
+        <img id="loserIcon" class="loser-icon" src="../image/loser.png">
       </div>
     </div>
   </main>

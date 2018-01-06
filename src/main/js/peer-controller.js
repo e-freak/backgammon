@@ -119,7 +119,7 @@ export default class PeerController {
     };
     this._conn.send(obj);
   }
-  sendChangeTurn(){
+  sendChangeTurn() {
     var obj = {
       "message": "changeTurn",
     };

@@ -9,24 +9,22 @@ export default class WinLoseViewController {
   }
 
   display(isVictory, userData, opponentData, reasonString) {
-
-    let winLoseLabel = this._view.getElementById('win-lose-label');
-
-    let reason = this._view.getElementById('winning-losing-reason');
+    let winLoseLabel = this._view.getElementById('winLoseLabel');
+    let reason = this._view.getElementById('winningLosingReason');
     reason.innerHTML = reasonString;
 
-    let myIcon = this._view.getElementById('winning-losing-my-icon');
-    let myName = this._view.getElementById('winning-losing-my-name');
+    let myIcon = this._view.getElementById('winningLosingMyIcon');
+    let myName = this._view.getElementById('winningLosingMyName');
     myIcon.src = userData.imageSrc;
     myName.innerHTML = userData.name;
 
-    let opponentIcon = this._view.getElementById('winning-losing-opponent-icon');
-    let opponentName = this._view.getElementById('winning-losing-opponent-name');
+    let opponentIcon = this._view.getElementById('winningLosingOpponentIcon');
+    let opponentName = this._view.getElementById('winningLosingOpponentName');
     opponentIcon.src = opponentData.imageSrc;
     opponentName.innerHTML = opponentData.name;
 
-    let winnerIcon = this._view.getElementById('winner-icon');
-    let loserIcon = this._view.getElementById('loser-icon');
+    let winnerIcon = this._view.getElementById('winnerIcon');
+    let loserIcon = this._view.getElementById('loserIcon');
 
     if (isVictory) {
       winnerIcon.style.top = "150px";
@@ -41,8 +39,7 @@ export default class WinLoseViewController {
       loserIcon.style.left = "10px";
       winLoseLabel.innerHTML = "You Lose";
     }
-    let winningLosingArea = this._view.getElementById('winning-losing-area');
+    let winningLosingArea = this._view.getElementById('winningLosingArea');
     winningLosingArea.style.display = "block";
-
   }
 }

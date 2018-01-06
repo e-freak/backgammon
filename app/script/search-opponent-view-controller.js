@@ -29,7 +29,7 @@ var SearchOpponentViewController = (function () {
   _createClass(SearchOpponentViewController, [{
     key: 'initialize',
     value: function initialize() {
-      this._view.getElementById('searchOpponent-go-top-button').addEventListener('click', this.onClickGotoTopButton.bind(this));
+      this._view.getElementById('searchOpponentGoToTopButton').addEventListener('click', this.onClickGotoTopButton.bind(this));
     }
   }, {
     key: 'setVersusView',
@@ -37,22 +37,22 @@ var SearchOpponentViewController = (function () {
       // 自分の名前をJSONから取得
       var userName = this._userSettingController.loadUserNameFromJSON();
       // 自分の名前を設定
-      var myNameLabel = this._view.getElementById('my-name');
+      var myNameLabel = this._view.getElementById('searchResultsMyName');
       myNameLabel.innerHTML = userName;
 
       // 自分のアイコンをJSONから取得
       var base64 = this._userSettingController.loadImageBase64FromJSON();
       // 自分のアイコンを設定
-      var iconImage = this._view.getElementById('my-icon');
+      var iconImage = this._view.getElementById('searchResultsMyIcon');
       var iconImageSrc = this._getImagesrcWithBase64(base64);
       iconImage.src = iconImageSrc;
 
       // 相手の名前を設定
-      var opponentNameLabel = this._view.getElementById('opponent-name');
+      var opponentNameLabel = this._view.getElementById('searchResultsOpponentName');
       opponentNameLabel.innerHTML = opponent_userName;
 
       // 相手のアイコンを設定
-      var opponentIconImage = this._view.getElementById('opponent-icon');
+      var opponentIconImage = this._view.getElementById('searchResultsOpponentIcon');
       var opponentIconImageSrc = this._getImagesrcWithBase64(opponent_icon);
       opponentIconImage.src = opponentIconImageSrc;
     }
@@ -85,7 +85,7 @@ var SearchOpponentViewController = (function () {
       searchingLabel.style.display = "none";
 
       // 対戦相手を表示
-      var target = this._view.getElementById('search-results');
+      var target = this._view.getElementById('searchResults');
       target.style.display = "block";
     }
   }, {

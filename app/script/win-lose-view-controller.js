@@ -21,24 +21,22 @@ var WinLoseViewController = (function () {
   }, {
     key: 'display',
     value: function display(isVictory, userData, opponentData, reasonString) {
-
-      var winLoseLabel = this._view.getElementById('win-lose-label');
-
-      var reason = this._view.getElementById('winning-losing-reason');
+      var winLoseLabel = this._view.getElementById('winLoseLabel');
+      var reason = this._view.getElementById('winningLosingReason');
       reason.innerHTML = reasonString;
 
-      var myIcon = this._view.getElementById('winning-losing-my-icon');
-      var myName = this._view.getElementById('winning-losing-my-name');
+      var myIcon = this._view.getElementById('winningLosingMyIcon');
+      var myName = this._view.getElementById('winningLosingMyName');
       myIcon.src = userData.imageSrc;
       myName.innerHTML = userData.name;
 
-      var opponentIcon = this._view.getElementById('winning-losing-opponent-icon');
-      var opponentName = this._view.getElementById('winning-losing-opponent-name');
+      var opponentIcon = this._view.getElementById('winningLosingOpponentIcon');
+      var opponentName = this._view.getElementById('winningLosingOpponentName');
       opponentIcon.src = opponentData.imageSrc;
       opponentName.innerHTML = opponentData.name;
 
-      var winnerIcon = this._view.getElementById('winner-icon');
-      var loserIcon = this._view.getElementById('loser-icon');
+      var winnerIcon = this._view.getElementById('winnerIcon');
+      var loserIcon = this._view.getElementById('loserIcon');
 
       if (isVictory) {
         winnerIcon.style.top = "150px";
@@ -53,7 +51,7 @@ var WinLoseViewController = (function () {
         loserIcon.style.left = "10px";
         winLoseLabel.innerHTML = "You Lose";
       }
-      var winningLosingArea = this._view.getElementById('winning-losing-area');
+      var winningLosingArea = this._view.getElementById('winningLosingArea');
       winningLosingArea.style.display = "block";
     }
   }]);

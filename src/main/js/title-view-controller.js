@@ -19,9 +19,9 @@ export default class TitleViewController {
   initialize() {
     this._view.getElementById('main').addEventListener('drop', this.banDrop.bind(this));
 
-    this._view.getElementById('button-battle').addEventListener('click', this.onClickBattleButton.bind(this));
-    this._view.getElementById('button-register').addEventListener('click', this.onClickRegisterButton.bind(this));
-    this._view.getElementById('button-buy').addEventListener('click', this.onClickChipsBuyButton.bind(this));
+    this._view.getElementById('battleStartButton').addEventListener('click', this.onClickBattleButton.bind(this));
+    this._view.getElementById('userInfoRegisterButton').addEventListener('click', this.onClickRegisterButton.bind(this));
+    this._view.getElementById('chipsBuyButton').addEventListener('click', this.onClickChipsBuyButton.bind(this));
     this._dropArea = this._view.getElementById('dropArea');
     this._fileInput = this._view.getElementById('fileInput');
 
@@ -70,6 +70,7 @@ export default class TitleViewController {
 
     chipsValueLabel.innerHTML = "$" + chips;
   }
+
   onClickRegisterButton() {
     // ユーザー名が設定されているか
     var userName = this._view.getElementById('nameValue').value;
@@ -101,7 +102,6 @@ export default class TitleViewController {
     // メニューを閉じる
     var clickMe = document.getElementById("showMenu");
     clickMe.click();
-
   }
 
   // ドラッグ中の要素がドロップ要素に重なった時
@@ -130,7 +130,6 @@ export default class TitleViewController {
   imageClick() {
     this._fileInput.click();
   }
-
 
   // ファイル参照で画像を追加した場合
   fileInputChange(ev) {
@@ -240,9 +239,7 @@ export default class TitleViewController {
         // #output へ出力
         dropArea.appendChild(image);
       });
-
     }
-
 
     // 対戦成績を設定
 
@@ -252,7 +249,6 @@ export default class TitleViewController {
       var chipsValueLabel = this._view.getElementById('chipsValueLabelArea');
       chipsValueLabel.innerHTML = "$" + chips;
     }
-
 
     // ユーザー名が登録されていない場合は、ユーザー情報設定画面を表示してあげる
     if (userName === undefined) {

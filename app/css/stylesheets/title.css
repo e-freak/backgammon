@@ -19,9 +19,9 @@ div.title {
   margin-top: 20px;
 }
 
-div.menue-field {}
+div.menu-field {}
 
-button.menu {
+button.battle-start-button {
   margin-top: 100px;
   background-color: transparent;
   border: 0;

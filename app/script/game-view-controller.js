@@ -52,14 +52,14 @@ var GameViewController = (function () {
     this._notificationTimeup = this._notificationTimeup.bind(this);
     this._informationViewController = new _scriptInformationViewController2['default'](this._view, this._notificationTimeup);
 
-    var myFirstDiceButton = this._view.getElementById('my-firstDice-button');
-    var mySecoundDiceButton = this._view.getElementById('my-secoundDice-button');
-    var opponentFirstDiceButton = this._view.getElementById('opponent-firstDice-button');
-    var opponentSecoundDiceButton = this._view.getElementById('opponent-secoundDice-button');
+    var myFirstDiceButton = this._view.getElementById('myFirstDiceButton');
+    var mySecoundDiceButton = this._view.getElementById('mySecoundDiceButton');
+    var opponentFirstDiceButton = this._view.getElementById('opponentFirstDiceButton');
+    var opponentSecoundDiceButton = this._view.getElementById('opponentSecoundDiceButton');
     this._notificationFirstShakeDice = this._notificationFirstShakeDice.bind(this);
     this._notificationShakeDice = this._notificationShakeDice.bind(this);
     this._notificationChangeTurn = this._notificationChangeTurn.bind(this);
-    var diceBorderElements = this._view.getElementsByClassName("diceBorderBaseStyle");
+    var diceBorderElements = this._view.getElementsByClassName("dice-border-base");
 
     this._diceController = new _scriptDiceController2['default'](myFirstDiceButton, mySecoundDiceButton, opponentFirstDiceButton, opponentSecoundDiceButton, diceBorderElements, this._notificationFirstShakeDice, this._notificationShakeDice, this._notificationChangeTurn);
 
@@ -73,8 +73,8 @@ var GameViewController = (function () {
     this.notificationOfReceiveMessage = this.notificationOfReceiveMessage.bind(this);
     this._peerController = new _scriptPeerController2['default'](this.notificationOfReceiveMessage);
 
-    this._undoButton = this._view.getElementById('undo-button');
-    this._giveupButton = this._view.getElementById('giveup-button');
+    this._undoButton = this._view.getElementById('undoButton');
+    this._giveupButton = this._view.getElementById('giveupButton');
 
     this._winloseViewController = new _scriptWinLoseViewController2['default'](this._view);
   }
@@ -82,7 +82,6 @@ var GameViewController = (function () {
   _createClass(GameViewController, [{
     key: 'initialize',
     value: function initialize() {
-
       this._undoButton.addEventListener('click', this._onClickUndoButton.bind(this));
       this._giveupButton.addEventListener('click', this._onClickGiveupButton.bind(this));
 
@@ -225,11 +224,11 @@ var GameViewController = (function () {
       // コマを配りたい
       var myPieceButtons = this._pieceController.appendMyPiece();
       myPieceButtons.forEach((function (value) {
-        this._view.getElementById("board-area").appendChild(value);
+        this._view.getElementById("boardArea").appendChild(value);
       }).bind(this));
       var opponentPieceButtons = this._pieceController.appendOpponentPiece();
       opponentPieceButtons.forEach((function (value) {
-        this._view.getElementById("board-area").appendChild(value);
+        this._view.getElementById("boardArea").appendChild(value);
       }).bind(this));
     }
   }, {
@@ -306,11 +305,11 @@ var GameViewController = (function () {
     value: function _notificationFirstShakeDice(myPip, opponentPip) {
       // 順番を表示(first or second)
       if (myPip > opponentPip) {
-        this._view.getElementById('first-smoky').style.display = "block"; // 表示
+        this._view.getElementById('firstSmoky').style.display = "block"; // 表示
         // コマを動かせる
         this._isMyTurn = true;
       } else {
-        this._view.getElementById('second-smoky').style.display = "block"; // 表示
+        this._view.getElementById('secondSmoky').style.display = "block"; // 表示
         // コマを動かせない
         this._isMyTurn = false;
       }

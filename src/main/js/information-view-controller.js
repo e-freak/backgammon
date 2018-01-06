@@ -25,7 +25,7 @@ export default class InformationViewController {
 
     this._userSettingController = new UserSettingController();
 
-    this._informationAreaWrapper = this._view.getElementById('information-area-wrapper');
+    this._informationAreaWrapper = this._view.getElementById('informationAreaWrapper');
   }
 
   initialize(opponentName, opponentIconBase64) {
@@ -33,17 +33,19 @@ export default class InformationViewController {
     this.setMyIcon();
     this.setOpponentName(opponentName);
     this.setOpponentIcon(opponentIconBase64);
-    this._myPipElement = this._view.getElementById('my-pipCount');
-    this._myTimeElement = this._view.getElementById('my-timeLimit');
+    this._myPipElement = this._view.getElementById('myPipCount');
+    this._myTimeElement = this._view.getElementById('myTimeLimit');
 
-    this._opponentPipElement = this._view.getElementById('opponent-pipCount');
-    this._opponentTimeElement = this._view.getElementById('opponent-timeLimit');
+    this._opponentPipElement = this._view.getElementById('opponentPipCount');
+    this._opponentTimeElement = this._view.getElementById('opponentTimeLimit');
 
     this._informationAreaWrapper.style.display = "block";
   }
+
   hideWrapper() {
     this._informationAreaWrapper.style.display = "none";
   }
+
   setIsTuru(flag) {
     this._isTurn = flag;
   }
@@ -99,6 +101,7 @@ export default class InformationViewController {
     this._myPipCount -= count;
     this._myPipElement.innerText = String(this._myPipCount);
   }
+
   updateOpponentPipCount(count) {
     this._opponentPipCount -= count;
     this._opponentPipElement.innerText = String(this._opponentPipCount);
@@ -106,31 +109,30 @@ export default class InformationViewController {
 
   setMyName() {
     var name = this._userSettingController.loadUserNameFromJSON();
-    var myNameElement = this._view.getElementById('my-information-name');
+    var myNameElement = this._view.getElementById('myInformationName');
     myNameElement.innerHTML = name;
 
     this._myData["name"] = name;
   }
 
-
   setMyIcon(iconSrc) {
     var base64 = this._userSettingController.loadImageBase64FromJSON();
     var iconImageSrc = this._getImagesrcWithBase64(base64);
-    var myIcon = this._view.getElementById('my-information-icon');
+    var myIcon = this._view.getElementById('myInformationIcon');
     myIcon.src = iconImageSrc;
 
     this._myData["imageSrc"] = myIcon.src;
   }
 
   setOpponentName(name) {
-    var opponentName = this._view.getElementById('opponent-information-name');
+    var opponentName = this._view.getElementById('opponentInformationName');
     opponentName.innerHTML = name;
 
     this._opponentData["name"] = name;
   }
 
   setOpponentIcon(icon) {
-    var opponentIcon = this._view.getElementById('opponent-information-icon');
+    var opponentIcon = this._view.getElementById('opponentInformationIcon');
     var opponentIconImageSrc = this._getImagesrcWithBase64(icon);
     opponentIcon.src = opponentIconImageSrc;
 
@@ -164,5 +166,4 @@ export default class InformationViewController {
     }
     return src;
   }
-
 }

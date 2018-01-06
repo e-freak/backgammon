@@ -11,17 +11,17 @@ div.searchOpponentArea {
   background-color: rgba(0, 0, 0, 0.8);
 }
 
-span.loading {
+span.searching {
   position: relative;
   display: inline-block;
-  top: 150px;
-  left: 231px;
+  top: 130px;
+  left: 156px;
   font-family: "arial black", sans-serif;
   font-size: xx-large;
   color: #FFF;
 }
 
-span.loading span {
+span.searching span {
   position: absolute;
   display: inline-block;
   left: 0;
@@ -30,11 +30,11 @@ span.loading span {
   height: 2px;
   background-position: 0 0;
   background-image: linear-gradient(to right, #FFF, transparent);
-  -webkit-animation: animation 2s linear infinite;
-  animation: animation 2s linear infinite;
+  -webkit-animation: searchingAnimation 2s linear infinite;
+  animation: searchingAnimation 2s linear infinite;
 }
 
-@keyframes animation {
+@keyframes searchingAnimation {
   0% {
     width: 0;
     background-color: transparent;

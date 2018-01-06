@@ -81,8 +81,8 @@ var SearchOpponentViewController = (function () {
     key: 'displayVersusView',
     value: function displayVersusView() {
       // 対戦相手待ちのラベルを非表示にする
-      var loadingLabel = this._view.getElementById('loadingLabel');
-      loadingLabel.style.display = "none";
+      var searchingLabel = this._view.getElementById('searchingLabel');
+      searchingLabel.style.display = "none";
 
       // 対戦相手を表示
       var target = this._view.getElementById('search-results');

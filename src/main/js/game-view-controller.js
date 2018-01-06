@@ -56,8 +56,6 @@ export default class GameViewController {
     this._giveupButton = this._view.getElementById('giveup-button');
 
     this._winloseViewController = new WinLoseViewController(this._view);
-
-
   }
 
   initialize() {

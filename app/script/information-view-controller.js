@@ -15,10 +15,11 @@ var _scriptUserSettingController = require('../script/user-setting-controller');
 var _scriptUserSettingController2 = _interopRequireDefault(_scriptUserSettingController);
 
 var InformationViewController = (function () {
-  function InformationViewController(view) {
+  function InformationViewController(view, notificationTimeup) {
     _classCallCheck(this, InformationViewController);
 
     this._view = view;
+    this._notificationTimeup = notificationTimeup;
     this._myPipCount = 167;
     this._myTimeLimit = 600; // 制限時間
     this._opponentPipCount = 167;
@@ -39,7 +40,6 @@ var InformationViewController = (function () {
     this._userSettingController = new _scriptUserSettingController2['default']();
 
     this._informationAreaWrapper = this._view.getElementById('information-area-wrapper');
-    //    this._balloonMessageElement = this._view.getElementById('balloon-message');
   }
 
   _createClass(InformationViewController, [{
@@ -56,8 +56,6 @@ var InformationViewController = (function () {
       this._opponentTimeElement = this._view.getElementById('opponent-timeLimit');
 
       this._informationAreaWrapper.style.display = "block";
-
-      //    this._balloonMessageElement.style.display = "none";
     }
   }, {
     key: 'hideWrapper',
@@ -90,13 +88,16 @@ var InformationViewController = (function () {
       var id = setTimeout(this._startMyTimeLimit.bind(this), 1000);
       if (this._isTurn === false || this._isTimerForcedTermination === true) {
         clearTimeout(id); //idをclearTimeoutで指定している
+        return;
       }
-      var min = ("00" + String(Math.floor(this._myTimeLimit / 60))).slice(-2);
-      var second = ("00" + String(this._myTimeLimit % 60)).slice(-2);
-      this._myTimeElement.innerText = min + ":" + second;
       if (this._myTimeLimit < 0) {
         this._isTimerForcedTermination = true;
-        alert("時間切れ〜");
+        // 時間切れをGame View Controllerに通知
+        this._notificationTimeup();
+      } else {
+        var min = ("00" + String(Math.floor(this._myTimeLimit / 60))).slice(-2);
+        var second = ("00" + String(this._myTimeLimit % 60)).slice(-2);
+        this._myTimeElement.innerText = min + ":" + second;
       }
     }
   }, {
@@ -106,14 +107,16 @@ var InformationViewController = (function () {
       var id = setTimeout(this._startOpponentTimeLimit.bind(this), 1000);
       if (this._isTurn === true || this._isTimerForcedTermination === true) {
         clearTimeout(id); //idをclearTimeoutで指定している
+        return;
       }
-      var min = ("00" + String(Math.floor(this._opponentTimeLimit / 60))).slice(-2);
-      var second = ("00" + String(this._opponentTimeLimit % 60)).slice(-2);
-      this._opponentTimeElement.innerText = min + ":" + second;
       if (this._opponentTimeLimit < 0) {
         this._isTimerForcedTermination = true;
-        alert("対戦相手の時間切れ〜");
-      }
+        // 対戦相手の時間切れはこちらからは通知しない（対戦相手側から通知される）
+      } else {
+          var min = ("00" + String(Math.floor(this._opponentTimeLimit / 60))).slice(-2);
+          var second = ("00" + String(this._opponentTimeLimit % 60)).slice(-2);
+          this._opponentTimeElement.innerText = min + ":" + second;
+        }
     }
   }, {
     key: 'updateMyPipCount',

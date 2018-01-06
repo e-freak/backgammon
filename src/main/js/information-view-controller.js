@@ -2,15 +2,16 @@ import UserSettingController from '../script/user-setting-controller';
 
 export default class InformationViewController {
 
-  constructor(view) {
+  constructor(view, notificationTimeup) {
     this._view = view;
+    this._notificationTimeup = notificationTimeup;
     this._myPipCount = 167;
     this._myTimeLimit = 600; // 制限時間
     this._opponentPipCount = 167;
     this._opponentTimeLimit = 600; // 制限時間
 
-    this._myData={};
-    this._opponentData={};
+    this._myData = {};
+    this._opponentData = {};
 
 
     this._isTurn = true; // 自分のターンか？
@@ -25,8 +26,6 @@ export default class InformationViewController {
     this._userSettingController = new UserSettingController();
 
     this._informationAreaWrapper = this._view.getElementById('information-area-wrapper');
-//    this._balloonMessageElement = this._view.getElementById('balloon-message');
-
   }
 
   initialize(opponentName, opponentIconBase64) {
@@ -41,8 +40,6 @@ export default class InformationViewController {
     this._opponentTimeElement = this._view.getElementById('opponent-timeLimit');
 
     this._informationAreaWrapper.style.display = "block";
-
-//    this._balloonMessageElement.style.display = "none";
   }
   hideWrapper() {
     this._informationAreaWrapper.style.display = "none";
@@ -56,9 +53,9 @@ export default class InformationViewController {
   }
 
   startTime() {
-    if (this._isTurn){
+    if (this._isTurn) {
       this._startMyTimeLimit();
-    }else{
+    } else {
       this._startOpponentTimeLimit();
     }
   }
@@ -68,13 +65,16 @@ export default class InformationViewController {
     var id = setTimeout(this._startMyTimeLimit.bind(this), 1000);
     if (this._isTurn === false || this._isTimerForcedTermination === true) {　
       clearTimeout(id);　 //idをclearTimeoutで指定している
+      return;
     }
-    var min = ("00" + String(Math.floor(this._myTimeLimit / 60))).slice(-2);
-    var second = ("00" + String(this._myTimeLimit % 60)).slice(-2);
-    this._myTimeElement.innerText = min + ":" + second;
-    if (this._myTimeLimit < 0){
+    if (this._myTimeLimit < 0) {
       this._isTimerForcedTermination = true;
-      alert("時間切れ〜");
+      // 時間切れをGame View Controllerに通知
+      this._notificationTimeup();
+    } else {
+      var min = ("00" + String(Math.floor(this._myTimeLimit / 60))).slice(-2);
+      var second = ("00" + String(this._myTimeLimit % 60)).slice(-2);
+      this._myTimeElement.innerText = min + ":" + second;
     }
   }
 
@@ -83,13 +83,15 @@ export default class InformationViewController {
     var id = setTimeout(this._startOpponentTimeLimit.bind(this), 1000);
     if (this._isTurn === true || this._isTimerForcedTermination === true) {　
       clearTimeout(id);　 //idをclearTimeoutで指定している
+      return;
     }
-    var min = ("00" + String(Math.floor(this._opponentTimeLimit / 60))).slice(-2);
-    var second =  ("00" + String(this._opponentTimeLimit % 60)).slice(-2);
-    this._opponentTimeElement.innerText = min + ":" + second;
-    if (this._opponentTimeLimit < 0){
+    if (this._opponentTimeLimit < 0) {
       this._isTimerForcedTermination = true;
-      alert("対戦相手の時間切れ〜");
+      // 対戦相手の時間切れはこちらからは通知しない（対戦相手側から通知される）
+    } else {
+      var min = ("00" + String(Math.floor(this._opponentTimeLimit / 60))).slice(-2);
+      var second = ("00" + String(this._opponentTimeLimit % 60)).slice(-2);
+      this._opponentTimeElement.innerText = min + ":" + second;
     }
   }
 
@@ -135,11 +137,11 @@ export default class InformationViewController {
     this._opponentData["imageSrc"] = opponentIcon.src;
   }
 
-  getMyData(){
+  getMyData() {
     return this._myData;
   }
 
-  getOpponentData(){
+  getOpponentData() {
     return this._opponentData;
   }
 

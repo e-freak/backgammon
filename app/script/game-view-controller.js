@@ -49,7 +49,8 @@ var GameViewController = (function () {
     // this.notificationSearchCompleted = this.notificationSearchCompleted.bind(this);
     this._searchOpponentViewController = new _scriptSearchOpponentViewController2['default'](this._view);
 
-    this._informationViewController = new _scriptInformationViewController2['default'](this._view);
+    this._notificationTimeup = this._notificationTimeup.bind(this);
+    this._informationViewController = new _scriptInformationViewController2['default'](this._view, this._notificationTimeup);
 
     var myFirstDiceButton = this._view.getElementById('my-firstDice-button');
     var mySecoundDiceButton = this._view.getElementById('my-secoundDice-button');
@@ -283,6 +284,21 @@ var GameViewController = (function () {
         "isVictory": true,
         "reasonString": "Give UP"
       };
+      this._peerController.sendMatchResult(matchResult);
+    }
+  }, {
+    key: '_notificationTimeup',
+    value: function _notificationTimeup() {
+      // Giveup画面を表示
+      var myData = this._informationViewController.getMyData();
+      var opponentData = this._informationViewController.getOpponentData();
+      this._winloseViewController.display(false, myData, opponentData, "Time UP");
+      // 対戦相手に通知
+      var matchResult = {
+        "isVictory": true,
+        "reasonString": "Time UP"
+      };
+      // time up を対戦相手に通知
       this._peerController.sendMatchResult(matchResult);
     }
   }, {

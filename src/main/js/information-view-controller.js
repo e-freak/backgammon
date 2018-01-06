@@ -25,7 +25,7 @@ export default class InformationViewController {
     this._userSettingController = new UserSettingController();
 
     this._informationAreaWrapper = this._view.getElementById('information-area-wrapper');
-    this._balloonMessageElement = this._view.getElementById('balloon-message');
+//    this._balloonMessageElement = this._view.getElementById('balloon-message');
 
   }
 
@@ -42,7 +42,7 @@ export default class InformationViewController {
 
     this._informationAreaWrapper.style.display = "block";
 
-    this._balloonMessageElement.style.display = "none";
+//    this._balloonMessageElement.style.display = "none";
   }
   hideWrapper() {
     this._informationAreaWrapper.style.display = "none";
@@ -143,14 +143,6 @@ export default class InformationViewController {
     return this._opponentData;
   }
 
-  displayBalloonMessage(message){
-    this._balloonMessageElement.style.display = "block"
-    this._balloonMessageElement.innerHTML = message;
-  }
-  clearBalloonMessage(){
-    this._balloonMessageElement.style.display = "none"
-    this._balloonMessageElement.innerHTML = "";
-  }
   _getImagesrcWithBase64(base64) {
     // ファイル形式は先頭3文字で判断する
     var first3Char = base64.substring(0, 3);

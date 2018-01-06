@@ -58,7 +58,9 @@ var GameViewController = (function () {
     this._notificationFirstShakeDice = this._notificationFirstShakeDice.bind(this);
     this._notificationShakeDice = this._notificationShakeDice.bind(this);
     this._notificationChangeTurn = this._notificationChangeTurn.bind(this);
-    this._diceController = new _scriptDiceController2['default'](myFirstDiceButton, mySecoundDiceButton, opponentFirstDiceButton, opponentSecoundDiceButton, this._notificationFirstShakeDice, this._notificationShakeDice, this._notificationChangeTurn);
+    var diceBorderElements = this._view.getElementsByClassName("diceBorderBaseStyle");
+
+    this._diceController = new _scriptDiceController2['default'](myFirstDiceButton, mySecoundDiceButton, opponentFirstDiceButton, opponentSecoundDiceButton, diceBorderElements, this._notificationFirstShakeDice, this._notificationShakeDice, this._notificationChangeTurn);
 
     this._notificationMovedPiece = this._notificationMovedPiece.bind(this);
     this._notificationMovedPieceToBar = this._notificationMovedPieceToBar.bind(this);
@@ -167,7 +169,8 @@ var GameViewController = (function () {
         var isMovable = this._pieceController.isMovableMyPiece();
         if (isMovable === false) {
           // 移動できない場合、_diceControllerに伝えて、ターン交代できるようにする
-          this._informationViewController.displayBalloonMessage("これ以上コマを動かせられません！！");
+          // サイコロの枠を表示する
+          this._diceController.displayDiceBorder();
           this._diceController.allowTurnChange();
         }
       }
@@ -263,7 +266,7 @@ var GameViewController = (function () {
       // Pip Countを更新
       this._informationViewController.updateMyPipCount(undoMyPiece.destPoint - undoMyPiece.sourcePoint);
 
-      this._informationViewController.clearBalloonMessage();
+      this._diceController.clearDiceBorder();
     }
   }, {
     key: '_onClickGiveupButton',
@@ -329,7 +332,7 @@ var GameViewController = (function () {
       // タイマースタート
       this._informationViewController.startTime();
 
-      this._informationViewController.clearBalloonMessage();
+      this._diceController.clearDiceBorder();
     }
   }, {
     key: '_notificationMovedPiece',
@@ -355,8 +358,9 @@ var GameViewController = (function () {
       // まだ移動できるかを確認
       var isMovable = this._pieceController.isMovableMyPiece();
       if (isMovable === false) {
+        // サイコロの枠を表示する
+        this._diceController.displayDiceBorder();
         // 移動できない場合、_diceControllerに伝えて、ターン交代できるようにする
-        this._informationViewController.displayBalloonMessage("これ以上コマを動かせられません！！");
         this._diceController.allowTurnChange();
       }
     }

@@ -2,7 +2,7 @@ import 'babel-polyfill';
 
 export default class DiceController {
 
-  constructor(myFirstDiceButton, mySecoundDiceButton, opponentFirstDiceButton, opponentSecoundDiceButton, notificationFirstShakeDice, notificationShakeDice, notificationChangeTurn) {
+  constructor(myFirstDiceButton, mySecoundDiceButton, opponentFirstDiceButton, opponentSecoundDiceButton, diceBorderElements, notificationFirstShakeDice, notificationShakeDice, notificationChangeTurn) {
     this._imageMyDiceResource = []; // 自分のサイコロの画像(indexはサイコロの目と対応, index=0は使用しない)
     this._imageOpponentDiceResource = []; // 相手のサイコロの画像(indexはサイコロの目と対応, index=0は使用しない)
 
@@ -10,6 +10,8 @@ export default class DiceController {
     this._mySecoundDiceButton = mySecoundDiceButton;
     this._opponentFirstDiceButton = opponentFirstDiceButton;
     this._opponentSecoundDiceButton = opponentSecoundDiceButton;
+
+    this._diceBorderElements = diceBorderElements;
 
     // サイコロを振り終わった後に呼ばれるメソッド
     this._notificationFirstShakeDice = notificationFirstShakeDice;
@@ -34,6 +36,9 @@ export default class DiceController {
     this._mySecoundDiceButton.addEventListener('click', this._onClickDiceButton.bind(this));
     this._opponentFirstDiceButton.addEventListener('click', this._onClickDiceButton.bind(this));
     this._opponentSecoundDiceButton.addEventListener('click', this._onClickDiceButton.bind(this));
+
+    // サイコロの枠を非表示にする
+    this.clearDiceBorder();
   }
 
   // ゲーム開始時にサイコロを振る
@@ -102,6 +107,9 @@ export default class DiceController {
     this._myFirstDiceButton.style.left = ""
 
     this.isAllowTurnChange = false;
+
+    // サイコロの枠を非表示にする
+    this.clearDiceBorder();
   }
 
   movedPiece(point) {
@@ -244,6 +252,19 @@ export default class DiceController {
 
     if (flag || this.isAllowTurnChange) {
       this._notificationChangeTurn();
+    }
+  }
+
+  displayDiceBorder() {
+    // サイコロの枠を表示する
+    for (let index = 0; index < this._diceBorderElements.length; index++){
+      this._diceBorderElements[index].style.display = "block";
+    }
+  }
+  clearDiceBorder() {
+    // サイコロの枠を非表示にする
+    for (let index = 0; index < this._diceBorderElements.length; index++){
+      this._diceBorderElements[index].style.display = "none";
     }
   }
 

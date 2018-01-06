@@ -129,33 +129,6 @@ button.opponent-secoundDice {
   outline:none;
 }
 
-button.dice-border {
-  display: none;
-  position: absolute;
-  top: 240px;
-  left: 410px;
-  width: 200px;
-  height: 100px;
-  border:0;
-  background:none;
-  outline:none;
-  animation: flashingAnimation 1s linear infinite;
-  -webkit-animation:flashingAnimation 1s linear infinite;
-}
-
-@keyframes flashingAnimation {
-    0% {
-        opacity: 0.0;
-    }
-    50% {
-        opacity: 1.0;
-    }
-    100% {
-        opacity: 0.0;
-    }
-}
-
-
 img.piece-field {
   width: 50px;
   height: 50px;
@@ -313,27 +286,84 @@ img.icon-image {
   max-height:90px;
 }
 
-
-div.balloon-message {
- 	position: absolute;
-	display: none;
- 	margin: 1.5em 15px 1.5em 0;
-	padding: 7px 10px;
-	min-width: 280px;
- 	max-width: 100%;
- 	color: white;
-	font-size: 16px;
-	background: #3cb371;
-  top: 25px;
-  left: -310px;
+hr.diceBorderBaseStyle{
+  position: absolute;
+  border: 1px solid #00f;
+  animation: diceBorderStyleAnimation 1.0s ease-out infinite alternate;
 }
 
-div.balloon-messag:before{
-	content: "";
-	position: absolute;
-	top: 50%;
-	left: 100%;
- 	margin-top: -15px;
-	border: 15px solid transparent;
-	border-left: 15px solid #3cb371;
+@keyframes diceBorderStyleAnimation{
+0% {opacity: 0;}
+50% {opacity: 1;}
+100% {opacity: 0;}
+}
+
+hr.diceBorderStyle1{
+  top: 256px;
+  left: 453px;
+  width: 35px;
+  transform: rotate(-31deg);
+}
+
+hr.diceBorderStyle2{
+  top: 283px;
+  left: 438px; /*108px*/
+  width: 34px;
+  transform: rotate(-90deg);
+}
+
+hr.diceBorderStyle3{
+  top: 309px;
+  left: 453px;
+  width: 35px;
+  transform: rotate(30deg);
+}
+
+hr.diceBorderStyle4{
+  top: 310px;
+  left: 485px;
+  width: 28px;
+  transform: rotate(-30deg);
+}
+
+hr.diceBorderStyle5{
+  top: 310px;
+  left: 510px;
+  width: 30px;
+  transform: rotate(30deg);
+}
+
+hr.diceBorderStyle6{
+  top: 309px;
+  left: 537px;
+  width: 34px;
+  transform: rotate(-30deg);
+}
+
+hr.diceBorderStyle7{
+  top: 283px;
+  left: 552px;
+  width: 34px;
+  transform: rotate(-90deg);
+}
+
+hr.diceBorderStyle8{
+  top: 256px;
+  left: 537px;
+  width: 34px;
+  transform: rotate(31deg);
+}
+
+hr.diceBorderStyle9{
+  top: 254px;
+  left: 511px;
+  width: 29px;
+  transform: rotate(-30deg);
+}
+
+hr.diceBorderStyle10{
+  top: 254px;
+  left: 485px;
+  width: 29px;
+  transform: rotate(30deg);
 }

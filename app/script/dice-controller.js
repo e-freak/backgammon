@@ -11,7 +11,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 require('babel-polyfill');
 
 var DiceController = (function () {
-  function DiceController(myFirstDiceButton, mySecoundDiceButton, opponentFirstDiceButton, opponentSecoundDiceButton, notificationFirstShakeDice, notificationShakeDice, notificationChangeTurn) {
+  function DiceController(myFirstDiceButton, mySecoundDiceButton, opponentFirstDiceButton, opponentSecoundDiceButton, diceBorderElements, notificationFirstShakeDice, notificationShakeDice, notificationChangeTurn) {
     _classCallCheck(this, DiceController);
 
     this._imageMyDiceResource = []; // 自分のサイコロの画像(indexはサイコロの目と対応, index=0は使用しない)
@@ -21,6 +21,8 @@ var DiceController = (function () {
     this._mySecoundDiceButton = mySecoundDiceButton;
     this._opponentFirstDiceButton = opponentFirstDiceButton;
     this._opponentSecoundDiceButton = opponentSecoundDiceButton;
+
+    this._diceBorderElements = diceBorderElements;
 
     // サイコロを振り終わった後に呼ばれるメソッド
     this._notificationFirstShakeDice = notificationFirstShakeDice;
@@ -47,6 +49,9 @@ var DiceController = (function () {
       this._mySecoundDiceButton.addEventListener('click', this._onClickDiceButton.bind(this));
       this._opponentFirstDiceButton.addEventListener('click', this._onClickDiceButton.bind(this));
       this._opponentSecoundDiceButton.addEventListener('click', this._onClickDiceButton.bind(this));
+
+      // サイコロの枠を非表示にする
+      this.clearDiceBorder();
     }
 
     // ゲーム開始時にサイコロを振る
@@ -120,6 +125,9 @@ var DiceController = (function () {
       this._myFirstDiceButton.style.left = "";
 
       this.isAllowTurnChange = false;
+
+      // サイコロの枠を非表示にする
+      this.clearDiceBorder();
     }
   }, {
     key: "movedPiece",
@@ -343,6 +351,22 @@ var DiceController = (function () {
 
       if (flag || this.isAllowTurnChange) {
         this._notificationChangeTurn();
+      }
+    }
+  }, {
+    key: "displayDiceBorder",
+    value: function displayDiceBorder() {
+      // サイコロの枠を表示する
+      for (var index = 0; index < this._diceBorderElements.length; index++) {
+        this._diceBorderElements[index].style.display = "block";
+      }
+    }
+  }, {
+    key: "clearDiceBorder",
+    value: function clearDiceBorder() {
+      // サイコロの枠を非表示にする
+      for (var index = 0; index < this._diceBorderElements.length; index++) {
+        this._diceBorderElements[index].style.display = "none";
       }
     }
   }, {

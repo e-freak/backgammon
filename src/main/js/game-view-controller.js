@@ -30,10 +30,13 @@ export default class GameViewController {
     this._notificationFirstShakeDice = this._notificationFirstShakeDice.bind(this);
     this._notificationShakeDice = this._notificationShakeDice.bind(this);
     this._notificationChangeTurn = this._notificationChangeTurn.bind(this);
+    var diceBorderElements = this._view.getElementsByClassName("diceBorderBaseStyle");
+
     this._diceController = new DiceController(myFirstDiceButton,
       mySecoundDiceButton,
       opponentFirstDiceButton,
       opponentSecoundDiceButton,
+      diceBorderElements,
       this._notificationFirstShakeDice,
       this._notificationShakeDice,
       this._notificationChangeTurn);
@@ -144,7 +147,8 @@ export default class GameViewController {
       var isMovable = this._pieceController.isMovableMyPiece();
       if (isMovable === false) {
         // 移動できない場合、_diceControllerに伝えて、ターン交代できるようにする
-        this._informationViewController.displayBalloonMessage("これ以上コマを動かせられません！！");
+        // サイコロの枠を表示する
+        this._diceController.displayDiceBorder();
         this._diceController.allowTurnChange();
       }
     }
@@ -235,7 +239,7 @@ export default class GameViewController {
     // Pip Countを更新
     this._informationViewController.updateMyPipCount(undoMyPiece.destPoint - undoMyPiece.sourcePoint);
 
-    this._informationViewController.clearBalloonMessage();
+    this._diceController.clearDiceBorder();
   }
 
   _onClickGiveupButton() {
@@ -300,7 +304,7 @@ export default class GameViewController {
     // タイマースタート
     this._informationViewController.startTime();
 
-    this._informationViewController.clearBalloonMessage();
+    this._diceController.clearDiceBorder();
   }
 
   _notificationMovedPiece(destPoint, sourcePoint) {
@@ -325,8 +329,9 @@ export default class GameViewController {
     // まだ移動できるかを確認
     var isMovable = this._pieceController.isMovableMyPiece();
     if (isMovable === false) {
+      // サイコロの枠を表示する
+      this._diceController.displayDiceBorder();
       // 移動できない場合、_diceControllerに伝えて、ターン交代できるようにする
-      this._informationViewController.displayBalloonMessage("これ以上コマを動かせられません！！");
       this._diceController.allowTurnChange();
     }
   }

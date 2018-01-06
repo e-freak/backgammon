@@ -100,7 +100,7 @@ export default class InformationViewController {
     this._myPipElement.innerText = String(this._myPipCount);
   }
   updateOpponentPipCount(count) {
-    this._opponentPieces -= count;
+    this._opponentPipCount -= count;
     this._opponentPipElement.innerText = String(this._opponentPipCount);
   }
 

@@ -127,7 +127,7 @@ var InformationViewController = (function () {
   }, {
     key: 'updateOpponentPipCount',
     value: function updateOpponentPipCount(count) {
-      this._opponentPieces -= count;
+      this._opponentPipCount -= count;
       this._opponentPipElement.innerText = String(this._opponentPipCount);
     }
   }, {

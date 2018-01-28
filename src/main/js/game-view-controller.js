@@ -97,6 +97,10 @@ export default class GameViewController {
         // バーエリアのときは特別
         point = data.destPoint;
       }
+      if (data.destPoint === 0){
+        // ベアオフのときも特別
+        point = BAR_POINT - data.sourcePoint;
+      }
       this._diceController.movedPiece(point);
 
       // Pip Countを更新
@@ -111,6 +115,10 @@ export default class GameViewController {
       this._pieceController.undoOpponent(data.undoOjb);
       // 移動数
       let point = data.undoOjb.opponentPiece.sourcePoint - data.undoOjb.opponentPiece.destPoint;
+      if (data.undoOjb.opponentPiece.destPoint === 0) {
+          // ベアオフのときは特別
+        point = data.undoOjb.opponentPiece.sourcePoint - BAR_POINT;
+      }
       this._diceController.movedPiece(point);
 
       // Pip Countを更新
@@ -211,9 +219,14 @@ export default class GameViewController {
 
     // undoObjeを対戦相手もに通知する
     // 通知するときに相手側のPointに変換して通知する
+    // ベアオフ用
+    var destPoint =  BAR_POINT - undoMyPiece.destPoint;
+    if (undoMyPiece.destPoint === 0) {
+      destPoint = 0;
+    }
     let sendUndoOjb = {
       "opponentPiece": {
-        "destPoint": BAR_POINT - undoMyPiece.destPoint,
+        "destPoint": destPoint,
         "sourcePoint": BAR_POINT - undoMyPiece.sourcePoint
       }
     };
@@ -326,6 +339,11 @@ export default class GameViewController {
     // barのときは特別(微妙。。。)
     if (sourcePoint === BAR_POINT) {
       convertSourcePoint = BAR_POINT;
+    }
+
+    // ベアオフのときも特別
+    if (destPoint === 0){
+      convertDestPoint = 0;
     }
     this._peerController.sendMovedPiece(convertDestPoint, convertSourcePoint);
 

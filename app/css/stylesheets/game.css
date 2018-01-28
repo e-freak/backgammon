@@ -39,7 +39,7 @@ img.my-bear-off-image {
   width: 60px;
   height: 250px;
   left: 630px;
-  top: 20px;
+  top: 310px;
 }
 
 img.opponent-bear-off-image {
@@ -47,7 +47,17 @@ img.opponent-bear-off-image {
   width: 60px;
   height: 250px;
   left: 630px;
+  top: 20px;
+}
+
+button.my-bear-off-area-button {
+  position: absolute;
+  width: 60px;
+  height: 250px;
+  left: 630px;
   top: 310px;
+  background-color: #248;
+  opacity: 0.5;
 }
 
 button.undo-button {
@@ -128,6 +138,7 @@ button.opponent-secound-dice-button {
 }
 
 img.piece-field {
+  
   width: 50px;
   height: 50px;
 }
@@ -138,7 +149,7 @@ img.move-piece-field {
   opacity: 0.6;
 }
 
-button.piece-field {
+button.piece-field-button {
   position: absolute;
   top: 520px;
   left: 580px;
@@ -152,7 +163,7 @@ button.piece-field {
   outline: none;
 }
 
-button.movable-field {
+button.movable-field-button {
   position: absolute;
   top: 520px;
   left: 580px;

@@ -13,6 +13,10 @@ export default class Piece {
     this._image;
   }
 
+  getIsMyPiece() {
+    return this._isMyPiece;
+  }
+
   getTop() {
     return this._top;
   }
@@ -49,7 +53,7 @@ export default class Piece {
   createPieceElement() {
     this._btn = document.createElement("button");
     this._btn.type = 'button';
-    this._btn.className = "piece-field";
+    this._btn.className = "piece-field-button";
     this._btn.style.top = this._top + "px";
     this._btn.style.left = this._left + "px";
 
@@ -65,7 +69,7 @@ export default class Piece {
   createMovablePieceElement() {
     this._btn = document.createElement("button");
     this._btn.type = 'button';
-    this._btn.className = "movable-field";
+    this._btn.className = "movable-field-button";
     this._btn.style.top = this._top + "px";
     this._btn.style.left = this._left + "px";
 

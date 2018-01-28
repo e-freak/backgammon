@@ -57,6 +57,9 @@ export default class PieceController {
     var returnValue = [];
     // 自分のコマの位置
     var point = [24, 24, 13, 13, 13, 13, 13, 8, 8, 8, 6, 6, 6, 6, 6];
+    // テスト用
+    // var point = [7, 7, 7, 6, 6, 6, 6, 6, 5, 5, 5, 5, 2, 1, 1];
+
     for (var i = 0; i <= 14; i++) {
       var position = this._getPiecePosition(point[i], this._myPieces);
       var piece = new Piece(position[0], position[1], point[i], true, i);
@@ -75,6 +78,8 @@ export default class PieceController {
     var returnValue = [];
     // 対戦相手のコマの位置
     var point = [19, 19, 19, 19, 19, 17, 17, 17, 12, 12, 12, 12, 12, 1, 1];
+    // テスト用
+    // var point = [25 - 7, 25 - 7, 25 - 7, 25 - 6, 25 - 6, 25 - 6, 25 - 6, 25 - 6, 25 - 5, 25 - 5, 25 - 5, 25 - 5, 25 - 2, 25 - 1, 25 - 1];
 
     for (var i = 0; i <= 14; i++) {
       var position = this._getPiecePosition(point[i], this._opponentPieces);
@@ -90,15 +95,17 @@ export default class PieceController {
   }
 
   _getPiecePosition(point, pieces) {
-    // 0番目の要素はダミー
-    var base_x = [-1, 512, 512, 512, 512, 512, 512, 512, 512, 512, 512, 512, 512,
+    // 0番目の要素は、ベアオフ用
+    var base_x = [512, 512, 512, 512, 512, 512, 512, 512, 512, 512, 512, 512, 512,
       20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20
     ];
-    var base_y = [-1, 573, 525, 478, 433, 386, 340, 242, 195, 148, 101, 55, 9,
+    var base_y = [636, 573, 525, 478, 433, 386, 340, 242, 195, 148, 101, 55, 9,
       9, 55, 101, 148, 195, 242, 340, 386, 433, 478, 525, 573
     ];
 
-    var base = 40;
+    // ベアオフの場合は被るようにする
+    var base = (point === 0) ? 10 : 40;
+    //var base = 40;
     if (point <= 12) {
       base = -1 * base;
     }
@@ -139,7 +146,7 @@ export default class PieceController {
     return [position_x, base_y];
   }
 
-  // バーにコマが存在するか？
+  // バーにコマが存在するか？ → _isExistInPoint()を使うように
   _isExistInBar() {
     var returnValue = false;
     for (let i = 0; i < this._myPieces.length; i++) {
@@ -180,18 +187,78 @@ export default class PieceController {
 
     } else {
       movablePoints.forEach(function(value) {
-        this._showMovablePoint(value, piece);
+        // valueが0以下ならベアオフ, destPointを0にする
+        let destPoint = (value <= 0) ? 0 : value;
+        this._showMovablePoint(destPoint, piece);
       }.bind(this));
     }
   }
 
-  _isMovablePeiceWithPip(currentPoint, pip) {
+  _isMovablePeiceWithPip(currentPoint, pip, preMovablePoints) {
     var returnValue = false;
     var point = currentPoint - pip;
-    if (point > 0) { // とりあえず、ベアリングオフできないように
+    var lastPiecePoint = this._getLastPiecePoint(); // 一番後ろにあるPoint
+    if (point > 0) { // ベアリングオフ以外
       var num = this._numberOfOpponentPeiceOnPoint(point);
       if (num <= 1) {
         returnValue = true; // 移動可能
+      }
+    } else if (lastPiecePoint <= 6) { // 自分の駒がすべて自分のインナーにある時
+      if (point === 0) {
+        returnValue = true; // 移動可能
+      } else {
+        // 出た目の位置に駒が無くて、さらにそのうしろにも駒が無い場合
+        let isExistInPoint = this._isExistInPoint(pip);
+        if (this._movableDicePips.indexOf(pip) !== -1){ // 1回分の移動の場合
+          if (isExistInPoint === false &&
+            lastPiecePoint === currentPoint) {
+            returnValue = true; // 移動可能
+          }
+        }else{ // 複数回の移動の場合
+          returnValue = true;
+          var min = Math.min.apply(null, preMovablePoints);
+          var numOfPieceInCurrentPoint = 0;
+          this._myPieces.forEach(function(value) {
+            if (value.getPoint() === currentPoint) {
+              numOfPieceInCurrentPoint++;
+            }
+          });
+          if (numOfPieceInCurrentPoint === 1){ //自分自身しかない
+            this._myPieces.forEach(function(value) {
+              if ((value.getPoint() !== currentPoint) && (value.getPoint() >= min)) { // preMovablePointsですら一番最後
+                returnValue = false;
+              }
+            });
+          }else {
+            returnValue = false;
+          }
+        }
+      }
+    }
+
+    // currentPointに1つしか駒がなく、それ以外の駒がすべて自分のインナーにある時
+
+    return returnValue;
+  }
+
+  // 一番後ろにあるコマのPoint
+  _getLastPiecePoint() {
+    var lastPoint = 0;
+    this._myPieces.forEach(function(value) {
+      if (value.getPoint() >= lastPoint) {
+        lastPoint = value.getPoint();
+      }
+    });
+    return lastPoint;
+  }
+
+  // 引数のPointに自分のコマがあるか？
+  _isExistInPoint(point) {
+    var returnValue = false;
+    for (let i = 0; i < this._myPieces.length; i++) {
+      if (this._myPieces[i].getPoint() === point) {
+        returnValue = true;
+        break;
       }
     }
     return returnValue;
@@ -245,13 +312,22 @@ export default class PieceController {
       targetPiecePoints = [25];
     }
 
+    var isBearOff = true;
     // 移動先 = 自分のコマのPoint - サイコロの目
     var movablePoints = [];
     targetPips.forEach(function(pip) {
       targetPiecePoints.forEach(function(point) {
         movablePoints.push(point - pip);
+        if (point - pip > 0){
+          isBearOff = false;
+        }
       });
     });
+
+    // ベアオフできる = 移動可能
+    if (movablePoints.length !==0 && isBearOff) {
+      return true;
+    }
 
     var returnValue = false;
     // 対戦相手のコマが 0個 or 1個のPoint かつ
@@ -280,7 +356,7 @@ export default class PieceController {
       case 2:
       case 4:
         for (var i = 0; i < length; i++) {
-          var isMovable = this._isMovablePeiceWithPip(currentPoint, numberOfMoving[i]);
+          var isMovable = this._isMovablePeiceWithPip(currentPoint, numberOfMoving[i], returnMovablePoints);
           if (isMovable == true) {
             returnMovablePoints.push(currentPoint - numberOfMoving[i])
           } else {
@@ -291,23 +367,32 @@ export default class PieceController {
       case 3:
         // [x, y, x+y]と[x, x*2, x*3]の2パターン考えられる
         // [x, y, x+y]の場合、 x+yは x or y のどちらかが移動可能であることが前提
-        var isMovable1 = this._isMovablePeiceWithPip(currentPoint, numberOfMoving[0]);
-        if (isMovable1 == true) {
-          returnMovablePoints.push(currentPoint - numberOfMoving[0])
-        }
-        var isMovable2 = this._isMovablePeiceWithPip(currentPoint, numberOfMoving[1]);
-        if (isMovable2 == true) {
-          returnMovablePoints.push(currentPoint - numberOfMoving[1])
-        }
-        if (isMovable1 || isMovable2) {
-          var isMovable3 = this._isMovablePeiceWithPip(currentPoint, numberOfMoving[2]);
-          if (isMovable3 == true) {
-            returnMovablePoints.push(currentPoint - numberOfMoving[2])
+        var isMatchingDice = numberOfMoving[0] === numberOfMoving[1];
+
+        var isMovableList = [];
+        for (var i = 0; i < numberOfMoving.length; i++) {
+          isMovableList[i] = this._isMovablePeiceWithPip(currentPoint, numberOfMoving[i], returnMovablePoints);
+          if (isMovableList[i]) {
+            returnMovablePoints.push(currentPoint - numberOfMoving[i]);
+          } else {
+            if (isMatchingDice) {
+              break;
+            }
+          }
+          if (i === 1) {
+            if (!(isMovableList[0] || isMovableList[1])) {
+              break;
+            }
           }
         }
         break;
     }
-    return returnMovablePoints;
+
+    // 重複分を削除(0が重複している可能性がある)
+    var returnMovablePointsFilter = returnMovablePoints.filter(function(x, i, self) {
+      return self.indexOf(x) === i;
+    });
+    return returnMovablePointsFilter;
   }
 
   // 引数で与えたPointにある対戦相手のコマ数を返す
@@ -339,6 +424,11 @@ export default class PieceController {
 
   // 引数のpointに対戦相手のPieceが1個の場合、バーに移動させる
   _moveOpponentPieceToBar(point) {
+    // ベアオフの場合はバーに移動させない
+    // 自分と対戦相手のベアオフエリアのPointは両方0なので
+    if (point === 0) {
+      return false;
+    }
     var returnValue = false;
     if (this._numberOfOpponentPeiceOnPoint(point) === 1) {
       this._opponentPieces.forEach(function(value) {
@@ -384,6 +474,7 @@ export default class PieceController {
 
   undoOpponent(undoObj) {
     let undoOpponentPiece = undoObj.opponentPiece;
+    // if (undoOpponentPiece.destPoint === 0)
     let target = this._getTopPiece(undoOpponentPiece.destPoint, true);
     var position = this._getPiecePosition(undoOpponentPiece.sourcePoint, this._opponentPieces);
     target.move(position[0], position[1], undoOpponentPiece.sourcePoint);
@@ -414,12 +505,33 @@ export default class PieceController {
   }
 
   _clearMovableField() {
-    var elements = this._view.getElementsByClassName("movable-field");
+    var elements = this._view.getElementsByClassName("movable-field-button");
     while (elements.length > 0) {
       elements[0].parentNode.removeChild(elements[0]);
     }
   }
 
+  // ベアエリアのコマを後方に移動しておく
+  _bringBackwardBearPiece() {
+    var parentElement = this._view.getElementById("boardArea")
+
+    var elements = this._view.getElementsByClassName("piece-field-button");
+    var elementsList = Array.prototype.slice.call(elements);
+
+    var tmp1 = [];
+    var tmp2 = [];
+    for (var i = 0; i < elementsList.length; i++) {
+      if (elementsList[i].style.left === "636px") {
+        tmp1.push(elementsList[i]);
+      } else {
+        tmp2.push(elementsList[i]);
+      }
+    }
+    tmp1 = tmp1.concat(tmp2);
+    for (var i = 0; i < tmp1.length; i++) {
+      parentElement.appendChild(parentElement.removeChild(tmp1[i]))
+    }
+  }
   // piece を movablePiece の位置に移動
   async _movePiece(movablePiece, piece) {
     // まずは、すでに表示されている移動可能な場所の表示をクリア
@@ -437,12 +549,52 @@ export default class PieceController {
     var point = piece.getPoint();
     var destPoint = movablePiece.getPoint();
 
+    // ベアオフの場合、コマの画像が被るので DOM ツリーを更新して
+    // ベアエリアのコマを後方に移動しておく
+    if (destPoint === 0) {
+      this._bringBackwardBearPiece();
+      await this._sleep(50);
+    }
+    if (destPoint < 0) {
+      alert("destPoint が マイナスになるのはおかしい");
+    }
+
+
     // 1. もし_movableDicePipsの足し算の移動分なら移動は2〜4回分の移動に分ける
     var numberOfMoving = point - destPoint; // 移動数
     // _movableDicePipsは、ゾロ目なら[x, x, x, x]、それ以外は[x, y]の配列
     var index = this._movableDicePips.indexOf(numberOfMoving);
 
-    if (index == 0 || index == 1) { // 1回分の移動
+    // 以下のルール用の処理
+    // もし出た目の位置に駒が無くて、さらにそのうしろにも駒が無い場合には、一番後ろにある駒を上げることが出来る
+    var isContainAddition = false;
+    var sum = 0;
+    switch (this._movableDicePips.length) {
+      case 2:
+        sum = this._movableDicePips[0] + this._movableDicePips[1];
+        isContainAddition = (sum === numberOfMoving)
+        break;
+      case 3:
+        sum = this._movableDicePips[0] * 3;
+        isContainAddition = (sum === numberOfMoving)
+        break;
+      case 4:
+        sum = this._movableDicePips[0] * 4;
+        isContainAddition = (sum === numberOfMoving)
+        break;
+    }
+
+    if (isContainAddition === false && index === -1) {
+      let destTop = movablePiece.getTop();
+      let destLeft = movablePiece.getLeft();
+      piece.move(destTop, destLeft, destPoint);
+      // 移動分を削除
+      this._movableDicePips.splice(0, 1); // どれを削除しても同じだろう
+      // undo配列に追加
+      this._addUndoList(destPoint, point, false);
+      // 移動をGameViewControllerに伝える
+      this._notificationMovedPiece(destPoint, point);
+    } else if (index == 0 || index == 1) { // 1回分の移動
       // 移動先に対戦相手のPieceが1個だけある場合、バーに移動させる
       let isMoveOpponentPieceToBar = this._moveOpponentPieceToBar(destPoint);
       // 移動する
@@ -496,10 +648,22 @@ export default class PieceController {
     }
   }
 
-  movedOpponentPiece(destPoint, sourcePoint) {
+  async movedOpponentPiece(destPoint, sourcePoint) {
     let target = this._getTopPiece(sourcePoint, true);
     var position = this._getPiecePosition(destPoint, this._opponentPieces);
-    target.move(position[0], position[1], destPoint);
+    var top = position[0];
+    if (destPoint == 0) {
+      top = 532 - top;
+    }
+
+    // ベアオフの場合、コマの画像が被るので DOM ツリーを更新して
+    // ベアエリアのコマを後方に移動しておく
+    if (destPoint === 0) {
+      this._bringBackwardBearPiece();
+      await this._sleep(50);
+    }
+
+    target.move(top, position[1], destPoint);
   }
 
   movedMyPieceToBar(destPoint, sourcePoint) {
@@ -539,6 +703,14 @@ export default class PieceController {
       }
     });
 
+    // ベアオフエリアの場合は特別
+    if (point === 0) {
+      if (isOpponent) {
+        return maxPiece;
+      } else {
+        return miniPiece;
+      }
+    }
     // Barエリアの場合は特別
     if (point === 25) {
       if (isOpponent) {

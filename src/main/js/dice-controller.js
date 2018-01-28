@@ -131,9 +131,19 @@ export default class DiceController {
     }
 
     var displayDiceButtons = this._getDisplayDiceButtons();
+
+    // もし出た目の位置に駒が無くて、さらにそのうしろにも駒が無い場合には、一番後ろにある駒を上げることが出来る
+    // 上記の場合、pointはサイコロの目以外の数値以外になる
+    var dicePips =[];
+    for (let i = 0; i < displayDiceButtons.length; i++) {
+      dicePips.push(this._getDicePipFromButton(displayDiceButtons[i]));
+    }
+    var index = dicePips.indexOf(point);
+
     for (let i = 0; i < displayDiceButtons.length; i++) {
       var opacity = parseFloat(displayDiceButtons[i].firstChild.style.opacity);
-      if ((this._getDicePipFromButton(displayDiceButtons[i]) === point) && (opacity !== limit)) {
+      if (((this._getDicePipFromButton(displayDiceButtons[i]) === point) && (opacity !== limit)) ||
+        ((index === -1) && (opacity !== limit))) {
         opacity += addOpacity;
         displayDiceButtons[i].firstChild.style.opacity = opacity + ''; // toString()より速いよう
         break;
@@ -260,7 +270,7 @@ export default class DiceController {
       this._diceBorderElements[index].style.display = "block";
     }
   }
-  
+
   clearDiceBorder() {
     // サイコロの枠を非表示にする
     for (let index = 0; index < this._diceBorderElements.length; index++) {

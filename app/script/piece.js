@@ -25,6 +25,11 @@ var Piece = (function () {
   }
 
   _createClass(Piece, [{
+    key: "getIsMyPiece",
+    value: function getIsMyPiece() {
+      return this._isMyPiece;
+    }
+  }, {
     key: "getTop",
     value: function getTop() {
       return this._top;
@@ -68,7 +73,7 @@ var Piece = (function () {
     value: function createPieceElement() {
       this._btn = document.createElement("button");
       this._btn.type = 'button';
-      this._btn.className = "piece-field";
+      this._btn.className = "piece-field-button";
       this._btn.style.top = this._top + "px";
       this._btn.style.left = this._left + "px";
 
@@ -86,7 +91,7 @@ var Piece = (function () {
     value: function createMovablePieceElement() {
       this._btn = document.createElement("button");
       this._btn.type = 'button';
-      this._btn.className = "movable-field";
+      this._btn.className = "movable-field-button";
       this._btn.style.top = this._top + "px";
       this._btn.style.left = this._left + "px";
 

@@ -192,6 +192,13 @@ export default class PieceController {
         this._showMovablePoint(destPoint, piece);
       }.bind(this));
     }
+
+    // 移動可能場所が1つなら強制的に移動させてしまう。
+    var elements = this._view.getElementsByClassName("movable-field-button");
+    if (elements.length === 1){
+      elements[0].click();
+    }
+
   }
 
   _isMovablePeiceWithPip(currentPoint, pip, preMovablePoints) {

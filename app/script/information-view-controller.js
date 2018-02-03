@@ -15,11 +15,12 @@ var _scriptUserSettingController = require('../script/user-setting-controller');
 var _scriptUserSettingController2 = _interopRequireDefault(_scriptUserSettingController);
 
 var InformationViewController = (function () {
-  function InformationViewController(view, notificationTimeup) {
+  function InformationViewController(view, notificationTimeup, notificationGoal) {
     _classCallCheck(this, InformationViewController);
 
     this._view = view;
     this._notificationTimeup = notificationTimeup;
+    this._notificationGoal = notificationGoal;
     this._myPipCount = 167;
     this._myTimeLimit = 600; // 制限時間
     this._opponentPipCount = 167;
@@ -123,6 +124,13 @@ var InformationViewController = (function () {
     value: function updateMyPipCount(count) {
       this._myPipCount -= count;
       this._myPipElement.innerText = String(this._myPipCount);
+
+      if (this._myPipCount <= 0) {
+        // タイマーストップ
+        this._isTimerForcedTermination = true;
+        // Goal(勝利)を通知
+        this._notificationGoal();
+      }
     }
   }, {
     key: 'updateOpponentPipCount',

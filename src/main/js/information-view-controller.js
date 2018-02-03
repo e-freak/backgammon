@@ -2,9 +2,10 @@ import UserSettingController from '../script/user-setting-controller';
 
 export default class InformationViewController {
 
-  constructor(view, notificationTimeup) {
+  constructor(view, notificationTimeup, notificationGoal) {
     this._view = view;
     this._notificationTimeup = notificationTimeup;
+    this._notificationGoal = notificationGoal;
     this._myPipCount = 167;
     this._myTimeLimit = 600; // 制限時間
     this._opponentPipCount = 167;
@@ -100,6 +101,13 @@ export default class InformationViewController {
   updateMyPipCount(count) {
     this._myPipCount -= count;
     this._myPipElement.innerText = String(this._myPipCount);
+
+    if (this._myPipCount <= 0){
+      // タイマーストップ
+      this._isTimerForcedTermination = true;
+      // Goal(勝利)を通知
+      this._notificationGoal();
+    }
   }
 
   updateOpponentPipCount(count) {

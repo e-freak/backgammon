@@ -22,7 +22,8 @@ export default class GameViewController {
     this._searchOpponentViewController = new SearchOpponentViewController(this._view);
 
     this._notificationTimeup = this._notificationTimeup.bind(this);
-    this._informationViewController = new InformationViewController(this._view, this._notificationTimeup);
+    this._notificationGoal = this._notificationGoal.bind(this);
+    this._informationViewController = new InformationViewController(this._view, this._notificationTimeup, this._notificationGoal);
 
     var myFirstDiceButton = this._view.getElementById('myFirstDiceButton');
     var mySecoundDiceButton = this._view.getElementById('mySecoundDiceButton');
@@ -269,7 +270,7 @@ export default class GameViewController {
   }
 
   _notificationTimeup() {
-    // Giveup画面を表示
+    // Time UP"画面を表示
     let myData = this._informationViewController.getMyData();
     let opponentData = this._informationViewController.getOpponentData();
     this._winloseViewController.display(false, myData, opponentData, "Time UP");
@@ -278,10 +279,23 @@ export default class GameViewController {
       "isVictory": true,
       "reasonString": "Time UP"
     };
-    // time up を対戦相手に通知
+    // Time UP"を対戦相手に通知
     this._peerController.sendMatchResult(matchResult);
   }
 
+  _notificationGoal(){
+    // Goal画面を表示
+    let myData = this._informationViewController.getMyData();
+    let opponentData = this._informationViewController.getOpponentData();
+    this._winloseViewController.display(true, myData, opponentData, "Goal");
+    // 対戦相手に通知
+    let matchResult = {
+      "isVictory": false,
+      "reasonString": "Goal"
+    };
+    // Goalしたことを対戦相手に通知
+    this._peerController.sendMatchResult(matchResult);
+  }
   _notificationFirstShakeDice(myPip, opponentPip) {
     // 順番を表示(first or second)
     if (myPip > opponentPip) {

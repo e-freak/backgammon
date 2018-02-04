@@ -372,9 +372,9 @@ export default class PieceController {
         }
         break;
       case 3:
-        // [x, y, x+y]と[x, x*2, x*3]の2パターン考えられる
-        // [x, y, x+y]の場合、 x+yは x or y のどちらかが移動可能であることが前提
-        var isMatchingDice = numberOfMoving[0] === numberOfMoving[1];
+        // // [x, y, x+y]と[x, x*2, x*3]の2パターン考えられる
+        // // [x, y, x+y]の場合、 x+yは x or y のどちらかが移動可能であることが前提
+        // var isMatchingDice = numberOfMoving[0] === numberOfMoving[1];
 
         var isMovableList = [];
         for (var i = 0; i < numberOfMoving.length; i++) {
@@ -382,9 +382,9 @@ export default class PieceController {
           if (isMovableList[i]) {
             returnMovablePoints.push(currentPoint - numberOfMoving[i]);
           } else {
-            if (isMatchingDice) {
+//            if (isMatchingDice) {
               break;
-            }
+//            }
           }
           if (i === 1) {
             if (!(isMovableList[0] || isMovableList[1])) {
@@ -582,12 +582,10 @@ export default class PieceController {
         isContainAddition = (sum === numberOfMoving)
         break;
       case 3:
-        sum = this._movableDicePips[0] * 3;
-        isContainAddition = (sum === numberOfMoving)
+        isContainAddition = (numberOfMoving%this._movableDicePips[0] === 0)
         break;
       case 4:
-        sum = this._movableDicePips[0] * 4;
-        isContainAddition = (sum === numberOfMoving)
+        isContainAddition = (numberOfMoving%this._movableDicePips[0] === 0)
         break;
     }
 

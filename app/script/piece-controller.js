@@ -412,9 +412,9 @@ var PieceController = (function () {
           }
           break;
         case 3:
-          // [x, y, x+y]と[x, x*2, x*3]の2パターン考えられる
-          // [x, y, x+y]の場合、 x+yは x or y のどちらかが移動可能であることが前提
-          var isMatchingDice = numberOfMoving[0] === numberOfMoving[1];
+          // // [x, y, x+y]と[x, x*2, x*3]の2パターン考えられる
+          // // [x, y, x+y]の場合、 x+yは x or y のどちらかが移動可能であることが前提
+          // var isMatchingDice = numberOfMoving[0] === numberOfMoving[1];
 
           var isMovableList = [];
           for (var i = 0; i < numberOfMoving.length; i++) {
@@ -422,9 +422,9 @@ var PieceController = (function () {
             if (isMovableList[i]) {
               returnMovablePoints.push(currentPoint - numberOfMoving[i]);
             } else {
-              if (isMatchingDice) {
-                break;
-              }
+              //            if (isMatchingDice) {
+              break;
+              //            }
             }
             if (i === 1) {
               if (!(isMovableList[0] || isMovableList[1])) {
@@ -636,27 +636,25 @@ var PieceController = (function () {
             isContainAddition = false;
             sum = 0;
             context$2$0.t0 = this._movableDicePips.length;
-            context$2$0.next = context$2$0.t0 === 2 ? 15 : context$2$0.t0 === 3 ? 18 : context$2$0.t0 === 4 ? 21 : 24;
+            context$2$0.next = context$2$0.t0 === 2 ? 15 : context$2$0.t0 === 3 ? 18 : context$2$0.t0 === 4 ? 20 : 22;
             break;
 
           case 15:
             sum = this._movableDicePips[0] + this._movableDicePips[1];
             isContainAddition = sum === numberOfMoving;
-            return context$2$0.abrupt('break', 24);
+            return context$2$0.abrupt('break', 22);
 
           case 18:
-            sum = this._movableDicePips[0] * 3;
-            isContainAddition = sum === numberOfMoving;
-            return context$2$0.abrupt('break', 24);
+            isContainAddition = numberOfMoving % this._movableDicePips[0] === 0;
+            return context$2$0.abrupt('break', 22);
 
-          case 21:
-            sum = this._movableDicePips[0] * 4;
-            isContainAddition = sum === numberOfMoving;
-            return context$2$0.abrupt('break', 24);
+          case 20:
+            isContainAddition = numberOfMoving % this._movableDicePips[0] === 0;
+            return context$2$0.abrupt('break', 22);
 
-          case 24:
+          case 22:
             if (!(isContainAddition === false && index === -1)) {
-              context$2$0.next = 33;
+              context$2$0.next = 31;
               break;
             }
 
@@ -670,12 +668,12 @@ var PieceController = (function () {
             this._addUndoList(destPoint, point, false);
             // 移動をGameViewControllerに伝える
             this._notificationMovedPiece(destPoint, point);
-            context$2$0.next = 64;
+            context$2$0.next = 62;
             break;
 
-          case 33:
+          case 31:
             if (!(index == 0 || index == 1)) {
-              context$2$0.next = 43;
+              context$2$0.next = 41;
               break;
             }
 
@@ -690,10 +688,10 @@ var PieceController = (function () {
             this._addUndoList(destPoint, point, isMoveOpponentPieceToBar);
             // 移動をGameViewControllerに伝える
             this._notificationMovedPiece(destPoint, point);
-            context$2$0.next = 64;
+            context$2$0.next = 62;
             break;
 
-          case 43:
+          case 41:
             sumNumberOfMoving = 0;
 
             // 移動先に相手のコマが2個以上あるのはダメ
@@ -709,9 +707,9 @@ var PieceController = (function () {
             copyMovableDicePips = this._movableDicePips.concat();
             i = 0;
 
-          case 47:
+          case 45:
             if (!(i < copyMovableDicePips.length)) {
-              context$2$0.next = 64;
+              context$2$0.next = 62;
               break;
             }
 
@@ -732,22 +730,22 @@ var PieceController = (function () {
             this._notificationMovedPiece(tmpDestPoint, tmpSourcePoint);
 
             if (!(sumNumberOfMoving === numberOfMoving)) {
-              context$2$0.next = 59;
+              context$2$0.next = 57;
               break;
             }
 
-            return context$2$0.abrupt('break', 64);
+            return context$2$0.abrupt('break', 62);
 
-          case 59:
-            context$2$0.next = 61;
+          case 57:
+            context$2$0.next = 59;
             return regeneratorRuntime.awrap(this._sleep(500));
 
-          case 61:
+          case 59:
             i++;
-            context$2$0.next = 47;
+            context$2$0.next = 45;
             break;
 
-          case 64:
+          case 62:
           case 'end':
             return context$2$0.stop();
         }

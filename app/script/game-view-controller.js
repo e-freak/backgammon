@@ -302,7 +302,7 @@ var GameViewController = (function () {
   }, {
     key: '_notificationTimeup',
     value: function _notificationTimeup() {
-      // Giveup画面を表示
+      // Time UP"画面を表示
       var myData = this._informationViewController.getMyData();
       var opponentData = this._informationViewController.getOpponentData();
       this._winloseViewController.display(false, myData, opponentData, "Time UP");
@@ -311,13 +311,13 @@ var GameViewController = (function () {
         "isVictory": true,
         "reasonString": "Time UP"
       };
-      // time up を対戦相手に通知
+      // Time UP"を対戦相手に通知
       this._peerController.sendMatchResult(matchResult);
     }
   }, {
     key: '_notificationGoal',
     value: function _notificationGoal() {
-      // Giveup画面を表示
+      // Goal画面を表示
       var myData = this._informationViewController.getMyData();
       var opponentData = this._informationViewController.getOpponentData();
       this._winloseViewController.display(true, myData, opponentData, "Goal");
@@ -326,7 +326,7 @@ var GameViewController = (function () {
         "isVictory": false,
         "reasonString": "Goal"
       };
-      // time up を対戦相手に通知
+      // Goalしたことを対戦相手に通知
       this._peerController.sendMatchResult(matchResult);
     }
   }, {

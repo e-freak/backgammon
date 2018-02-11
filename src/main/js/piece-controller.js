@@ -195,7 +195,7 @@ export default class PieceController {
 
     // 移動可能場所が1つなら強制的に移動させてしまう。
     var elements = this._view.getElementsByClassName("movable-field-button");
-    if (elements.length === 1){
+    if (elements.length === 1) {
       elements[0].click();
     }
 
@@ -216,12 +216,12 @@ export default class PieceController {
       } else {
         // 出た目の位置に駒が無くて、さらにそのうしろにも駒が無い場合
         let isExistInPoint = this._isExistInPoint(pip);
-        if (this._movableDicePips.indexOf(pip) !== -1){ // 1回分の移動の場合
+        if (this._movableDicePips.indexOf(pip) !== -1) { // 1回分の移動の場合
           if (isExistInPoint === false &&
             lastPiecePoint === currentPoint) {
             returnValue = true; // 移動可能
           }
-        }else{ // 複数回の移動の場合
+        } else { // 複数回の移動の場合
           returnValue = true;
           var min = Math.min.apply(null, preMovablePoints);
           var numOfPieceInCurrentPoint = 0;
@@ -230,13 +230,13 @@ export default class PieceController {
               numOfPieceInCurrentPoint++;
             }
           });
-          if (numOfPieceInCurrentPoint === 1){ //自分自身しかない
+          if (numOfPieceInCurrentPoint === 1) { //自分自身しかない
             this._myPieces.forEach(function(value) {
               if ((value.getPoint() !== currentPoint) && (value.getPoint() >= min)) { // preMovablePointsですら一番最後
                 returnValue = false;
               }
             });
-          }else {
+          } else {
             returnValue = false;
           }
         }
@@ -325,14 +325,14 @@ export default class PieceController {
     targetPips.forEach(function(pip) {
       targetPiecePoints.forEach(function(point) {
         movablePoints.push(point - pip);
-        if (point - pip > 0){
+        if (point - pip > 0) {
           isBearOff = false;
         }
       });
     });
 
     // ベアオフできる = 移動可能
-    if (movablePoints.length !==0 && isBearOff) {
+    if (movablePoints.length !== 0 && isBearOff) {
       return true;
     }
 
@@ -355,12 +355,12 @@ export default class PieceController {
   _isMatchingDice(movableDicePips) {
     var returnValue = false;
     var length = movableDicePips.length;
-    if (length <= 1){
+    if (length <= 1) {
       returnValue = false; // 要素数が1以下ならゾロ目ではないとする
-    }else{
-      if (movableDicePips[0] === movableDicePips[1]){
+    } else {
+      if (movableDicePips[0] === movableDicePips[1]) {
         returnValue = true;
-      }else{
+      } else {
         returnValue = false;
       }
     }
@@ -383,9 +383,9 @@ export default class PieceController {
           if (isMovable === true) {
             returnMovablePoints.push(currentPoint - numberOfMoving[i])
           } else {
-            if (isMatchingDice === true){
-              break;  // ゾロ目の場合
-            }else{
+            if (isMatchingDice === true) {
+              break; // ゾロ目の場合
+            } else {
               continue; // ゾロ目以外の場合
             }
           }
@@ -401,8 +401,8 @@ export default class PieceController {
           if (isMovableList[i]) {
             returnMovablePoints.push(currentPoint - numberOfMoving[i]);
           } else {
-            if (isMatchingDice === true){
-              break;  // ゾロ目の場合
+            if (isMatchingDice === true) {
+              break; // ゾロ目の場合
             }
           }
 
@@ -602,10 +602,10 @@ export default class PieceController {
         isContainAddition = (sum === numberOfMoving)
         break;
       case 3:
-        isContainAddition = (numberOfMoving%this._movableDicePips[0] === 0)
+        isContainAddition = (numberOfMoving % this._movableDicePips[0] === 0)
         break;
       case 4:
-        isContainAddition = (numberOfMoving%this._movableDicePips[0] === 0)
+        isContainAddition = (numberOfMoving % this._movableDicePips[0] === 0)
         break;
     }
 

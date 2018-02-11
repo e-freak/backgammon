@@ -103,7 +103,7 @@ export default class InformationViewController {
     this._myPipCount -= count;
     this._myPipElement.innerText = String(this._myPipCount);
 
-    if (this._myPipCount <= 0){
+    if (this._myPipCount <= 0) {
       // タイマーストップ
       this._isTimerForcedTermination = true;
       // Goal(勝利)を通知

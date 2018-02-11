@@ -134,7 +134,7 @@ export default class DiceController {
 
     // もし出た目の位置に駒が無くて、さらにそのうしろにも駒が無い場合には、一番後ろにある駒を上げることが出来る
     // 上記の場合、pointはサイコロの目以外の数値以外になる
-    var dicePips =[];
+    var dicePips = [];
     for (let i = 0; i < displayDiceButtons.length; i++) {
       dicePips.push(this._getDicePipFromButton(displayDiceButtons[i]));
     }

@@ -168,9 +168,9 @@ export default class GameViewController {
 
       // Takeされたことを表示
       var takeImage = this._view.getElementById('takeImage');
-      takeImage.style.display ="block";
+      takeImage.style.display = "block";
       setTimeout(function() {
-        this._view.getElementById('takeImage').style.display ="none";
+        this._view.getElementById('takeImage').style.display = "none";
       }.bind(this), 2000);
       this._changedMyTurn();
     }

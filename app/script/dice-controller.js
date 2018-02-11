@@ -89,7 +89,7 @@ var DiceController = (function () {
 
       this._dicePips.push(pip1);
       this._dicePips.push(pip2);
-      // 降っている風に見せる
+      // 振っている風に見せる
       this._shakeMyDiceAnimation(pip1, pip2);
     }
   }, {
@@ -107,7 +107,7 @@ var DiceController = (function () {
 
       this._dicePips.push(pip1);
       this._dicePips.push(pip2);
-      // 降っている風に見せる
+      // 振っている風に見せる
       this._shakeOpponentDiceAnimation(pip1, pip2);
     }
   }, {

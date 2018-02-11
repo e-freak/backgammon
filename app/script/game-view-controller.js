@@ -75,6 +75,12 @@ var GameViewController = (function () {
     this._peerController = new _scriptPeerController2['default'](this.notificationOfReceiveMessage);
 
     this._undoButton = this._view.getElementById('undoButton');
+    this._doubleButton = this._view.getElementById('doubleButton');
+    this._rollButton = this._view.getElementById('rollButton');
+
+    this._takeButton = this._view.getElementById('takeButton');
+    this._passButton = this._view.getElementById('passButton');
+
     this._giveupButton = this._view.getElementById('giveupButton');
 
     this._winloseViewController = new _scriptWinLoseViewController2['default'](this._view);
@@ -84,6 +90,13 @@ var GameViewController = (function () {
     key: 'initialize',
     value: function initialize() {
       this._undoButton.addEventListener('click', this._onClickUndoButton.bind(this));
+
+      this._doubleButton.addEventListener('click', this._onClickDoubleButton.bind(this));
+      this._rollButton.addEventListener('click', this._onClickRollButton.bind(this));
+
+      this._takeButton.addEventListener('click', this._onClickTakeButton.bind(this));
+      this._passButton.addEventListener('click', this._onClickPassButton.bind(this));
+
       this._giveupButton.addEventListener('click', this._onClickGiveupButton.bind(this));
 
       this._diceController.initialize();
@@ -151,8 +164,6 @@ var GameViewController = (function () {
       }
 
       if (message === "changeTurn") {
-        // double/roll/take/passの実装は後から
-
         // flagを変更
         this._isMyTurn = true;
         // サイコロの情報をクリア
@@ -161,28 +172,33 @@ var GameViewController = (function () {
         this._pieceController.clear();
         this._pieceController.setIsMovable(this._isMyTurn);
         this._informationViewController.setIsTuru(this._isMyTurn);
+
+        // double, roll ボタンを表示
+        this._doubleButton.style.display = "block"; // doubleボタン表示
+        this._rollButton.style.display = "block"; // rollボタン表示
+
         // タイマースタート
         this._informationViewController.startTime();
-
-        // サイコロの目を決める
-        var pip1 = Math.ceil(Math.random() * 6); // 1から6までの適当な数字
-        var pip2 = Math.ceil(Math.random() * 6);
-
-        // 対戦相手にサイコロの目を送る
-        this._peerController.sendDices(pip1, pip2);
-        this._diceController.shakeMyDice(pip1, pip2);
-
-        this._pieceController.setMovableDicePips(pip1, pip2);
-
-        // 移動できるかを確認
-        var isMovable = this._pieceController.isMovableMyPiece();
-        if (isMovable === false) {
-          // 移動できない場合、_diceControllerに伝えて、ターン交代できるようにする
-          // サイコロの枠を表示する
-          this._diceController.displayDiceBorder();
-          this._diceController.allowTurnChange();
-        }
       }
+
+      if (message === "double") {
+        this._takeButton.style.display = "block"; // takeボタン表示
+        this._passButton.style.display = "block"; // passボタン表示
+      }
+
+      if (message === "take") {
+        // this._doubleButton.style.display = "none"; // doubleボタン表示
+        // this._rollButton.style.display = "none"; // rollBボタン表示
+
+        // Takeされたことを表示
+        var takeImage = this._view.getElementById('takeImage');
+        takeImage.style.display = "block";
+        setTimeout((function () {
+          this._view.getElementById('takeImage').style.display = "none";
+        }).bind(this), 2000);
+        this._changedMyTurn();
+      }
+
       if (message === "dices") {
         this._diceController.shakeOpponentDice(data.pips[0], data.pips[1]);
         this._pieceController.setMovableDicePips(data.pips[0], data.pips[1]);
@@ -281,6 +297,72 @@ var GameViewController = (function () {
       this._informationViewController.updateMyPipCount(undoMyPiece.destPoint - undoMyPiece.sourcePoint);
 
       this._diceController.clearDiceBorder();
+    }
+  }, {
+    key: '_onClickDoubleButton',
+    value: function _onClickDoubleButton() {
+      this._doubleButton.style.display = "none"; // doubleボタン非表示
+      this._rollButton.style.display = "none"; // rollボタン非表示
+
+      // DOUBLEの場合は相手のアクション(Take or Pass)を受信してから、サイコロを振る
+      this._peerController.sendDouble();
+    }
+  }, {
+    key: '_onClickRollButton',
+    value: function _onClickRollButton() {
+      this._doubleButton.style.display = "none"; // doubleボタン非表示
+      this._rollButton.style.display = "none"; // rollボタン非表示
+
+      // ROLLの場合は相手のアクションを待つ必要がないので、ここでサイコロを振る
+      this._changedMyTurn();
+    }
+  }, {
+    key: '_onClickTakeButton',
+    value: function _onClickTakeButton() {
+      this._takeButton.style.display = "none"; // takeボタン非表示
+      this._passButton.style.display = "none"; // passボタン非表示
+      this._peerController.sendTake();
+    }
+  }, {
+    key: '_onClickPassButton',
+    value: function _onClickPassButton() {
+      this._takeButton.style.display = "none"; // takeボタン非表示
+      this._passButton.style.display = "none"; // passボタン非表示
+
+      // Giveup(PASS)画面を表示
+      var myData = this._informationViewController.getMyData();
+      var opponentData = this._informationViewController.getOpponentData();
+      this._winloseViewController.display(false, myData, opponentData, "PASS");
+      // 対戦相手に通知
+      var matchResult = {
+        "isVictory": true,
+        "reasonString": "PASS"
+      };
+      this._peerController.sendMatchResult(matchResult);
+    }
+
+    // 自分のターンなった場合の処理
+  }, {
+    key: '_changedMyTurn',
+    value: function _changedMyTurn() {
+      // サイコロの目を決める
+      var pip1 = Math.ceil(Math.random() * 6); // 1から6までの適当な数字
+      var pip2 = Math.ceil(Math.random() * 6);
+
+      // 対戦相手にサイコロの目を送る
+      this._peerController.sendDices(pip1, pip2);
+      this._diceController.shakeMyDice(pip1, pip2);
+
+      this._pieceController.setMovableDicePips(pip1, pip2);
+
+      // 移動できるかを確認
+      var isMovable = this._pieceController.isMovableMyPiece();
+      if (isMovable === false) {
+        // 移動できない場合、_diceControllerに伝えて、ターン交代できるようにする
+        // サイコロの枠を表示する
+        this._diceController.displayDiceBorder();
+        this._diceController.allowTurnChange();
+      }
     }
   }, {
     key: '_onClickGiveupButton',

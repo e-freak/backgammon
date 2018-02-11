@@ -389,6 +389,24 @@ var PieceController = (function () {
       return returnValue;
     }
 
+    // 引数の配列がゾロ目かを返す
+  }, {
+    key: '_isMatchingDice',
+    value: function _isMatchingDice(movableDicePips) {
+      var returnValue = false;
+      var length = movableDicePips.length;
+      if (length <= 1) {
+        returnValue = false; // 要素数が1以下ならゾロ目ではないとする
+      } else {
+          if (movableDicePips[0] === movableDicePips[1]) {
+            returnValue = true;
+          } else {
+            returnValue = false;
+          }
+        }
+      return returnValue;
+    }
+
     // 移動可能なpointを返す
     // currentPoint: 対象のコマのPoint
     // movableDicePips: 移動可能サイコロの目(ゾロ目の場合{x,x,x,x}の場合がある)
@@ -398,16 +416,21 @@ var PieceController = (function () {
       var returnMovablePoints = [];
       var numberOfMoving = this._getMoveableNumberOfMovements(movableDicePips);
       var length = numberOfMoving.length;
+      var isMatchingDice = this._isMatchingDice(movableDicePips); // ゾロ目か？
       switch (length) {
         case 1:
         case 2:
         case 4:
           for (var i = 0; i < length; i++) {
             var isMovable = this._isMovablePeiceWithPip(currentPoint, numberOfMoving[i], returnMovablePoints);
-            if (isMovable == true) {
+            if (isMovable === true) {
               returnMovablePoints.push(currentPoint - numberOfMoving[i]);
             } else {
-              break;
+              if (isMatchingDice === true) {
+                break; // ゾロ目の場合
+              } else {
+                  continue; // ゾロ目以外の場合
+                }
             }
           }
           break;
@@ -415,17 +438,17 @@ var PieceController = (function () {
           // // [x, y, x+y]と[x, x*2, x*3]の2パターン考えられる
           // // [x, y, x+y]の場合、 x+yは x or y のどちらかが移動可能であることが前提
           // var isMatchingDice = numberOfMoving[0] === numberOfMoving[1];
-
           var isMovableList = [];
           for (var i = 0; i < numberOfMoving.length; i++) {
             isMovableList[i] = this._isMovablePeiceWithPip(currentPoint, numberOfMoving[i], returnMovablePoints);
             if (isMovableList[i]) {
               returnMovablePoints.push(currentPoint - numberOfMoving[i]);
             } else {
-              //            if (isMatchingDice) {
-              break;
-              //            }
+              if (isMatchingDice === true) {
+                break; // ゾロ目の場合
+              }
             }
+
             if (i === 1) {
               if (!(isMovableList[0] || isMovableList[1])) {
                 break;

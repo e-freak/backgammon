@@ -56,6 +56,7 @@ export default class InformationViewController {
   }
 
   startTime() {
+    this._isTimerForcedTermination = false;
     if (this._isTurn) {
       this._startMyTimeLimit();
     } else {

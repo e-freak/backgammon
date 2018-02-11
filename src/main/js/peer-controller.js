@@ -126,6 +126,27 @@ export default class PeerController {
     this._conn.send(obj);
   }
 
+  sendDouble() {
+    var obj = {
+      "message": "double",
+    };
+    this._conn.send(obj);
+  }
+
+  sendTake() {
+    var obj = {
+      "message": "take",
+    };
+    this._conn.send(obj);
+  }
+
+  sendRoll() {
+    var obj = {
+      "message": "roll",
+    };
+    this._conn.send(obj);
+  }
+
   _sendUserNameAndIcon() {
     // ユーザー名をJSONから取得(JSONにはあるはず)
     var userName = this._userSettingController.loadUserNameFromJSON();

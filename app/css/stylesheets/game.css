@@ -81,6 +81,117 @@ button.undo-button:hover {
   background-image: linear-gradient(45deg, #FFC107 0%, #f76a35 100%);
 }
 
+button.double-button {
+  display: none;
+  position: absolute;
+  top: 270px;
+  left: 120px;
+  font-size: 25px;
+  border-radius: 25px;
+  outline: none;
+  width: 150px;
+  padding: 7px 20px;
+  border-radius: 25px;
+  text-decoration: none;
+  color: #FFF;
+  background-image: linear-gradient(45deg, #cc0000 0%, #a52a2a 100%);
+  transition: .4s;
+}
+
+button.double-button:hover {
+  background-image: linear-gradient(45deg, #cc0000 0%, #ff8b5f 100%);
+}
+
+button.roll-button {
+  display: none;
+  position: absolute;
+  top: 270px;
+  left: 420px;
+  font-size: 25px;
+  border-radius: 25px;
+  outline: none;
+  width: 150px;
+  padding: 7px 20px;
+  border-radius: 25px;
+  text-decoration: none;
+  color: #FFF;
+  background-image: linear-gradient(45deg, #00f 0%, #00008b 100%);
+  transition: .4s;
+}
+
+button.roll-button:hover {
+  background-image: linear-gradient(45deg, #00f 0%, #99ffff 100%);
+}
+
+button.take-button {
+  display: none;
+  position: absolute;
+  top: 270px;
+  left: 120px;
+  font-size: 25px;
+  border-radius: 25px;
+  outline: none;
+  width: 150px;
+  padding: 7px 20px;
+  border-radius: 25px;
+  text-decoration: none;
+  color: #FFF;
+  background-image: linear-gradient(45deg, #cc0000 0%, #a52a2a 100%);
+  transition: .4s;
+}
+
+button.take-button:hover {
+  background-image: linear-gradient(45deg, #cc0000 0%, #ff8b5f 100%);
+}
+
+button.pass-button {
+  display: none;
+  position: absolute;
+  top: 270px;
+  left: 420px;
+  font-size: 25px;
+  border-radius: 25px;
+  outline: none;
+  width: 150px;
+  padding: 7px 20px;
+  border-radius: 25px;
+  text-decoration: none;
+  color: #FFF;
+  background-image: linear-gradient(45deg, #00f 0%, #00008b 100%);
+  transition: .4s;
+}
+
+button.pass-button:hover {
+  background-image: linear-gradient(45deg, #00f 0%, #99ffff 100%);
+}
+
+img.take-image {
+  position: absolute;
+  display: none;
+  z-index:100; // 最前面になるように適当な値
+  width: 211px;
+  height: 72px;
+  left: 200px;
+  top: 0px;
+  opacity: 0;
+  animation: takeAnimation 2s linear;
+}
+
+@keyframes takeAnimation {
+  0% {
+    top: 0px;
+    opacity: 0;
+  }
+  50% {
+    top: 120px;
+    opacity: 1;
+  }
+  100% {
+    top: 0px;
+    opacity: 0;
+  }
+}
+
 img.firstOrSecond {
   position: absolute;
   top: 200px;
@@ -138,7 +249,7 @@ button.opponent-secound-dice-button {
 }
 
 img.piece-field {
-  
+
   width: 50px;
   height: 50px;
 }

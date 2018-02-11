@@ -157,6 +157,30 @@ var PeerController = (function () {
       this._conn.send(obj);
     }
   }, {
+    key: 'sendDouble',
+    value: function sendDouble() {
+      var obj = {
+        "message": "double"
+      };
+      this._conn.send(obj);
+    }
+  }, {
+    key: 'sendTake',
+    value: function sendTake() {
+      var obj = {
+        "message": "take"
+      };
+      this._conn.send(obj);
+    }
+  }, {
+    key: 'sendRoll',
+    value: function sendRoll() {
+      var obj = {
+        "message": "roll"
+      };
+      this._conn.send(obj);
+    }
+  }, {
     key: '_sendUserNameAndIcon',
     value: function _sendUserNameAndIcon() {
       // ユーザー名をJSONから取得(JSONにはあるはず)

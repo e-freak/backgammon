@@ -76,6 +76,7 @@ var InformationViewController = (function () {
   }, {
     key: 'startTime',
     value: function startTime() {
+      this._isTimerForcedTermination = false;
       if (this._isTurn) {
         this._startMyTimeLimit();
       } else {

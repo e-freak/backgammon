@@ -1,18 +1,27 @@
 import PeerController from '../script/peer-controller';
 import UserSettingController from '../script/user-setting-controller';
 
+const BANKERS_FREE = 100;
+const BET = 500;
 export default class SearchOpponentViewController {
 
   constructor(view) {
     this._view = view;
     this._userSettingController = new UserSettingController();
+
+    this._searchResultsMyChips = this._view.getElementById('searchResultsMyChips');
+    this._searchResultsOpponentChips = this._view.getElementById('searchResultsOpponentChips');
+
+    this._myChips = 0;
+    this._opponentChips = 0;
+    this._chargeChipsValue = BANKERS_FREE;
   }
 
   initialize() {
     this._view.getElementById('searchOpponentGoToTopButton').addEventListener('click', this.onClickGotoTopButton.bind(this));
   }
 
-  setVersusView(opponent_userName, opponent_icon) {
+  setVersusView(opponent_userName, opponent_icon, opponent_chips) {
     // 自分の名前をJSONから取得
     var userName = this._userSettingController.loadUserNameFromJSON();
     // 自分の名前を設定
@@ -26,6 +35,9 @@ export default class SearchOpponentViewController {
     var iconImageSrc = this._getImagesrcWithBase64(base64);
     iconImage.src = iconImageSrc;
 
+    // 自分のチップをJSONから取得
+    this._myChips = this._userSettingController.loadChipsFromJSON();
+
     // 相手の名前を設定
     var opponentNameLabel = this._view.getElementById('searchResultsOpponentName');
     opponentNameLabel.innerHTML = opponent_userName;
@@ -34,6 +46,9 @@ export default class SearchOpponentViewController {
     var opponentIconImage = this._view.getElementById('searchResultsOpponentIcon');
     var opponentIconImageSrc = this._getImagesrcWithBase64(opponent_icon);
     opponentIconImage.src = opponentIconImageSrc;
+
+    // 相手のチップを設定
+    this._opponentChips = opponent_chips;
   }
 
   _getImagesrcWithBase64(base64) {
@@ -64,6 +79,29 @@ export default class SearchOpponentViewController {
     // 対戦相手を表示
     let target = this._view.getElementById('searchResults');
     target.style.display = "block";
+
+    // 0.03秒間隔でチップを減算
+    this._chargeChips();
+  }
+
+  _chargeChips() {
+
+    var id = setTimeout(this._chargeChips.bind(this), 30);
+
+    if (this._chargeChipsValue <= 0) {
+      this._chargeChipsValue = BANKERS_FREE;
+      clearTimeout(id);　 //idをclearTimeoutで指定している
+
+      // 自分のチップをJSONに保存
+      this._userSettingController.writeChipsToJSON(this._myChips);
+      return;
+    }
+    this._myChips--;
+    this._opponentChips--;
+    this._chargeChipsValue--;
+
+    this._searchResultsMyChips.innerHTML = "$" + this._myChips;
+    this._searchResultsOpponentChips.innerHTML = "$" + this._opponentChips;
   }
 
   hideVersusView() {

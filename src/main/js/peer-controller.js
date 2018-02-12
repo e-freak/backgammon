@@ -152,10 +152,13 @@ export default class PeerController {
     var userName = this._userSettingController.loadUserNameFromJSON();
     // ユーザーのアイコンをJSONから取得(JSONにはあるはず)
     var iconBase64 = this._userSettingController.loadImageBase64FromJSON();
+    // ユーザーのチップをJSONから取得
+    var chips = this._userSettingController.loadChipsFromJSON();
     var obj = {
       "message": "userNameAndIcon",
       "userName": userName,
-      "iconBase64": iconBase64
+      "iconBase64": iconBase64,
+      "chips": chips
     };
     this._conn.send(obj);
   }
@@ -165,10 +168,14 @@ export default class PeerController {
     var userName = this._userSettingController.loadUserNameFromJSON();
     // ユーザーのアイコンをJSONから取得(JSONにはあるはず)
     var iconBase64 = this._userSettingController.loadImageBase64FromJSON();
+
+    // ユーザーのチップをJSONから取得
+    var chips = this._userSettingController.loadChipsFromJSON();
     var obj = {
       "message": "answerUserNameAndIcon",
       "userName": userName,
-      "iconBase64": iconBase64
+      "iconBase64": iconBase64,
+      "chips": chips
     };
     this._conn.send(obj);
   }

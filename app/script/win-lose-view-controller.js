@@ -17,10 +17,12 @@ var WinLoseViewController = (function () {
 
   _createClass(WinLoseViewController, [{
     key: 'initialize',
-    value: function initialize() {}
+    value: function initialize() {
+      this._view.getElementById('goToTopButton').addEventListener('click', this.onClickGotoTopButton.bind(this));
+    }
   }, {
     key: 'display',
-    value: function display(isVictory, userData, opponentData, reasonString) {
+    value: function display(isVictory, userData, opponentData, reasonString, myChips) {
       var winLoseLabel = this._view.getElementById('winLoseLabel');
       var reason = this._view.getElementById('winningLosingReason');
       reason.innerHTML = reasonString;
@@ -53,6 +55,15 @@ var WinLoseViewController = (function () {
       }
       var winningLosingArea = this._view.getElementById('winningLosingArea');
       winningLosingArea.style.display = "block";
+
+      // チップ
+      var myChipsLabel = this._view.getElementById('winningLosingMyChips');
+      myChipsLabel.innerHTML = "$" + myChips;
+    }
+  }, {
+    key: 'onClickGotoTopButton',
+    value: function onClickGotoTopButton() {
+      history.back();
     }
   }]);
 

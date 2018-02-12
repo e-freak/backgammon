@@ -18,12 +18,22 @@ var _scriptUserSettingController = require('../script/user-setting-controller');
 
 var _scriptUserSettingController2 = _interopRequireDefault(_scriptUserSettingController);
 
+var BANKERS_FREE = 100;
+var BET = 500;
+
 var SearchOpponentViewController = (function () {
   function SearchOpponentViewController(view) {
     _classCallCheck(this, SearchOpponentViewController);
 
     this._view = view;
     this._userSettingController = new _scriptUserSettingController2['default']();
+
+    this._searchResultsMyChips = this._view.getElementById('searchResultsMyChips');
+    this._searchResultsOpponentChips = this._view.getElementById('searchResultsOpponentChips');
+
+    this._myChips = 0;
+    this._opponentChips = 0;
+    this._chargeChipsValue = BANKERS_FREE;
   }
 
   _createClass(SearchOpponentViewController, [{
@@ -33,7 +43,7 @@ var SearchOpponentViewController = (function () {
     }
   }, {
     key: 'setVersusView',
-    value: function setVersusView(opponent_userName, opponent_icon) {
+    value: function setVersusView(opponent_userName, opponent_icon, opponent_chips) {
       // 自分の名前をJSONから取得
       var userName = this._userSettingController.loadUserNameFromJSON();
       // 自分の名前を設定
@@ -47,6 +57,9 @@ var SearchOpponentViewController = (function () {
       var iconImageSrc = this._getImagesrcWithBase64(base64);
       iconImage.src = iconImageSrc;
 
+      // 自分のチップをJSONから取得
+      this._myChips = this._userSettingController.loadChipsFromJSON();
+
       // 相手の名前を設定
       var opponentNameLabel = this._view.getElementById('searchResultsOpponentName');
       opponentNameLabel.innerHTML = opponent_userName;
@@ -55,6 +68,9 @@ var SearchOpponentViewController = (function () {
       var opponentIconImage = this._view.getElementById('searchResultsOpponentIcon');
       var opponentIconImageSrc = this._getImagesrcWithBase64(opponent_icon);
       opponentIconImage.src = opponentIconImageSrc;
+
+      // 相手のチップを設定
+      this._opponentChips = opponent_chips;
     }
   }, {
     key: '_getImagesrcWithBase64',
@@ -87,6 +103,30 @@ var SearchOpponentViewController = (function () {
       // 対戦相手を表示
       var target = this._view.getElementById('searchResults');
       target.style.display = "block";
+
+      // 0.03秒間隔でチップを減算
+      this._chargeChips();
+    }
+  }, {
+    key: '_chargeChips',
+    value: function _chargeChips() {
+
+      var id = setTimeout(this._chargeChips.bind(this), 30);
+
+      if (this._chargeChipsValue <= 0) {
+        this._chargeChipsValue = BANKERS_FREE;
+        clearTimeout(id); //idをclearTimeoutで指定している
+
+        // 自分のチップをJSONに保存
+        this._userSettingController.writeChipsToJSON(this._myChips);
+        return;
+      }
+      this._myChips--;
+      this._opponentChips--;
+      this._chargeChipsValue--;
+
+      this._searchResultsMyChips.innerHTML = "$" + this._myChips;
+      this._searchResultsOpponentChips.innerHTML = "$" + this._opponentChips;
     }
   }, {
     key: 'hideVersusView',

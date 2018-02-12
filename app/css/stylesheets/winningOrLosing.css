@@ -69,6 +69,15 @@ label.winning-losing-my-name {
   text-shadow: 1px 1px 0 #09f
 }
 
+label.winning-losing-my-chips {
+  position: absolute;
+  top: 270px;
+  left: 150px;
+  color: #ffebcd;
+  font-size: x-large;
+  text-shadow: 1px 1px 0 #09f
+}
+
 img.winning-losing-opponent-icon {
   position: absolute;
   border: solid 1px #000;

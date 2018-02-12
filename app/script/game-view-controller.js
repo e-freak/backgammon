@@ -35,7 +35,12 @@ var _scriptWinLoseViewController = require('../script/win-lose-view-controller')
 
 var _scriptWinLoseViewController2 = _interopRequireDefault(_scriptWinLoseViewController);
 
+var _scriptUserSettingController = require('../script/user-setting-controller');
+
+var _scriptUserSettingController2 = _interopRequireDefault(_scriptUserSettingController);
+
 var BAR_POINT = 25;
+var BASE_BET = 500;
 
 var GameViewController = (function () {
   function GameViewController(view) {
@@ -44,6 +49,10 @@ var GameViewController = (function () {
     this._view = view;
     this._isHost = false;
     this._isMyTurn = false;
+    this._currentBet = BASE_BET;
+
+    this._currentBetLabel = this._view.getElementById('currentBetLabel');
+    this._currentBetLabel.innerHTML = "$" + this._currentBet;
 
     this._gameSound = this._view.getElementById('gameSound');
     this._gameSound.volume = 0.2;
@@ -88,6 +97,8 @@ var GameViewController = (function () {
     this._giveupButton = this._view.getElementById('giveupButton');
 
     this._winloseViewController = new _scriptWinLoseViewController2['default'](this._view);
+
+    this._userSettingController = new _scriptUserSettingController2['default']();
   }
 
   _createClass(GameViewController, [{
@@ -107,6 +118,8 @@ var GameViewController = (function () {
 
       this._searchOpponentViewController.initialize();
 
+      this._winloseViewController.initialize();
+
       setTimeout(this._peerController.initialize(), 1000);
     }
 
@@ -116,13 +129,12 @@ var GameViewController = (function () {
     value: function notificationOfReceiveMessage(data) {
       var message = data.message;
       if (message === "userNameAndIcon" || message === "answerUserNameAndIcon") {
-        this._searchOpponentViewController.setVersusView(data.userName, data.iconBase64);
+        this._searchOpponentViewController.setVersusView(data.userName, data.iconBase64, data.chips);
         this._searchOpponentViewController.displayVersusView();
 
         // informationエリアのアイコンなどを設定する
         this._informationViewController.initialize(data.userName, data.iconBase64);
 
-        // ゲーム開始
         setTimeout(this.gameStart.bind(this, data.userName, data.iconBase64), 6000);
       }
       if (message === "userNameAndIcon") {
@@ -191,6 +203,9 @@ var GameViewController = (function () {
       }
 
       if (message === "take") {
+
+        this._currentBet = this._currentBet * 2;
+        this._currentBetLabel.innerHTML = "$" + this._currentBet;
         // this._doubleButton.style.display = "none"; // doubleボタン表示
         // this._rollButton.style.display = "none"; // rollBボタン表示
 
@@ -214,7 +229,17 @@ var GameViewController = (function () {
         var myData = this._informationViewController.getMyData();
         var opponentData = this._informationViewController.getOpponentData();
         var result = data.result;
-        this._winloseViewController.display(result.isVictory, myData, opponentData, result.reasonString);
+
+        // チップを加算/減算
+        var myChips = this._userSettingController.loadChipsFromJSON();
+        if (result.isVictory) {
+          myChips += this._currentBet;
+        } else {
+          myChips -= this._currentBet;
+        }
+        this._userSettingController.writeChipsToJSON(myChips);
+
+        this._winloseViewController.display(result.isVictory, myData, opponentData, result.reasonString, myChips);
       }
     }
 
@@ -249,6 +274,8 @@ var GameViewController = (function () {
 
       // 対戦相手表示画面を非表示にする
       this._searchOpponentViewController.hideVersusView();
+
+      this._currentBetLabel.style.display = "block";
 
       // コマを配りたい
       var myPieceButtons = this._pieceController.appendMyPiece();
@@ -326,6 +353,9 @@ var GameViewController = (function () {
       this._takeButton.style.display = "none"; // takeボタン非表示
       this._passButton.style.display = "none"; // passボタン非表示
       this._peerController.sendTake();
+
+      this._currentBet = this._currentBet * 2;
+      this._currentBetLabel.innerHTML = "$" + this._currentBet;
     }
   }, {
     key: '_onClickPassButton',
@@ -336,7 +366,12 @@ var GameViewController = (function () {
       // Giveup(PASS)画面を表示
       var myData = this._informationViewController.getMyData();
       var opponentData = this._informationViewController.getOpponentData();
-      this._winloseViewController.display(false, myData, opponentData, "PASS");
+
+      var myChips = this._userSettingController.loadChipsFromJSON();
+      myChips -= this._currentBet;
+      this._userSettingController.writeChipsToJSON(myChips);
+
+      this._winloseViewController.display(false, myData, opponentData, "PASS", myChips);
       // 対戦相手に通知
       var matchResult = {
         "isVictory": true,
@@ -377,7 +412,11 @@ var GameViewController = (function () {
       // Giveup画面を表示
       var myData = this._informationViewController.getMyData();
       var opponentData = this._informationViewController.getOpponentData();
-      this._winloseViewController.display(false, myData, opponentData, "Give UP");
+      var myChips = this._userSettingController.loadChipsFromJSON();
+      myChips -= this._currentBet;
+      this._userSettingController.writeChipsToJSON(myChips);
+
+      this._winloseViewController.display(false, myData, opponentData, "Give UP", myChips);
       // 対戦相手に通知
       var matchResult = {
         "isVictory": true,
@@ -391,7 +430,12 @@ var GameViewController = (function () {
       // Time UP"画面を表示
       var myData = this._informationViewController.getMyData();
       var opponentData = this._informationViewController.getOpponentData();
-      this._winloseViewController.display(false, myData, opponentData, "Time UP");
+
+      var myChips = this._userSettingController.loadChipsFromJSON();
+      myChips -= this._currentBet;
+      this._userSettingController.writeChipsToJSON(myChips);
+
+      this._winloseViewController.display(false, myData, opponentData, "Time UP", myChips);
       // 対戦相手に通知
       var matchResult = {
         "isVictory": true,
@@ -406,7 +450,12 @@ var GameViewController = (function () {
       // Goal画面を表示
       var myData = this._informationViewController.getMyData();
       var opponentData = this._informationViewController.getOpponentData();
-      this._winloseViewController.display(true, myData, opponentData, "Goal");
+
+      var myChips = this._userSettingController.loadChipsFromJSON();
+      myChips += this._currentBet;
+      this._userSettingController.writeChipsToJSON(myChips);
+
+      this._winloseViewController.display(true, myData, opponentData, "Goal", myChips);
       // 対戦相手に通知
       var matchResult = {
         "isVictory": false,

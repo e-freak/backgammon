@@ -5,10 +5,10 @@ export default class WinLoseViewController {
   }
 
   initialize() {
-
+    this._view.getElementById('goToTopButton').addEventListener('click', this.onClickGotoTopButton.bind(this));
   }
 
-  display(isVictory, userData, opponentData, reasonString) {
+  display(isVictory, userData, opponentData, reasonString, myChips) {
     let winLoseLabel = this._view.getElementById('winLoseLabel');
     let reason = this._view.getElementById('winningLosingReason');
     reason.innerHTML = reasonString;
@@ -41,5 +41,14 @@ export default class WinLoseViewController {
     }
     let winningLosingArea = this._view.getElementById('winningLosingArea');
     winningLosingArea.style.display = "block";
+
+
+    // チップ
+    let myChipsLabel = this._view.getElementById('winningLosingMyChips');
+    myChipsLabel.innerHTML = "$" + myChips;
+  }
+
+  onClickGotoTopButton() {
+    history.back();
   }
 }

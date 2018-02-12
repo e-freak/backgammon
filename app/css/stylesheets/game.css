@@ -60,6 +60,23 @@ button.my-bear-off-area-button {
   opacity: 0.5;
 }
 
+label.current-bet-title {
+  position: absolute;
+  top: 270px;
+  left: 630px;
+  font-size: 12px;
+  color: white;
+}
+
+label.current-bet-label {
+  position: absolute;
+  display: none;
+  top: 285px;
+  left: 650px;
+  font-size: 14px;
+  color: white;
+}
+
 button.undo-button {
   display: none;
   position: absolute;

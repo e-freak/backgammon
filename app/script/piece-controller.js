@@ -46,6 +46,8 @@ var PieceController = (function () {
     this._notificationMovedPiece = notificationMovedPiece;
 
     this._notificationMovedPieceToBar = notificationMovedPieceToBar;
+
+    this._swishSound = document.getElementById('swishSound');
   }
 
   _createClass(PieceController, [{
@@ -84,7 +86,7 @@ var PieceController = (function () {
 
       for (var i = 0; i <= 14; i++) {
         var position = this._getPiecePosition(point[i], this._myPieces);
-        var piece = new _scriptPiece2['default'](position[0], position[1], point[i], true, i);
+        var piece = new _scriptPiece2['default'](position[0], position[1], point[i], true, i, this._swishSound);
         piece.initialize();
         var btn = piece.createPieceElement();
 

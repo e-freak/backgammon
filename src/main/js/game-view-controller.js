@@ -17,6 +17,9 @@ export default class GameViewController {
     this._isHost = false;
     this._isMyTurn = false;
 
+    this._gameSound = this._view.getElementById('gameSound');
+    this._gameSound.volume = 0.2;
+
     // 対戦相手検索完了後に呼ばれるメソッド
     // this.notificationSearchCompleted = this.notificationSearchCompleted.bind(this);
     this._searchOpponentViewController = new SearchOpponentViewController(this._view);
@@ -34,6 +37,7 @@ export default class GameViewController {
     this._notificationChangeTurn = this._notificationChangeTurn.bind(this);
     var diceBorderElements = this._view.getElementsByClassName("dice-border-base");
 
+    var diceSound = this._view.getElementById('diceSound');
     this._diceController = new DiceController(myFirstDiceButton,
       mySecoundDiceButton,
       opponentFirstDiceButton,
@@ -41,7 +45,8 @@ export default class GameViewController {
       diceBorderElements,
       this._notificationFirstShakeDice,
       this._notificationShakeDice,
-      this._notificationChangeTurn);
+      this._notificationChangeTurn,
+      diceSound);
 
     this._notificationMovedPiece = this._notificationMovedPiece.bind(this);
     this._notificationMovedPieceToBar = this._notificationMovedPieceToBar.bind(this);
@@ -63,6 +68,7 @@ export default class GameViewController {
     this._giveupButton = this._view.getElementById('giveupButton');
 
     this._winloseViewController = new WinLoseViewController(this._view);
+
   }
 
   initialize() {

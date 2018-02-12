@@ -11,6 +11,9 @@ export default class Piece {
     this._btn;
 
     this._image;
+
+    this._swishSound = swishSound;
+    this._swishSound.volume = 1;
   }
 
   getIsMyPiece() {
@@ -30,6 +33,7 @@ export default class Piece {
   }
 
   move(top, left, point) {
+    this._swishSound.play();
     this._top = top;
     this._left = left;
     this._point = point
@@ -37,6 +41,8 @@ export default class Piece {
     this._btn.style.top = top + "px";
     this._btn.style.left = left + "px";
     this._point = point;
+
+    this._swishSound.currentTime = 0;
   }
 
   initialize() {

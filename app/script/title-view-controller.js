@@ -23,6 +23,9 @@ var TitleViewController = (function () {
     _classCallCheck(this, TitleViewController);
 
     this._view = view;
+    this._gameSound = this._view.getElementById('gameSound');
+    this._gameSound.volume = 0.2;
+
     this.imageDragover = this.imageDragover.bind(this);
     this.imageDragleave = this.imageDragleave.bind(this);
     this.imageDrop = this.imageDrop.bind(this);

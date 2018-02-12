@@ -2,7 +2,11 @@ import 'babel-polyfill';
 
 export default class DiceController {
 
-  constructor(myFirstDiceButton, mySecoundDiceButton, opponentFirstDiceButton, opponentSecoundDiceButton, diceBorderElements, notificationFirstShakeDice, notificationShakeDice, notificationChangeTurn) {
+  constructor(myFirstDiceButton, mySecoundDiceButton,
+    opponentFirstDiceButton, opponentSecoundDiceButton,
+    diceBorderElements,
+    notificationFirstShakeDice, notificationShakeDice, notificationChangeTurn,
+    sound) {
     this._imageMyDiceResource = []; // 自分のサイコロの画像(indexはサイコロの目と対応, index=0は使用しない)
     this._imageOpponentDiceResource = []; // 相手のサイコロの画像(indexはサイコロの目と対応, index=0は使用しない)
 
@@ -22,6 +26,9 @@ export default class DiceController {
     this._dicePips = []; // ボード上に出ているサイコロの目の配列
 
     this.isAllowTurnChange = false;
+
+    this._sound = sound;
+    this._sound.volume = 1;
   }
 
   initialize() {
@@ -75,9 +82,11 @@ export default class DiceController {
     this._dicePips.push(pip2);
     // 振っている風に見せる
     this._shakeMyDiceAnimation(pip1, pip2);
+
   }
 
   shakeOpponentDice(pip1, pip2) {
+
     this._myFirstDiceButton.style.display = "none" // 非表示;
     this._mySecoundDiceButton.style.display = "none" // 非表示;
     this._opponentFirstDiceButton.style.display = "block" // 表示;
@@ -92,6 +101,7 @@ export default class DiceController {
     this._dicePips.push(pip2);
     // 振っている風に見せる
     this._shakeOpponentDiceAnimation(pip1, pip2);
+
   }
 
   clear() {
@@ -181,6 +191,8 @@ export default class DiceController {
   }
 
   async _firstShakeAnimation(myPip, opponentPip) {
+    // 効果音再生
+    this._sound.play();
     for (let i = 0; i < 20; i++) {
       var num1 = Math.ceil(Math.random() * 6);
       var num2 = Math.ceil(Math.random() * 6);
@@ -191,6 +203,10 @@ export default class DiceController {
       // 少し待つ
       await this._sleep(50);
     }
+    // 効果音ストップ
+    this._sound.pause();
+    this._sound.currentTime = 0;
+
     this._myFirstDiceButton.firstChild.src = this._imageMyDiceResource[myPip].src;
     this._opponentFirstDiceButton.firstChild.src = this._imageOpponentDiceResource[opponentPip].src;
 
@@ -204,6 +220,8 @@ export default class DiceController {
   }
 
   async _shakeMyDiceAnimation(pip1, pip2) {
+    // 効果音再生
+    this._sound.play();
     for (let i = 0; i < 20; i++) {
       var num1 = Math.ceil(Math.random() * 6);
       var num2 = Math.ceil(Math.random() * 6);
@@ -214,11 +232,18 @@ export default class DiceController {
       // 少し待つ
       await this._sleep(50);
     }
+    // 効果音ストップ
+    this._sound.pause();
+    this._sound.currentTime = 0;
+
     this._myFirstDiceButton.firstChild.src = this._imageMyDiceResource[pip1].src;
     this._mySecoundDiceButton.firstChild.src = this._imageMyDiceResource[pip2].src;
   }
 
   async _shakeOpponentDiceAnimation(pip1, pip2) {
+    // 効果音再生
+    this._sound.play();
+
     for (let i = 0; i < 20; i++) {
       var num1 = Math.ceil(Math.random() * 6);
       var num2 = Math.ceil(Math.random() * 6);
@@ -229,6 +254,11 @@ export default class DiceController {
       // 少し待つ
       await this._sleep(50);
     }
+
+    // 効果音ストップ
+    this._sound.pause();
+    this._sound.currentTime = 0;
+
     this._opponentFirstDiceButton.firstChild.src = this._imageOpponentDiceResource[pip1].src;
     this._opponentSecoundDiceButton.firstChild.src = this._imageOpponentDiceResource[pip2].src;
   }

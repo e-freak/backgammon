@@ -11,7 +11,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 require('babel-polyfill');
 
 var DiceController = (function () {
-  function DiceController(myFirstDiceButton, mySecoundDiceButton, opponentFirstDiceButton, opponentSecoundDiceButton, diceBorderElements, notificationFirstShakeDice, notificationShakeDice, notificationChangeTurn) {
+  function DiceController(myFirstDiceButton, mySecoundDiceButton, opponentFirstDiceButton, opponentSecoundDiceButton, diceBorderElements, notificationFirstShakeDice, notificationShakeDice, notificationChangeTurn, sound) {
     _classCallCheck(this, DiceController);
 
     this._imageMyDiceResource = []; // 自分のサイコロの画像(indexはサイコロの目と対応, index=0は使用しない)
@@ -33,6 +33,9 @@ var DiceController = (function () {
     this._dicePips = []; // ボード上に出ているサイコロの目の配列
 
     this.isAllowTurnChange = false;
+
+    this._sound = sound;
+    this._sound.volume = 1;
   }
 
   _createClass(DiceController, [{
@@ -95,6 +98,7 @@ var DiceController = (function () {
   }, {
     key: "shakeOpponentDice",
     value: function shakeOpponentDice(pip1, pip2) {
+
       this._myFirstDiceButton.style.display = "none"; // 非表示;
       this._mySecoundDiceButton.style.display = "none"; // 非表示;
       this._opponentFirstDiceButton.style.display = "block"; // 表示;
@@ -207,11 +211,13 @@ var DiceController = (function () {
       return regeneratorRuntime.async(function _firstShakeAnimation$(context$2$0) {
         while (1) switch (context$2$0.prev = context$2$0.next) {
           case 0:
+            // 効果音再生
+            this._sound.play();
             i = 0;
 
-          case 1:
+          case 2:
             if (!(i < 20)) {
-              context$2$0.next = 11;
+              context$2$0.next = 12;
               break;
             }
 
@@ -222,15 +228,19 @@ var DiceController = (function () {
             this._opponentFirstDiceButton.firstChild.src = this._imageOpponentDiceResource[num2].src;
 
             // 少し待つ
-            context$2$0.next = 8;
+            context$2$0.next = 9;
             return regeneratorRuntime.awrap(this._sleep(50));
 
-          case 8:
+          case 9:
             i++;
-            context$2$0.next = 1;
+            context$2$0.next = 2;
             break;
 
-          case 11:
+          case 12:
+            // 効果音ストップ
+            this._sound.pause();
+            this._sound.currentTime = 0;
+
             this._myFirstDiceButton.firstChild.src = this._imageMyDiceResource[myPip].src;
             this._opponentFirstDiceButton.firstChild.src = this._imageOpponentDiceResource[opponentPip].src;
 
@@ -242,7 +252,7 @@ var DiceController = (function () {
             // game controller に通知
             this._notificationFirstShakeDice(myPip, opponentPip);
 
-          case 15:
+          case 18:
           case "end":
             return context$2$0.stop();
         }
@@ -255,11 +265,13 @@ var DiceController = (function () {
       return regeneratorRuntime.async(function _shakeMyDiceAnimation$(context$2$0) {
         while (1) switch (context$2$0.prev = context$2$0.next) {
           case 0:
+            // 効果音再生
+            this._sound.play();
             i = 0;
 
-          case 1:
+          case 2:
             if (!(i < 20)) {
-              context$2$0.next = 11;
+              context$2$0.next = 12;
               break;
             }
 
@@ -270,19 +282,23 @@ var DiceController = (function () {
             this._mySecoundDiceButton.firstChild.src = this._imageMyDiceResource[num2].src;
 
             // 少し待つ
-            context$2$0.next = 8;
+            context$2$0.next = 9;
             return regeneratorRuntime.awrap(this._sleep(50));
 
-          case 8:
+          case 9:
             i++;
-            context$2$0.next = 1;
+            context$2$0.next = 2;
             break;
 
-          case 11:
+          case 12:
+            // 効果音ストップ
+            this._sound.pause();
+            this._sound.currentTime = 0;
+
             this._myFirstDiceButton.firstChild.src = this._imageMyDiceResource[pip1].src;
             this._mySecoundDiceButton.firstChild.src = this._imageMyDiceResource[pip2].src;
 
-          case 13:
+          case 16:
           case "end":
             return context$2$0.stop();
         }
@@ -295,11 +311,14 @@ var DiceController = (function () {
       return regeneratorRuntime.async(function _shakeOpponentDiceAnimation$(context$2$0) {
         while (1) switch (context$2$0.prev = context$2$0.next) {
           case 0:
+            // 効果音再生
+            this._sound.play();
+
             i = 0;
 
-          case 1:
+          case 2:
             if (!(i < 20)) {
-              context$2$0.next = 11;
+              context$2$0.next = 12;
               break;
             }
 
@@ -310,19 +329,24 @@ var DiceController = (function () {
             this._opponentSecoundDiceButton.firstChild.src = this._imageOpponentDiceResource[num2].src;
 
             // 少し待つ
-            context$2$0.next = 8;
+            context$2$0.next = 9;
             return regeneratorRuntime.awrap(this._sleep(50));
 
-          case 8:
+          case 9:
             i++;
-            context$2$0.next = 1;
+            context$2$0.next = 2;
             break;
 
-          case 11:
+          case 12:
+
+            // 効果音ストップ
+            this._sound.pause();
+            this._sound.currentTime = 0;
+
             this._opponentFirstDiceButton.firstChild.src = this._imageOpponentDiceResource[pip1].src;
             this._opponentSecoundDiceButton.firstChild.src = this._imageOpponentDiceResource[pip2].src;
 
-          case 13:
+          case 16:
           case "end":
             return context$2$0.stop();
         }

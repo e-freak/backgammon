@@ -245,6 +245,25 @@ export default class TitleViewController {
     }
 
     // 対戦成績を設定
+    var wins = this._userSettingController.loadWinsFromJSON();
+    if (wins !== undefined) {
+      var winLabel = this._view.getElementById('winLabelArea');
+      var ret = ('000' + wins).slice(-3);
+      winLabel.innerHTML = ret + "勝";
+    } else {
+      // 定義されてなかったら0をユーザー情報設定(Json)に書き込もう
+      this._userSettingController.writeWinsToJSON(0);
+    }
+
+    var defeats = this._userSettingController.loadDefeatsFromJSON();
+    if (defeats !== undefined) {
+      var defeatsLabel = this._view.getElementById('lossLabelArea');
+      var ret = ('000' + defeats).slice(-3);
+      defeatsLabel.innerHTML = ret + "負";
+    } else {
+      // 定義されてなかったら0をユーザー情報設定(Json)に書き込もう
+      this._userSettingController.writeDefeatsToJSON(0);
+    }
 
     // チップを設定
     var chips = this._userSettingController.loadChipsFromJSON();

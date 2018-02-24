@@ -39,6 +39,20 @@ export default class UserSettingController {
     this._writeConfigJSON(obj);
   }
 
+  writeWinsToJSON(wins) {
+    var obj = {
+      "wins": wins
+    };
+    this._writeConfigJSON(obj);
+  }
+
+  writeDefeatsToJSON(defeats) {
+    var obj = {
+      "defeats": defeats
+    };
+    this._writeConfigJSON(obj);
+  }
+
   loadUserNameFromJSON() {
     var jsonObj = this._loadConfigJSON();
     try {
@@ -70,6 +84,32 @@ export default class UserSettingController {
     var jsonObj = this._loadConfigJSON();
     try {
       return jsonObj.chips;
+    } catch (e) {
+      return;
+    }
+  }
+
+  loadWinsFromJSON() {
+    var jsonObj = this._loadConfigJSON();
+    try {
+      if (jsonObj.wins !== undefined) {
+        return jsonObj.wins;
+      } else {
+        return 0;
+      }
+    } catch (e) {
+      return;
+    }
+  }
+
+  loadDefeatsFromJSON() {
+    var jsonObj = this._loadConfigJSON();
+    try {
+      if (jsonObj.defeats !== undefined) {
+        return jsonObj.defeats;
+      } else {
+        return 0;
+      }
     } catch (e) {
       return;
     }

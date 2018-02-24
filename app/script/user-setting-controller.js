@@ -54,6 +54,22 @@ var UserSettingController = (function () {
       this._writeConfigJSON(obj);
     }
   }, {
+    key: "writeWinsToJSON",
+    value: function writeWinsToJSON(wins) {
+      var obj = {
+        "wins": wins
+      };
+      this._writeConfigJSON(obj);
+    }
+  }, {
+    key: "writeDefeatsToJSON",
+    value: function writeDefeatsToJSON(defeats) {
+      var obj = {
+        "defeats": defeats
+      };
+      this._writeConfigJSON(obj);
+    }
+  }, {
     key: "loadUserNameFromJSON",
     value: function loadUserNameFromJSON() {
       var jsonObj = this._loadConfigJSON();
@@ -89,6 +105,34 @@ var UserSettingController = (function () {
       var jsonObj = this._loadConfigJSON();
       try {
         return jsonObj.chips;
+      } catch (e) {
+        return;
+      }
+    }
+  }, {
+    key: "loadWinsFromJSON",
+    value: function loadWinsFromJSON() {
+      var jsonObj = this._loadConfigJSON();
+      try {
+        if (jsonObj.wins !== undefined) {
+          return jsonObj.wins;
+        } else {
+          return 0;
+        }
+      } catch (e) {
+        return;
+      }
+    }
+  }, {
+    key: "loadDefeatsFromJSON",
+    value: function loadDefeatsFromJSON() {
+      var jsonObj = this._loadConfigJSON();
+      try {
+        if (jsonObj.defeats !== undefined) {
+          return jsonObj.defeats;
+        } else {
+          return 0;
+        }
       } catch (e) {
         return;
       }

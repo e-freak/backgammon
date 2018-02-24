@@ -95,7 +95,7 @@ export default class GameViewController {
     this._searchOpponentViewController.initialize();
 
     this._winloseViewController.initialize();
-    
+
     setTimeout(this._peerController.initialize(), 1000);
   }
 
@@ -214,6 +214,17 @@ export default class GameViewController {
         myChips -= this._currentBet;
       }
       this._userSettingController.writeChipsToJSON(myChips);
+
+      // 勝敗数
+      if (result.isVictory) {
+        var wins = this._userSettingController.loadWinsFromJSON();
+        wins++;
+        this._userSettingController.writeWinsToJSON(wins);
+      }else {
+        var defeats = this._userSettingController.loadDefeatsFromJSON();
+        defeats++;
+        this._userSettingController.writeDefeatsToJSON(defeats);
+      }
 
       this._winloseViewController.display(result.isVictory, myData, opponentData, result.reasonString, myChips);
     }
@@ -337,6 +348,11 @@ export default class GameViewController {
     myChips -= this._currentBet;
     this._userSettingController.writeChipsToJSON(myChips);
 
+    // 勝敗数
+    var defeats = this._userSettingController.loadDefeatsFromJSON();
+    defeats++;
+    this._userSettingController.writeDefeatsToJSON(defeats);
+
     this._winloseViewController.display(false, myData, opponentData, "PASS", myChips);
     // 対戦相手に通知
     let matchResult = {
@@ -380,6 +396,12 @@ export default class GameViewController {
     myChips -= this._currentBet;
     this._userSettingController.writeChipsToJSON(myChips);
 
+    // 勝敗数
+    var defeats = this._userSettingController.loadDefeatsFromJSON();
+    defeats++;
+    this._userSettingController.writeDefeatsToJSON(defeats);
+
+
     this._winloseViewController.display(false, myData, opponentData, "Give UP", myChips);
     // 対戦相手に通知
     let matchResult = {
@@ -397,6 +419,11 @@ export default class GameViewController {
     var myChips = this._userSettingController.loadChipsFromJSON();
     myChips -= this._currentBet;
     this._userSettingController.writeChipsToJSON(myChips);
+    // 勝敗数
+    var defeats = this._userSettingController.loadDefeatsFromJSON();
+    defeats++;
+    this._userSettingController.writeDefeatsToJSON(defeats);
+
 
     this._winloseViewController.display(false, myData, opponentData, "Time UP", myChips);
     // 対戦相手に通知
@@ -416,6 +443,11 @@ export default class GameViewController {
     var myChips = this._userSettingController.loadChipsFromJSON();
     myChips += this._currentBet;
     this._userSettingController.writeChipsToJSON(myChips);
+
+    // 勝敗数
+    var wins = this._userSettingController.loadWinsFromJSON();
+    wins++;
+    this._userSettingController.writeWinsToJSON(wins);
 
     this._winloseViewController.display(true, myData, opponentData, "Goal", myChips);
     // 対戦相手に通知

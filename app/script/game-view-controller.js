@@ -1,48 +1,48 @@
-//import Piece from '../script/Piece';
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); //import Piece from '../script/Piece';
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+var _pieceController = require('../script/piece-controller');
 
-var _scriptPieceController = require('../script/piece-controller');
+var _pieceController2 = _interopRequireDefault(_pieceController);
 
-var _scriptPieceController2 = _interopRequireDefault(_scriptPieceController);
+var _peerController = require('../script/peer-controller');
 
-var _scriptPeerController = require('../script/peer-controller');
+var _peerController2 = _interopRequireDefault(_peerController);
 
-var _scriptPeerController2 = _interopRequireDefault(_scriptPeerController);
+var _searchOpponentViewController = require('../script/search-opponent-view-controller');
 
-var _scriptSearchOpponentViewController = require('../script/search-opponent-view-controller');
+var _searchOpponentViewController2 = _interopRequireDefault(_searchOpponentViewController);
 
-var _scriptSearchOpponentViewController2 = _interopRequireDefault(_scriptSearchOpponentViewController);
+var _informationViewController = require('../script/information-view-controller');
 
-var _scriptInformationViewController = require('../script/information-view-controller');
+var _informationViewController2 = _interopRequireDefault(_informationViewController);
 
-var _scriptInformationViewController2 = _interopRequireDefault(_scriptInformationViewController);
+var _diceController = require('../script/dice-controller');
 
-var _scriptDiceController = require('../script/dice-controller');
+var _diceController2 = _interopRequireDefault(_diceController);
 
-var _scriptDiceController2 = _interopRequireDefault(_scriptDiceController);
+var _winLoseViewController = require('../script/win-lose-view-controller');
 
-var _scriptWinLoseViewController = require('../script/win-lose-view-controller');
+var _winLoseViewController2 = _interopRequireDefault(_winLoseViewController);
 
-var _scriptWinLoseViewController2 = _interopRequireDefault(_scriptWinLoseViewController);
+var _userSettingController = require('../script/user-setting-controller');
 
-var _scriptUserSettingController = require('../script/user-setting-controller');
+var _userSettingController2 = _interopRequireDefault(_userSettingController);
 
-var _scriptUserSettingController2 = _interopRequireDefault(_scriptUserSettingController);
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var BAR_POINT = 25;
 var BASE_BET = 500;
 
-var GameViewController = (function () {
+var GameViewController = function () {
   function GameViewController(view) {
     _classCallCheck(this, GameViewController);
 
@@ -59,11 +59,11 @@ var GameViewController = (function () {
 
     // 対戦相手検索完了後に呼ばれるメソッド
     // this.notificationSearchCompleted = this.notificationSearchCompleted.bind(this);
-    this._searchOpponentViewController = new _scriptSearchOpponentViewController2['default'](this._view);
+    this._searchOpponentViewController = new _searchOpponentViewController2.default(this._view);
 
     this._notificationTimeup = this._notificationTimeup.bind(this);
     this._notificationGoal = this._notificationGoal.bind(this);
-    this._informationViewController = new _scriptInformationViewController2['default'](this._view, this._notificationTimeup, this._notificationGoal);
+    this._informationViewController = new _informationViewController2.default(this._view, this._notificationTimeup, this._notificationGoal);
 
     var myFirstDiceButton = this._view.getElementById('myFirstDiceButton');
     var mySecoundDiceButton = this._view.getElementById('mySecoundDiceButton');
@@ -75,17 +75,17 @@ var GameViewController = (function () {
     var diceBorderElements = this._view.getElementsByClassName("dice-border-base");
 
     var diceSound = this._view.getElementById('diceSound');
-    this._diceController = new _scriptDiceController2['default'](myFirstDiceButton, mySecoundDiceButton, opponentFirstDiceButton, opponentSecoundDiceButton, diceBorderElements, this._notificationFirstShakeDice, this._notificationShakeDice, this._notificationChangeTurn, diceSound);
+    this._diceController = new _diceController2.default(myFirstDiceButton, mySecoundDiceButton, opponentFirstDiceButton, opponentSecoundDiceButton, diceBorderElements, this._notificationFirstShakeDice, this._notificationShakeDice, this._notificationChangeTurn, diceSound);
 
     this._notificationMovedPiece = this._notificationMovedPiece.bind(this);
     this._notificationMovedPieceToBar = this._notificationMovedPieceToBar.bind(this);
 
     // piceController
-    this._pieceController = new _scriptPieceController2['default'](this._view, this._notificationMovedPiece, this._notificationMovedPieceToBar);
+    this._pieceController = new _pieceController2.default(this._view, this._notificationMovedPiece, this._notificationMovedPieceToBar);
 
     // Peerからのメッセージを受信した場合の通知
     this.notificationOfReceiveMessage = this.notificationOfReceiveMessage.bind(this);
-    this._peerController = new _scriptPeerController2['default'](this.notificationOfReceiveMessage);
+    this._peerController = new _peerController2.default(this.notificationOfReceiveMessage);
 
     this._undoButton = this._view.getElementById('undoButton');
     this._doubleButton = this._view.getElementById('doubleButton');
@@ -96,9 +96,9 @@ var GameViewController = (function () {
 
     this._giveupButton = this._view.getElementById('giveupButton');
 
-    this._winloseViewController = new _scriptWinLoseViewController2['default'](this._view);
+    this._winloseViewController = new _winLoseViewController2.default(this._view);
 
-    this._userSettingController = new _scriptUserSettingController2['default']();
+    this._userSettingController = new _userSettingController2.default();
   }
 
   _createClass(GameViewController, [{
@@ -124,6 +124,7 @@ var GameViewController = (function () {
     }
 
     // Peerからのメッセージを受信した場合の通知
+
   }, {
     key: 'notificationOfReceiveMessage',
     value: function notificationOfReceiveMessage(data) {
@@ -212,9 +213,9 @@ var GameViewController = (function () {
         // Takeされたことを表示
         var takeImage = this._view.getElementById('takeImage');
         takeImage.style.display = "block";
-        setTimeout((function () {
+        setTimeout(function () {
           this._view.getElementById('takeImage').style.display = "none";
-        }).bind(this), 2000);
+        }.bind(this), 2000);
         this._changedMyTurn();
       }
 
@@ -255,6 +256,7 @@ var GameViewController = (function () {
     }
 
     // とりあえずの実装。設計は後から考える
+
   }, {
     key: 'gameStart',
     value: function gameStart(userName, iconBase64) {
@@ -290,13 +292,13 @@ var GameViewController = (function () {
 
       // コマを配りたい
       var myPieceButtons = this._pieceController.appendMyPiece();
-      myPieceButtons.forEach((function (value) {
+      myPieceButtons.forEach(function (value) {
         this._view.getElementById("boardArea").appendChild(value);
-      }).bind(this));
+      }.bind(this));
       var opponentPieceButtons = this._pieceController.appendOpponentPiece();
-      opponentPieceButtons.forEach((function (value) {
+      opponentPieceButtons.forEach(function (value) {
         this._view.getElementById("boardArea").appendChild(value);
-      }).bind(this));
+      }.bind(this));
     }
   }, {
     key: '_onClickUndoButton',
@@ -397,6 +399,7 @@ var GameViewController = (function () {
     }
 
     // 自分のターンなった場合の処理
+
   }, {
     key: '_changedMyTurn',
     value: function _changedMyTurn() {
@@ -590,7 +593,6 @@ var GameViewController = (function () {
   }]);
 
   return GameViewController;
-})();
+}();
 
-exports['default'] = GameViewController;
-module.exports = exports['default'];
+exports.default = GameViewController;

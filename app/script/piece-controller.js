@@ -1,17 +1,10 @@
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-
-require('babel-polyfill');
-
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 /**
 <メモ>
 node.jsのバージョンを8.9.3にあげる
@@ -23,11 +16,19 @@ node.jsのバージョンを8.9.3にあげる
   npm install -s skyway-js
 **/
 
-var _scriptPiece = require('../script/piece');
+require('babel-polyfill');
 
-var _scriptPiece2 = _interopRequireDefault(_scriptPiece);
+var _piece = require('../script/piece');
 
-var PieceController = (function () {
+var _piece2 = _interopRequireDefault(_piece);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var PieceController = function () {
   function PieceController(view, notificationMovedPiece, notificationMovedPieceToBar) {
     _classCallCheck(this, PieceController);
 
@@ -86,7 +87,7 @@ var PieceController = (function () {
 
       for (var i = 0; i <= 14; i++) {
         var position = this._getPiecePosition(point[i], this._myPieces);
-        var piece = new _scriptPiece2['default'](position[0], position[1], point[i], true, i, this._swishSound);
+        var piece = new _piece2.default(position[0], position[1], point[i], true, i, this._swishSound);
         piece.initialize();
         var btn = piece.createPieceElement();
 
@@ -108,7 +109,7 @@ var PieceController = (function () {
 
       for (var i = 0; i <= 14; i++) {
         var position = this._getPiecePosition(point[i], this._opponentPieces);
-        var piece = new _scriptPiece2['default'](position[0], position[1], point[i], false, i);
+        var piece = new _piece2.default(position[0], position[1], point[i], false, i);
         piece.initialize();
         var btn = piece.createPieceElement();
 
@@ -170,6 +171,7 @@ var PieceController = (function () {
     }
 
     // バーにコマが存在するか？ → _isExistInPoint()を使うように
+
   }, {
     key: '_isExistInBar',
     value: function _isExistInBar() {
@@ -212,12 +214,12 @@ var PieceController = (function () {
         // 他のコマに関しても移動可能な箇所がないかをチェック
 
       } else {
-          movablePoints.forEach((function (value) {
-            // valueが0以下ならベアオフ, destPointを0にする
-            var destPoint = value <= 0 ? 0 : value;
-            this._showMovablePoint(destPoint, piece);
-          }).bind(this));
-        }
+        movablePoints.forEach(function (value) {
+          // valueが0以下ならベアオフ, destPointを0にする
+          var destPoint = value <= 0 ? 0 : value;
+          this._showMovablePoint(destPoint, piece);
+        }.bind(this));
+      }
 
       // 移動可能場所が1つなら強制的に移動させてしまう。
       var elements = this._view.getElementsByClassName("movable-field-button");
@@ -238,41 +240,41 @@ var PieceController = (function () {
           returnValue = true; // 移動可能
         }
       } else if (lastPiecePoint <= 6) {
-          // 自分の駒がすべて自分のインナーにある時
-          if (point === 0) {
-            returnValue = true; // 移動可能
-          } else {
-              // 出た目の位置に駒が無くて、さらにそのうしろにも駒が無い場合
-              var isExistInPoint = this._isExistInPoint(pip);
-              if (this._movableDicePips.indexOf(pip) !== -1) {
-                // 1回分の移動の場合
-                if (isExistInPoint === false && lastPiecePoint === currentPoint) {
-                  returnValue = true; // 移動可能
-                }
-              } else {
-                  // 複数回の移動の場合
-                  returnValue = true;
-                  var min = Math.min.apply(null, preMovablePoints);
-                  var numOfPieceInCurrentPoint = 0;
-                  this._myPieces.forEach(function (value) {
-                    if (value.getPoint() === currentPoint) {
-                      numOfPieceInCurrentPoint++;
-                    }
-                  });
-                  if (numOfPieceInCurrentPoint === 1) {
-                    //自分自身しかない
-                    this._myPieces.forEach(function (value) {
-                      if (value.getPoint() !== currentPoint && value.getPoint() >= min) {
-                        // preMovablePointsですら一番最後
-                        returnValue = false;
-                      }
-                    });
-                  } else {
-                    returnValue = false;
-                  }
-                }
+        // 自分の駒がすべて自分のインナーにある時
+        if (point === 0) {
+          returnValue = true; // 移動可能
+        } else {
+          // 出た目の位置に駒が無くて、さらにそのうしろにも駒が無い場合
+          var isExistInPoint = this._isExistInPoint(pip);
+          if (this._movableDicePips.indexOf(pip) !== -1) {
+            // 1回分の移動の場合
+            if (isExistInPoint === false && lastPiecePoint === currentPoint) {
+              returnValue = true; // 移動可能
             }
+          } else {
+            // 複数回の移動の場合
+            returnValue = true;
+            var min = Math.min.apply(null, preMovablePoints);
+            var numOfPieceInCurrentPoint = 0;
+            this._myPieces.forEach(function (value) {
+              if (value.getPoint() === currentPoint) {
+                numOfPieceInCurrentPoint++;
+              }
+            });
+            if (numOfPieceInCurrentPoint === 1) {
+              //自分自身しかない
+              this._myPieces.forEach(function (value) {
+                if (value.getPoint() !== currentPoint && value.getPoint() >= min) {
+                  // preMovablePointsですら一番最後
+                  returnValue = false;
+                }
+              });
+            } else {
+              returnValue = false;
+            }
+          }
         }
+      }
 
       // currentPointに1つしか駒がなく、それ以外の駒がすべて自分のインナーにある時
 
@@ -280,6 +282,7 @@ var PieceController = (function () {
     }
 
     // 一番後ろにあるコマのPoint
+
   }, {
     key: '_getLastPiecePoint',
     value: function _getLastPiecePoint() {
@@ -293,6 +296,7 @@ var PieceController = (function () {
     }
 
     // 引数のPointに自分のコマがあるか？
+
   }, {
     key: '_isExistInPoint',
     value: function _isExistInPoint(point) {
@@ -311,6 +315,7 @@ var PieceController = (function () {
     // 移動可能なサイコロの目が[x,y]の場合[x, y, x+y]を返す
     // -> この場合、x+yは x or y のどちらかが移動可能であることが条件であることに注意
     // 移動可能なサイコロの目が[x,x]の場合[x, x*2, x*3, x*4]を返す
+
   }, {
     key: '_getMoveableNumberOfMovements',
     value: function _getMoveableNumberOfMovements(movableDicePips) {
@@ -338,6 +343,7 @@ var PieceController = (function () {
     }
 
     // サイコロの目に対して、移動できるかを返す
+
   }, {
     key: 'isMovableMyPiece',
     value: function isMovableMyPiece() {
@@ -392,6 +398,7 @@ var PieceController = (function () {
     }
 
     // 引数の配列がゾロ目かを返す
+
   }, {
     key: '_isMatchingDice',
     value: function _isMatchingDice(movableDicePips) {
@@ -400,18 +407,18 @@ var PieceController = (function () {
       if (length <= 1) {
         returnValue = false; // 要素数が1以下ならゾロ目ではないとする
       } else {
-          if (movableDicePips[0] === movableDicePips[1]) {
-            returnValue = true;
-          } else {
-            returnValue = false;
-          }
+        if (movableDicePips[0] === movableDicePips[1]) {
+          returnValue = true;
+        } else {
+          returnValue = false;
         }
+      }
       return returnValue;
     }
-
     // 移動可能なpointを返す
     // currentPoint: 対象のコマのPoint
     // movableDicePips: 移動可能サイコロの目(ゾロ目の場合{x,x,x,x}の場合がある)
+
   }, {
     key: '_getMovablePoints',
     value: function _getMovablePoints(currentPoint, movableDicePips) {
@@ -468,6 +475,7 @@ var PieceController = (function () {
     }
 
     // 引数で与えたPointにある対戦相手のコマ数を返す
+
   }, {
     key: '_numberOfOpponentPeiceOnPoint',
     value: function _numberOfOpponentPeiceOnPoint(point) {
@@ -481,6 +489,7 @@ var PieceController = (function () {
     }
 
     // 移動可能な位置を表示
+
   }, {
     key: '_showMovablePoint',
     value: function _showMovablePoint(destinationPoint, piece) {
@@ -489,7 +498,7 @@ var PieceController = (function () {
       var position = this._getPiecePosition(destinationPoint, this._myPieces);
 
       // 移動可能位置を表示するボタンを作成(identityNumberは不要なのでダミー)
-      var movablePiece = new _scriptPiece2['default'](position[0], position[1], destinationPoint, true, -1);
+      var movablePiece = new _piece2.default(position[0], position[1], destinationPoint, true, -1);
       movablePiece.initialize();
       var btn = movablePiece.createMovablePieceElement();
       btn.onclick = this._movePiece.bind(this, movablePiece, piece);
@@ -499,6 +508,7 @@ var PieceController = (function () {
     }
 
     // 引数のpointに対戦相手のPieceが1個の場合、バーに移動させる
+
   }, {
     key: '_moveOpponentPieceToBar',
     value: function _moveOpponentPieceToBar(point) {
@@ -509,7 +519,7 @@ var PieceController = (function () {
       }
       var returnValue = false;
       if (this._numberOfOpponentPeiceOnPoint(point) === 1) {
-        this._opponentPieces.forEach((function (value) {
+        this._opponentPieces.forEach(function (value) {
           if (value.getPoint() === point) {
             var position = this._getBarPiecePosition(true);
             value.move(position[0], position[1], 25);
@@ -519,7 +529,7 @@ var PieceController = (function () {
 
             returnValue = true; // 移動させた
           }
-        }).bind(this));
+        }.bind(this));
       }
       return returnValue;
     }
@@ -595,6 +605,7 @@ var PieceController = (function () {
     }
 
     // ベアエリアのコマを後方に移動しておく
+
   }, {
     key: '_bringBackwardBearPiece',
     value: function _bringBackwardBearPiece() {
@@ -617,202 +628,240 @@ var PieceController = (function () {
         parentElement.appendChild(parentElement.removeChild(tmp1[i]));
       }
     }
-
     // piece を movablePiece の位置に移動
+
   }, {
     key: '_movePiece',
-    value: function _movePiece(movablePiece, piece) {
-      var point, destPoint, numberOfMoving, index, isContainAddition, sum, destTop, destLeft, isMoveOpponentPieceToBar, sumNumberOfMoving, tmp, copyMovableDicePips, i, tmpDestPoint, tmpSourcePoint, position;
-      return regeneratorRuntime.async(function _movePiece$(context$2$0) {
-        while (1) switch (context$2$0.prev = context$2$0.next) {
-          case 0:
-            // まずは、すでに表示されている移動可能な場所の表示をクリア
-            this._clearMovableField();
-            // やること
-            // 1. もし_movableDicePipsの足し算の移動分なら移動は2〜4回分の移動に分ける
-            // 1.1 this._movableDicePipsから移動分を削除
-            // 2. GameViewControllerに移動を通知
-            // 2.1. サイコロの透過度を変更
-            // 2.2. 対戦相手にコマの移動を通知
-            // 3. undo できるように
-            // 3.1 undo用の配列を準備し、操作を戻せるようにする
-            // 3.2 undoボタンの表示も行う
+    value: function () {
+      var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(movablePiece, piece) {
+        var point, destPoint, numberOfMoving, index, isContainAddition, sum, destTop, destLeft, isMoveOpponentPieceToBar, _destTop, _destLeft, sumNumberOfMoving, tmp, copyMovableDicePips, i, tmpDestPoint, tmpSourcePoint, _isMoveOpponentPieceToBar, position;
 
-            point = piece.getPoint();
-            destPoint = movablePiece.getPoint();
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                // まずは、すでに表示されている移動可能な場所の表示をクリア
+                this._clearMovableField();
+                // やること
+                // 1. もし_movableDicePipsの足し算の移動分なら移動は2〜4回分の移動に分ける
+                // 1.1 this._movableDicePipsから移動分を削除
+                // 2. GameViewControllerに移動を通知
+                // 2.1. サイコロの透過度を変更
+                // 2.2. 対戦相手にコマの移動を通知
+                // 3. undo できるように
+                // 3.1 undo用の配列を準備し、操作を戻せるようにする
+                // 3.2 undoボタンの表示も行う
 
-            if (!(destPoint === 0)) {
-              context$2$0.next = 7;
-              break;
+                point = piece.getPoint();
+                destPoint = movablePiece.getPoint();
+
+                // ベアオフの場合、コマの画像が被るので DOM ツリーを更新して
+                // ベアエリアのコマを後方に移動しておく
+
+                if (!(destPoint === 0)) {
+                  _context.next = 7;
+                  break;
+                }
+
+                this._bringBackwardBearPiece();
+                _context.next = 7;
+                return this._sleep(50);
+
+              case 7:
+                if (destPoint < 0) {
+                  alert("destPoint が マイナスになるのはおかしい");
+                }
+
+                // 1. もし_movableDicePipsの足し算の移動分なら移動は2〜4回分の移動に分ける
+                numberOfMoving = point - destPoint; // 移動数
+                // _movableDicePipsは、ゾロ目なら[x, x, x, x]、それ以外は[x, y]の配列
+
+                index = this._movableDicePips.indexOf(numberOfMoving);
+
+                // 以下のルール用の処理
+                // もし出た目の位置に駒が無くて、さらにそのうしろにも駒が無い場合には、一番後ろにある駒を上げることが出来る
+
+                isContainAddition = false;
+                sum = 0;
+                _context.t0 = this._movableDicePips.length;
+                _context.next = _context.t0 === 2 ? 15 : _context.t0 === 3 ? 18 : _context.t0 === 4 ? 20 : 22;
+                break;
+
+              case 15:
+                sum = this._movableDicePips[0] + this._movableDicePips[1];
+                isContainAddition = sum === numberOfMoving;
+                return _context.abrupt('break', 22);
+
+              case 18:
+                isContainAddition = numberOfMoving % this._movableDicePips[0] === 0;
+                return _context.abrupt('break', 22);
+
+              case 20:
+                isContainAddition = numberOfMoving % this._movableDicePips[0] === 0;
+                return _context.abrupt('break', 22);
+
+              case 22:
+                if (!(isContainAddition === false && index === -1)) {
+                  _context.next = 31;
+                  break;
+                }
+
+                destTop = movablePiece.getTop();
+                destLeft = movablePiece.getLeft();
+
+                piece.move(destTop, destLeft, destPoint);
+                // 移動分を削除
+                this._movableDicePips.splice(0, 1); // どれを削除しても同じだろう
+                // undo配列に追加
+                this._addUndoList(destPoint, point, false);
+                // 移動をGameViewControllerに伝える
+                this._notificationMovedPiece(destPoint, point);
+                _context.next = 62;
+                break;
+
+              case 31:
+                if (!(index == 0 || index == 1)) {
+                  _context.next = 41;
+                  break;
+                }
+
+                // 1回分の移動
+                // 移動先に対戦相手のPieceが1個だけある場合、バーに移動させる
+                isMoveOpponentPieceToBar = this._moveOpponentPieceToBar(destPoint);
+                // 移動する
+
+                _destTop = movablePiece.getTop();
+                _destLeft = movablePiece.getLeft();
+
+                piece.move(_destTop, _destLeft, destPoint);
+                // 移動分を削除
+                this._movableDicePips.splice(index, 1);
+                // undo配列に追加
+                this._addUndoList(destPoint, point, isMoveOpponentPieceToBar);
+                // 移動をGameViewControllerに伝える
+                this._notificationMovedPiece(destPoint, point);
+                _context.next = 62;
+                break;
+
+              case 41:
+                // 2〜4分の移動
+                sumNumberOfMoving = 0;
+                // 移動先に相手のコマが2個以上あるのはダメ
+                // ヒットするならヒットさせたい
+
+                if (this._numberOfOpponentPeiceOnPoint(point - this._movableDicePips[0]) > 1 || this._numberOfOpponentPeiceOnPoint(point - this._movableDicePips[1]) === 1) {
+                  // ヒットしなければindexを事前に入れ替えておく
+                  tmp = this._movableDicePips[0];
+
+                  this._movableDicePips[0] = this._movableDicePips[1];
+                  this._movableDicePips[1] = tmp;
+                }
+
+                // for文での中でthis._movableDicePipsの要素を削除するとインデックスがずれるので
+                copyMovableDicePips = this._movableDicePips.concat();
+                i = 0;
+
+              case 45:
+                if (!(i < copyMovableDicePips.length)) {
+                  _context.next = 62;
+                  break;
+                }
+
+                sumNumberOfMoving += copyMovableDicePips[i];
+                tmpDestPoint = point - sumNumberOfMoving;
+                tmpSourcePoint = tmpDestPoint + copyMovableDicePips[i];
+                // 移動先に対戦相手のPieceが1個だけある場合、バーに移動させる
+
+                _isMoveOpponentPieceToBar = this._moveOpponentPieceToBar(tmpDestPoint);
+                position = this._getPiecePosition(tmpDestPoint, this._myPieces);
+                // 移動する
+
+                piece.move(position[0], position[1], tmpDestPoint);
+
+                // undo配列に追加
+                this._addUndoList(tmpDestPoint, tmpSourcePoint, _isMoveOpponentPieceToBar);
+                // 移動分を削除
+                this._movableDicePips.splice(0, 1);
+                // 移動をGameViewControllerに伝える
+                this._notificationMovedPiece(tmpDestPoint, tmpSourcePoint);
+
+                if (!(sumNumberOfMoving === numberOfMoving)) {
+                  _context.next = 57;
+                  break;
+                }
+
+                return _context.abrupt('break', 62);
+
+              case 57:
+                _context.next = 59;
+                return this._sleep(500);
+
+              case 59:
+                i++;
+                _context.next = 45;
+                break;
+
+              case 62:
+              case 'end':
+                return _context.stop();
             }
+          }
+        }, _callee, this);
+      }));
 
-            this._bringBackwardBearPiece();
-            context$2$0.next = 7;
-            return regeneratorRuntime.awrap(this._sleep(50));
+      function _movePiece(_x, _x2) {
+        return _ref.apply(this, arguments);
+      }
 
-          case 7:
-            if (destPoint < 0) {
-              alert("destPoint が マイナスになるのはおかしい");
-            }
-
-            // 1. もし_movableDicePipsの足し算の移動分なら移動は2〜4回分の移動に分ける
-            numberOfMoving = point - destPoint;
-            index = this._movableDicePips.indexOf(numberOfMoving);
-            isContainAddition = false;
-            sum = 0;
-            context$2$0.t0 = this._movableDicePips.length;
-            context$2$0.next = context$2$0.t0 === 2 ? 15 : context$2$0.t0 === 3 ? 18 : context$2$0.t0 === 4 ? 20 : 22;
-            break;
-
-          case 15:
-            sum = this._movableDicePips[0] + this._movableDicePips[1];
-            isContainAddition = sum === numberOfMoving;
-            return context$2$0.abrupt('break', 22);
-
-          case 18:
-            isContainAddition = numberOfMoving % this._movableDicePips[0] === 0;
-            return context$2$0.abrupt('break', 22);
-
-          case 20:
-            isContainAddition = numberOfMoving % this._movableDicePips[0] === 0;
-            return context$2$0.abrupt('break', 22);
-
-          case 22:
-            if (!(isContainAddition === false && index === -1)) {
-              context$2$0.next = 31;
-              break;
-            }
-
-            destTop = movablePiece.getTop();
-            destLeft = movablePiece.getLeft();
-
-            piece.move(destTop, destLeft, destPoint);
-            // 移動分を削除
-            this._movableDicePips.splice(0, 1); // どれを削除しても同じだろう
-            // undo配列に追加
-            this._addUndoList(destPoint, point, false);
-            // 移動をGameViewControllerに伝える
-            this._notificationMovedPiece(destPoint, point);
-            context$2$0.next = 62;
-            break;
-
-          case 31:
-            if (!(index == 0 || index == 1)) {
-              context$2$0.next = 41;
-              break;
-            }
-
-            isMoveOpponentPieceToBar = this._moveOpponentPieceToBar(destPoint);
-            destTop = movablePiece.getTop();
-            destLeft = movablePiece.getLeft();
-
-            piece.move(destTop, destLeft, destPoint);
-            // 移動分を削除
-            this._movableDicePips.splice(index, 1);
-            // undo配列に追加
-            this._addUndoList(destPoint, point, isMoveOpponentPieceToBar);
-            // 移動をGameViewControllerに伝える
-            this._notificationMovedPiece(destPoint, point);
-            context$2$0.next = 62;
-            break;
-
-          case 41:
-            sumNumberOfMoving = 0;
-
-            // 移動先に相手のコマが2個以上あるのはダメ
-            // ヒットするならヒットさせたい
-            if (this._numberOfOpponentPeiceOnPoint(point - this._movableDicePips[0]) > 1 || this._numberOfOpponentPeiceOnPoint(point - this._movableDicePips[1]) === 1) {
-              tmp = this._movableDicePips[0];
-
-              this._movableDicePips[0] = this._movableDicePips[1];
-              this._movableDicePips[1] = tmp;
-            }
-
-            // for文での中でthis._movableDicePipsの要素を削除するとインデックスがずれるので
-            copyMovableDicePips = this._movableDicePips.concat();
-            i = 0;
-
-          case 45:
-            if (!(i < copyMovableDicePips.length)) {
-              context$2$0.next = 62;
-              break;
-            }
-
-            sumNumberOfMoving += copyMovableDicePips[i];
-            tmpDestPoint = point - sumNumberOfMoving;
-            tmpSourcePoint = tmpDestPoint + copyMovableDicePips[i];
-            isMoveOpponentPieceToBar = this._moveOpponentPieceToBar(tmpDestPoint);
-            position = this._getPiecePosition(tmpDestPoint, this._myPieces);
-
-            // 移動する
-            piece.move(position[0], position[1], tmpDestPoint);
-
-            // undo配列に追加
-            this._addUndoList(tmpDestPoint, tmpSourcePoint, isMoveOpponentPieceToBar);
-            // 移動分を削除
-            this._movableDicePips.splice(0, 1);
-            // 移動をGameViewControllerに伝える
-            this._notificationMovedPiece(tmpDestPoint, tmpSourcePoint);
-
-            if (!(sumNumberOfMoving === numberOfMoving)) {
-              context$2$0.next = 57;
-              break;
-            }
-
-            return context$2$0.abrupt('break', 62);
-
-          case 57:
-            context$2$0.next = 59;
-            return regeneratorRuntime.awrap(this._sleep(500));
-
-          case 59:
-            i++;
-            context$2$0.next = 45;
-            break;
-
-          case 62:
-          case 'end':
-            return context$2$0.stop();
-        }
-      }, null, this);
-    }
+      return _movePiece;
+    }()
   }, {
     key: 'movedOpponentPiece',
-    value: function movedOpponentPiece(destPoint, sourcePoint) {
-      var target, position, top;
-      return regeneratorRuntime.async(function movedOpponentPiece$(context$2$0) {
-        while (1) switch (context$2$0.prev = context$2$0.next) {
-          case 0:
-            target = this._getTopPiece(sourcePoint, true);
-            position = this._getPiecePosition(destPoint, this._opponentPieces);
-            top = position[0];
+    value: function () {
+      var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(destPoint, sourcePoint) {
+        var target, position, top;
+        return regeneratorRuntime.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                target = this._getTopPiece(sourcePoint, true);
+                position = this._getPiecePosition(destPoint, this._opponentPieces);
+                top = position[0];
 
-            if (destPoint == 0) {
-              top = 532 - top;
+                if (destPoint == 0) {
+                  top = 532 - top;
+                }
+
+                // ベアオフの場合、コマの画像が被るので DOM ツリーを更新して
+                // ベアエリアのコマを後方に移動しておく
+
+                if (!(destPoint === 0)) {
+                  _context2.next = 8;
+                  break;
+                }
+
+                this._bringBackwardBearPiece();
+                _context2.next = 8;
+                return this._sleep(50);
+
+              case 8:
+
+                target.move(top, position[1], destPoint);
+
+              case 9:
+              case 'end':
+                return _context2.stop();
             }
+          }
+        }, _callee2, this);
+      }));
 
-            // ベアオフの場合、コマの画像が被るので DOM ツリーを更新して
-            // ベアエリアのコマを後方に移動しておく
+      function movedOpponentPiece(_x3, _x4) {
+        return _ref2.apply(this, arguments);
+      }
 
-            if (!(destPoint === 0)) {
-              context$2$0.next = 8;
-              break;
-            }
-
-            this._bringBackwardBearPiece();
-            context$2$0.next = 8;
-            return regeneratorRuntime.awrap(this._sleep(50));
-
-          case 8:
-
-            target.move(top, position[1], destPoint);
-
-          case 9:
-          case 'end':
-            return context$2$0.stop();
-        }
-      }, null, this);
-    }
+      return movedOpponentPiece;
+    }()
   }, {
     key: 'movedMyPieceToBar',
     value: function movedMyPieceToBar(destPoint, sourcePoint) {
@@ -843,11 +892,11 @@ var PieceController = (function () {
       var maxPiece = samePointPieces[0];
       samePointPieces.forEach(function (value) {
         if (value.getPoint() === point) {
-          var _top = value.getTop();
-          if (miniPiece.getTop() > _top) {
+          var top = value.getTop();
+          if (miniPiece.getTop() > top) {
             miniPiece = value;
           }
-          if (maxPiece.getTop() < _top) {
+          if (maxPiece.getTop() < top) {
             maxPiece = value;
           }
         }
@@ -886,27 +935,6 @@ var PieceController = (function () {
   }]);
 
   return PieceController;
-})();
+}();
 
-exports['default'] = PieceController;
-module.exports = exports['default'];
-
-// ベアオフの場合、コマの画像が被るので DOM ツリーを更新して
-// ベアエリアのコマを後方に移動しておく
-// 移動数
-// _movableDicePipsは、ゾロ目なら[x, x, x, x]、それ以外は[x, y]の配列
-
-// 以下のルール用の処理
-// もし出た目の位置に駒が無くて、さらにそのうしろにも駒が無い場合には、一番後ろにある駒を上げることが出来る
-// 1回分の移動
-// 移動先に対戦相手のPieceが1個だけある場合、バーに移動させる
-
-// 移動する
-
-// 2〜4分の移動
-
-// ヒットしなければindexを事前に入れ替えておく
-
-// 移動先に対戦相手のPieceが1個だけある場合、バーに移動させる
-
-// アニメーションの時間分待つ
+exports.default = PieceController;

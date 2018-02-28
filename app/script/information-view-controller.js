@@ -1,20 +1,20 @@
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+var _userSettingController = require('../script/user-setting-controller');
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+var _userSettingController2 = _interopRequireDefault(_userSettingController);
 
-var _scriptUserSettingController = require('../script/user-setting-controller');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var _scriptUserSettingController2 = _interopRequireDefault(_scriptUserSettingController);
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var InformationViewController = (function () {
+var InformationViewController = function () {
   function InformationViewController(view, notificationTimeup, notificationGoal) {
     _classCallCheck(this, InformationViewController);
 
@@ -38,7 +38,7 @@ var InformationViewController = (function () {
     this._opponentPipElement;
     this._opponentTimeElement;
 
-    this._userSettingController = new _scriptUserSettingController2['default']();
+    this._userSettingController = new _userSettingController2.default();
 
     this._informationAreaWrapper = this._view.getElementById('informationAreaWrapper');
   }
@@ -115,10 +115,10 @@ var InformationViewController = (function () {
         this._isTimerForcedTermination = true;
         // 対戦相手の時間切れはこちらからは通知しない（対戦相手側から通知される）
       } else {
-          var min = ("00" + String(Math.floor(this._opponentTimeLimit / 60))).slice(-2);
-          var second = ("00" + String(this._opponentTimeLimit % 60)).slice(-2);
-          this._opponentTimeElement.innerText = min + ":" + second;
-        }
+        var min = ("00" + String(Math.floor(this._opponentTimeLimit / 60))).slice(-2);
+        var second = ("00" + String(this._opponentTimeLimit % 60)).slice(-2);
+        this._opponentTimeElement.innerText = min + ":" + second;
+      }
     }
   }, {
     key: 'updateMyPipCount',
@@ -209,7 +209,6 @@ var InformationViewController = (function () {
   }]);
 
   return InformationViewController;
-})();
+}();
 
-exports['default'] = InformationViewController;
-module.exports = exports['default'];
+exports.default = InformationViewController;

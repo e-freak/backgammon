@@ -1,12 +1,12 @@
 'use strict';
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+var _gameViewController = require('../script/game-view-controller');
 
-var _scriptGameViewController = require('../script/game-view-controller');
+var _gameViewController2 = _interopRequireDefault(_gameViewController);
 
-var _scriptGameViewController2 = _interopRequireDefault(_scriptGameViewController);
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 global.window.addEventListener('DOMContentLoaded', function () {
-  global.controller = new _scriptGameViewController2['default'](global.document);
+  global.controller = new _gameViewController2.default(global.document);
   global.controller.initialize();
 }, false);

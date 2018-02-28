@@ -1,27 +1,28 @@
-//  http://nttcom.github.io/skyway/docs/
-//  https://qiita.com/daisaru11/items/52c10514ba2fa2dd1b87
-
-// http://shared-blog.kddi-web.com/test/skyway/
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); //  http://nttcom.github.io/skyway/docs/
+//  https://qiita.com/daisaru11/items/52c10514ba2fa2dd1b87
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+// http://shared-blog.kddi-web.com/test/skyway/
 
-var _scriptUserSettingController = require('../script/user-setting-controller');
 
-var _scriptUserSettingController2 = _interopRequireDefault(_scriptUserSettingController);
+var _userSettingController = require('../script/user-setting-controller');
+
+var _userSettingController2 = _interopRequireDefault(_userSettingController);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var Peer = require('skyway-js');
 var SkyWay_ApiKey = '46fe641a-df1c-42da-b45b-4061347deb7b';
 
-var PeerController = (function () {
+var PeerController = function () {
   function PeerController(receivedMessageToGameViewController) {
     _classCallCheck(this, PeerController);
 
@@ -30,7 +31,7 @@ var PeerController = (function () {
     this.onConnectionOpen = this.onConnectionOpen.bind(this);
     this.onReceivedData = this.onReceivedData.bind(this);
 
-    this._userSettingController = new _scriptUserSettingController2['default']();
+    this._userSettingController = new _userSettingController2.default();
 
     // メッセージを受信通知を送るメソッド
     this.receivedMessage = receivedMessageToGameViewController;
@@ -54,17 +55,18 @@ var PeerController = (function () {
     value: function onOpen() {
       // 1対1の接続を想定
       // アクティブなPeerIDが2つなら、自分以外のPeerIDに接続
-      this._peer.listAllPeers((function (list) {
+      this._peer.listAllPeers(function (list) {
         if (list.length === 2) {
           // 接続（自分より前に接続しているIDのindexは、きっと0だろう。。）
           var conn = this._peer.connect(list[0]);
           conn.on('open', this.onConnectionOpen);
           this._conn = conn;
         }
-      }).bind(this));
+      }.bind(this));
     }
 
     // 接続イベントの受信
+
   }, {
     key: 'onConnection',
     value: function onConnection(conn) {
@@ -73,6 +75,7 @@ var PeerController = (function () {
     }
 
     // コネクションが利用可能になった
+
   }, {
     key: 'onConnectionOpen',
     value: function onConnectionOpen(conn) {
@@ -82,6 +85,7 @@ var PeerController = (function () {
     }
 
     // メッセージを受信
+
   }, {
     key: 'onReceivedData',
     value: function onReceivedData(data) {
@@ -223,7 +227,6 @@ var PeerController = (function () {
   }]);
 
   return PeerController;
-})();
+}();
 
-exports['default'] = PeerController;
-module.exports = exports['default'];
+exports.default = PeerController;

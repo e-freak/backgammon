@@ -1,6 +1,6 @@
 export default class Piece {
 
-  constructor(top, left, point, isMyPiece, identityNumber) {
+  constructor(top, left, point, isMyPiece, identityNumber, swishSound) {
     this._top = top;
     this._left = left;
     this._isMyPiece = isMyPiece; // 自分のコマ(True) or 相手のコマ(False)
@@ -13,7 +13,7 @@ export default class Piece {
     this._image;
 
     this._swishSound = swishSound;
-    this._swishSound.volume = 1;
+//    this._swishSound.volume = 1;
   }
 
   getIsMyPiece() {

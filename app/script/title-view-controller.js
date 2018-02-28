@@ -1,24 +1,24 @@
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+var _userSettingController = require('../script/user-setting-controller');
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+var _userSettingController2 = _interopRequireDefault(_userSettingController);
 
-var _scriptUserSettingController = require('../script/user-setting-controller');
+var _base64Converter = require('../script/base64Converter');
 
-var _scriptUserSettingController2 = _interopRequireDefault(_scriptUserSettingController);
+var _base64Converter2 = _interopRequireDefault(_base64Converter);
 
-var _scriptBase64Converter = require('../script/base64Converter');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var _scriptBase64Converter2 = _interopRequireDefault(_scriptBase64Converter);
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var TitleViewController = (function () {
+var TitleViewController = function () {
   function TitleViewController(view) {
     _classCallCheck(this, TitleViewController);
 
@@ -32,8 +32,8 @@ var TitleViewController = (function () {
     this.imageClick = this.imageClick.bind(this);
     this.fileInputChange = this.fileInputChange.bind(this);
 
-    this._userSettingController = new _scriptUserSettingController2['default']();
-    this._base64Converter = new _scriptBase64Converter2['default']();
+    this._userSettingController = new _userSettingController2.default();
+    this._base64Converter = new _base64Converter2.default();
   }
 
   _createClass(TitleViewController, [{
@@ -131,6 +131,7 @@ var TitleViewController = (function () {
     }
 
     // ドラッグ中の要素がドロップ要素に重なった時
+
   }, {
     key: 'imageDragover',
     value: function imageDragover(ev) {
@@ -142,6 +143,7 @@ var TitleViewController = (function () {
     }
 
     // ドラッグ中の要素がドロップ要素から外れた時
+
   }, {
     key: 'imageDragleave',
     value: function imageDragleave() {
@@ -149,6 +151,7 @@ var TitleViewController = (function () {
     }
 
     // ドロップ要素にドロップされた時
+
   }, {
     key: 'imageDrop',
     value: function imageDrop(ev) {
@@ -159,6 +162,7 @@ var TitleViewController = (function () {
     }
 
     // #dropArea がクリックされた時
+
   }, {
     key: 'imageClick',
     value: function imageClick() {
@@ -166,6 +170,7 @@ var TitleViewController = (function () {
     }
 
     // ファイル参照で画像を追加した場合
+
   }, {
     key: 'fileInputChange',
     value: function fileInputChange(ev) {
@@ -176,6 +181,7 @@ var TitleViewController = (function () {
     }
 
     // ドロップされたファイルの整理
+
   }, {
     key: '_organizeFiles',
     value: function _organizeFiles(files) {
@@ -234,6 +240,7 @@ var TitleViewController = (function () {
     }
 
     // 長い。。。
+
   }, {
     key: '_updateUserInfoView',
     value: function _updateUserInfoView() {
@@ -318,7 +325,6 @@ var TitleViewController = (function () {
   }]);
 
   return TitleViewController;
-})();
+}();
 
-exports['default'] = TitleViewController;
-module.exports = exports['default'];
+exports.default = TitleViewController;

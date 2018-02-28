@@ -1,32 +1,32 @@
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+var _peerController = require('../script/peer-controller');
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+var _peerController2 = _interopRequireDefault(_peerController);
 
-var _scriptPeerController = require('../script/peer-controller');
+var _userSettingController = require('../script/user-setting-controller');
 
-var _scriptPeerController2 = _interopRequireDefault(_scriptPeerController);
+var _userSettingController2 = _interopRequireDefault(_userSettingController);
 
-var _scriptUserSettingController = require('../script/user-setting-controller');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var _scriptUserSettingController2 = _interopRequireDefault(_scriptUserSettingController);
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var BANKERS_FREE = 100;
 var BET = 500;
 
-var SearchOpponentViewController = (function () {
+var SearchOpponentViewController = function () {
   function SearchOpponentViewController(view) {
     _classCallCheck(this, SearchOpponentViewController);
 
     this._view = view;
-    this._userSettingController = new _scriptUserSettingController2['default']();
+    this._userSettingController = new _userSettingController2.default();
 
     this._searchResultsMyChips = this._view.getElementById('searchResultsMyChips');
     this._searchResultsOpponentChips = this._view.getElementById('searchResultsOpponentChips');
@@ -143,7 +143,6 @@ var SearchOpponentViewController = (function () {
   }]);
 
   return SearchOpponentViewController;
-})();
+}();
 
-exports['default'] = SearchOpponentViewController;
-module.exports = exports['default'];
+exports.default = SearchOpponentViewController;

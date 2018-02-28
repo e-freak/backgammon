@@ -4,12 +4,12 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var Piece = (function () {
-  function Piece(top, left, point, isMyPiece, identityNumber) {
+var Piece = function () {
+  function Piece(top, left, point, isMyPiece, identityNumber, swishSound) {
     _classCallCheck(this, Piece);
 
     this._top = top;
@@ -24,7 +24,7 @@ var Piece = (function () {
     this._image;
 
     this._swishSound = swishSound;
-    this._swishSound.volume = 1;
+    //    this._swishSound.volume = 1;
   }
 
   _createClass(Piece, [{
@@ -74,6 +74,7 @@ var Piece = (function () {
     }
 
     // コマのElementを生成して返す
+
   }, {
     key: "createPieceElement",
     value: function createPieceElement() {
@@ -92,6 +93,7 @@ var Piece = (function () {
     }
 
     // 移動可能コマのElementを生成して返す
+
   }, {
     key: "createMovablePieceElement",
     value: function createMovablePieceElement() {
@@ -111,7 +113,6 @@ var Piece = (function () {
   }]);
 
   return Piece;
-})();
+}();
 
-exports["default"] = Piece;
-module.exports = exports["default"];
+exports.default = Piece;

@@ -16,10 +16,15 @@ button.option {
 }
 
 div.title {
-  margin-top: 20px;
+  margin-top: 35px;
+}
+
+div.dice-gif {
+  margin-top: 50px;
 }
 
 div.menu-field {}
+
 
 button.battle-start-button {
   margin-top: 100px;

@@ -1,0 +1,17 @@
+@charset 'UTF-8';
+
+.sakurafall {
+  width: 800px;
+  height: 600px;
+  background-image: url('../../image/sakura/true1.jpg'), url('../../image/sakura/true2.jpg');
+  animation: sakura 20s linear infinite;
+}
+
+@keyframes sakura {
+  0% {
+    background-position: 0 0, 0 0, 0 0;
+  }
+  100% {
+    background-position: 0 500px, 0 300px, 0 400px;
+  }
+}

@@ -138,6 +138,8 @@ export default class GameViewController {
 
     if (message === "movedPieceToBar") {
       this._pieceController.movedMyPieceToBar(data.destPoint, data.sourcePoint);
+      // Pip Countを更新
+      this._informationViewController.updateMyPipCount(data.sourcePoint - data.destPoint);
     }
 
     if (message === "undo") {
@@ -546,5 +548,7 @@ export default class GameViewController {
     var convertDestPoint = BAR_POINT;
     var convertSourcePoint = BAR_POINT - sourcePoint;
     this._peerController.sendMovedPieceToBar(convertDestPoint, convertSourcePoint);
+    // Pip Countを更新
+    this._informationViewController.updateOpponentPipCount(0 - sourcePoint);
   }
 }
